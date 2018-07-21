@@ -1,0 +1,23 @@
+{
+    "name": "montealegreluis/ads-api",
+    "type": "project",
+    "description": "API to post Ads like Craiglist",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luis Montealegre",
+            "email": "montealegreluis@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Ads\\": "src"
+        }
+    }
+}
