@@ -9,6 +9,12 @@ namespace Ads\Posters;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * A poster's username
+ *
+ * @see Poster
+ * @see UsernameTest
+ */
 class Username
 {
     private const MIN_LENGTH = 5;

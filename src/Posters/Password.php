@@ -9,6 +9,12 @@ namespace Ads\Posters;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * A poster's password
+ *
+ * @see Poster
+ * @see PasswordTest
+ */
 class Password
 {
     private const MIN_LENGTH = 8;
