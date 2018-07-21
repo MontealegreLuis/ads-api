@@ -1,0 +1,6 @@
+default:
+    autoload: tests/contexts
+    suites:
+        registration_features:
+            paths:    [ '%paths.base%/features/registration' ]
+            contexts: [ UserSignUpContext ]
