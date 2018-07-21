@@ -12,6 +12,12 @@ use PHPUnit\Framework\TestCase;
 
 class PosterTest extends TestCase
 {
+    /** @before */
+    function reset()
+    {
+        EventPublisher::reset();
+    }
+
     /** @test */
     function it_can_sign_up()
     {

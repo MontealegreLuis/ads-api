@@ -49,4 +49,9 @@ class Poster implements RecordsEvents
             $this->email
         ));
     }
+
+    public function hasUsername(Username $username): bool
+    {
+        return $this->username->asText() === $username->asText();
+    }
 }
