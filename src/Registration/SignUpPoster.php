@@ -1,0 +1,34 @@
+<?php
+/**
+ * PHP version 7.1
+ *
+ * This source file is subject to the license that is bundled with this package in the file LICENSE.
+ */
+
+namespace Ads\Registration;
+
+use Ads\Posters\Poster;
+use Ads\Posters\PosterInformation;
+use Ads\Posters\Posters;
+
+class SignUpPoster
+{
+    /** @var Posters */
+    private $posters;
+
+    public function __construct(Posters $posters)
+    {
+        $this->posters = $posters;
+    }
+
+    public function signUp(PosterInformation $information): void
+    {
+        $registeredPoster = $this->posters->withUsername($information->username());
+        if ($registeredPoster) {
+            throw new UnavailableUsername($information->username());
+        }
+
+        $poster = Poster::signUp($information);
+        $this->posters->add($poster);
+    }
+}

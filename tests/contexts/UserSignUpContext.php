@@ -6,13 +6,34 @@
  */
 
 use Ads\Builders\A;
+use Ads\Ports\DomainEvents\EventPublisher;
+use Ads\Posters\InMemoryPosters;
+use Ads\Posters\PosterHasSignedUp;
+use Ads\Posters\PosterInformation;
+use Ads\Registration\SignUpPoster;
+use Ads\Registration\UnavailableUsername;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
+use Faker\Factory;
 
 class UserSignUpContext implements Context
 {
+    /** @var \Ads\Posters\Posters */
+    private $posters;
+
+    /** @var SignUpPoster */
+    private $action;
+
+    /** @var \Faker\Generator  */
+    private $faker;
+
+    /** @var bool */
+    private $usernameIsUnavailable = false;
+
     public function __construct()
     {
+        $this->posters = new InMemoryPosters();
+        $this->action = new SignUpPoster($this->posters);
+        $this->faker = Factory::create();
     }
 
     /**
@@ -20,15 +41,25 @@ class UserSignUpContext implements Context
      */
     public function aPosterWithTheUsername(string $username): void
     {
-        A::poster()->withUsername($username)->build();
+        $this->posters->add(A::poster()->withUsername($username)->build());
+        EventPublisher::reset(); // we're not interested in previous events
     }
 
     /**
-     * @When I sign up with the username :arg1
+     * @When I sign up with the username :username
      */
-    public function iSignUpWithTheUsername($arg1)
+    public function iSignUpWithTheUsername(string $username)
     {
-        throw new PendingException();
+        try {
+            $this->action->signUp(PosterInformation::fromInput([
+                'username' => $username,
+                'password' => $this->faker->password(8),
+                'name' => $this->faker->name,
+                'email' => $this->faker->email,
+            ]));
+        } catch (UnavailableUsername $exception) {
+            $this->usernameIsUnavailable = true;
+        }
     }
 
     /**
@@ -36,7 +67,7 @@ class UserSignUpContext implements Context
      */
     public function iShouldBeAskedToChooseADifferentUsername()
     {
-        throw new PendingException();
+        assertTrue($this->usernameIsUnavailable);
     }
 
     /**
@@ -44,6 +75,7 @@ class UserSignUpContext implements Context
      */
     public function iShouldBeNotifiedThatMyAccountWasCreated()
     {
-        throw new PendingException();
+        assertCount(1, EventPublisher::instance()->events());
+        assertInstanceOf(PosterHasSignedUp::class, EventPublisher::instance()->events()[0]);
     }
 }
