@@ -2,7 +2,7 @@
     "name": "montealegreluis/ads-api",
     "type": "project",
     "description": "API to post Ads like Craiglist",
-    "license": "MIT",
+    "license": "BSD 3-Clause",
     "authors": [
         {
             "name": "Luis Montealegre",
