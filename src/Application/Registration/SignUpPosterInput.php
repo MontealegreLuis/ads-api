@@ -54,7 +54,7 @@ class SignUpPosterInput
 
         $this->violationsToErrors($validator);
 
-        return \count($this->errors) <= 0;
+        return empty($this->errors);
     }
 
     public function errors(): array

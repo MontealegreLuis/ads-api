@@ -21,6 +21,7 @@ class SignUpPoster
         $this->posters = $posters;
     }
 
+    /** @throws UnavailableUsername */
     public function signUp(PosterInformation $information): void
     {
         $registeredPoster = $this->posters->withUsername($information->username());
