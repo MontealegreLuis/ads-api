@@ -54,4 +54,9 @@ class Poster implements RecordsEvents
     {
         return (string)$this->username === (string)$username;
     }
+
+    public function username(): Username
+    {
+        return $this->username;
+    }
 }

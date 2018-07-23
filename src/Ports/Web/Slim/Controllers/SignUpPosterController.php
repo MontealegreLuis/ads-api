@@ -7,15 +7,19 @@
 
 namespace Ads\Ports\Web\Slim\Controllers;
 
+use Ads\Application\Registration\CanSignUpPosters;
 use Ads\Application\Registration\SignUpPosterAction;
+use Ads\Application\Registration\SignUpPosterInput;
 use Ads\Ports\Web\Slim\HAL\HalSerializerFactory;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
+use Ads\Registration\UnavailableUsername;
 use Psr\Http\Message\ResponseInterface as Response;
+use RuntimeException;
 use Slim\Http\Request;
 use Slim\Router;
 
-class SignUpPosterController
+class SignUpPosterController implements CanSignUpPosters
 {
     /** @var SignUpPosterAction */
     private $action;
@@ -23,29 +27,53 @@ class SignUpPosterController
     /** @var Router */
     private $router;
 
+    /** @var Response */
+    private $response;
+
+    /** @var Request */
+    private $request;
+
     public function __construct(SignUpPosterAction $action, Router $router)
     {
         $this->action = $action;
+        $this->action->attach($this);
         $this->router = $router;
     }
 
-    public function signUp(Request $request, Response $response)
+    public function signUp(Request $request, Response $response): Response
     {
-        $information = PosterInformation::fromInput($request->getParsedBody());
-        $poster = Poster::signUp($information);
+        $this->request = $request;
+        $this->response = $response;
 
-        $serializer = HalSerializerFactory::createFor($request, $this->router);
+        $this->action->signUp(SignUpPosterInput::withValues($request->getParsedBody()));
 
-        $response->getBody()->write($serializer->serialize($poster));
+        return $this->response;
+    }
 
-        return $response
+    public function respondToPosterSignedUp(Poster $poster): void
+    {
+        $serializer = HalSerializerFactory::createFor($this->request, $this->router);
+
+        $this->response->getBody()->write($serializer->serialize($poster));
+
+        $this->response = $this->response
             ->withStatus(201)
             ->withHeader('Content-Type', 'application/hal+json')
             ->withHeader(
                 'Location',
-                (string)$request->getUri()->withPath($this->router->pathFor('poster', [
-                    'username' =>  $information->username()
+                (string)$this->request->getUri()->withPath($this->router->pathFor('poster', [
+                    'username' => (string)$poster->username()
                 ]))
             );
+    }
+
+    public function respondToInvalidPosterInformation(array $errors): void
+    {
+        throw new RuntimeException('TODO');
+    }
+
+    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $exception): void
+    {
+        throw new RuntimeException('TODO');
     }
 }

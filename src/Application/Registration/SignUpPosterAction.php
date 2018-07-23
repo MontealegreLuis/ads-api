@@ -10,6 +10,7 @@ namespace Ads\Application\Registration;
 use Ads\Posters\PosterInformation;
 use Ads\Registration\SignUpPoster;
 use Ads\Registration\UnavailableUsername;
+use LogicException;
 
 class SignUpPosterAction
 {
@@ -19,29 +20,42 @@ class SignUpPosterAction
     /** @var CanSignUpPosters */
     private $responder;
 
-    public function __construct(SignUpPoster $action, CanSignUpPosters $responder)
+    public function __construct(SignUpPoster $action)
     {
         $this->action = $action;
+    }
+
+    public function attach(CanSignUpPosters $responder): void
+    {
         $this->responder = $responder;
     }
 
     public function signUp(SignUpPosterInput $input): void
     {
         if ($input->isValid()) {
-            $information = PosterInformation::fromInput($input->values());
-            $this->tryToSignUpWith($information);
-            $this->responder->respondToPosterSignedUp($information);
+            $this->tryToSignUpWith($input);
         } else {
-            $this->responder->respondToInvalidPosterInformation($input->errors());
+            $this->responder()->respondToInvalidPosterInformation($input->errors());
         }
     }
 
-    private function tryToSignUpWith(PosterInformation $information): void
+    private function tryToSignUpWith(SignUpPosterInput $input): void
     {
+        $information = PosterInformation::fromInput($input->values());
         try {
-            $this->action->signUp($information);
+            $poster = $this->action->signUp($information);
+            $this->responder()->respondToPosterSignedUp($poster);
         } catch (UnavailableUsername $exception) {
-            $this->responder->respondToUnavailableUsername($information, $exception);
+            $this->responder()->respondToUnavailableUsername($information, $exception);
         }
+    }
+
+    /** @throws LogicException */
+    private function responder(): CanSignUpPosters
+    {
+        if (!$this->responder) {
+            throw new LogicException('Cannot sign up a poster without a responder');
+        }
+        return $this->responder;
     }
 }

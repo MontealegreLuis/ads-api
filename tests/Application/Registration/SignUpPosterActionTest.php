@@ -10,6 +10,7 @@ namespace Ads\Application\Registration;
 use Ads\Builders\A;
 use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\InMemoryPosters;
+use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
@@ -36,7 +37,7 @@ class SignUpPosterActionTest extends TestCase
         $this->assertNotNull($this->posters->withUsername(new Username('thomas_anderson')));
         $this->assertCount(1, EventPublisher::instance()->events());
         $this->responder
-            ->respondToPosterSignedUp(Argument::type(PosterInformation::class))
+            ->respondToPosterSignedUp(Argument::type(Poster::class))
             ->shouldHaveBeenCalled();
     }
 
@@ -85,7 +86,8 @@ class SignUpPosterActionTest extends TestCase
     {
         $this->responder = $this->prophesize(CanSignUpPosters::class);
         $this->posters = new InMemoryPosters();
-        $this->action = new SignUpPosterAction(new SignUpPoster($this->posters), $this->responder->reveal());
+        $this->action = new SignUpPosterAction(new SignUpPoster($this->posters));
+        $this->action->attach($this->responder->reveal());
         EventPublisher::reset();
     }
 

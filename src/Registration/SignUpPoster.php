@@ -22,7 +22,7 @@ class SignUpPoster
     }
 
     /** @throws UnavailableUsername */
-    public function signUp(PosterInformation $information): void
+    public function signUp(PosterInformation $information): Poster
     {
         $registeredPoster = $this->posters->withUsername($information->username());
         if ($registeredPoster) {
@@ -31,5 +31,7 @@ class SignUpPoster
 
         $poster = Poster::signUp($information);
         $this->posters->add($poster);
+
+        return $poster;
     }
 }
