@@ -6,7 +6,12 @@
  */
 
 use Ads\Ports\Web\Slim\Application;
+use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
-require __DIR__ . '/../vendor/autoload.php';
+/** @var ClassLoader $loader */
+$loader = require __DIR__ . '/../vendor/autoload.php';
 
-(new Application())->run();
+AnnotationRegistry::registerLoader(Closure::fromCallable([$loader, 'loadClass']));
+
+(new Application(new ApplicationServices()))->run();
