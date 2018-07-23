@@ -36,7 +36,7 @@ class SignUpPosterAction
         }
     }
 
-    private function tryToSignUpWith($information): void
+    private function tryToSignUpWith(PosterInformation $information): void
     {
         try {
             $this->action->signUp($information);
