@@ -5,27 +5,25 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Application\Registration;
+namespace Ads\Registration\SignUp;
 
 use Ads\Posters\PosterInformation;
-use Ads\Registration\SignUpPoster;
-use Ads\Registration\UnavailableUsername;
 use LogicException;
 
 class SignUpPosterAction
 {
     /** @var SignUpPoster */
-    private $action;
+    private $useCase;
 
-    /** @var CanSignUpPosters */
+    /** @var SignUpPosterResponder */
     private $responder;
 
-    public function __construct(SignUpPoster $action)
+    public function __construct(SignUpPoster $useCase)
     {
-        $this->action = $action;
+        $this->useCase = $useCase;
     }
 
-    public function attach(CanSignUpPosters $responder): void
+    public function attach(SignUpPosterResponder $responder): void
     {
         $this->responder = $responder;
     }
@@ -43,7 +41,7 @@ class SignUpPosterAction
     {
         $information = PosterInformation::fromInput($input->values());
         try {
-            $poster = $this->action->signUp($information);
+            $poster = $this->useCase->signUp($information);
             $this->responder()->respondToPosterSignedUp($poster);
         } catch (UnavailableUsername $exception) {
             $this->responder()->respondToUnavailableUsername($information, $exception);
@@ -51,7 +49,7 @@ class SignUpPosterAction
     }
 
     /** @throws LogicException */
-    private function responder(): CanSignUpPosters
+    private function responder(): SignUpPosterResponder
     {
         if (!$this->responder) {
             throw new LogicException('Cannot sign up a poster without a responder');

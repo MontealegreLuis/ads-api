@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Application\Registration;
+namespace Ads\Registration\SignUp;
 
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validation;

@@ -10,8 +10,8 @@ use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\InMemoryPosters;
 use Ads\Posters\PosterHasSignedUp;
 use Ads\Posters\PosterInformation;
-use Ads\Registration\SignUpPoster;
-use Ads\Registration\UnavailableUsername;
+use Ads\Registration\SignUp\SignUpPoster;
+use Ads\Registration\SignUp\UnavailableUsername;
 use Behat\Behat\Context\Context;
 use Faker\Factory;
 

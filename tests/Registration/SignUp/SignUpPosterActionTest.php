@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Application\Registration;
+namespace Ads\Registration\SignUp;
 
 use Ads\Builders\A;
 use Ads\Ports\DomainEvents\EventPublisher;
@@ -14,8 +14,6 @@ use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
-use Ads\Registration\SignUpPoster;
-use Ads\Registration\UnavailableUsername;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -84,7 +82,7 @@ class SignUpPosterActionTest extends TestCase
     /** @before */
     function configure()
     {
-        $this->responder = $this->prophesize(CanSignUpPosters::class);
+        $this->responder = $this->prophesize(SignUpPosterResponder::class);
         $this->posters = new InMemoryPosters();
         $this->action = new SignUpPosterAction(new SignUpPoster($this->posters));
         $this->action->attach($this->responder->reveal());
@@ -94,6 +92,6 @@ class SignUpPosterActionTest extends TestCase
     /** @var Posters */
     private $posters;
 
-    /** @var CanSignUpPosters */
+    /** @var SignUpPosterResponder */
     private $responder;
 }

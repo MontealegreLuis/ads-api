@@ -7,19 +7,19 @@
 
 namespace Ads\Ports\Web\Slim\Controllers;
 
-use Ads\Application\Registration\CanSignUpPosters;
-use Ads\Application\Registration\SignUpPosterAction;
-use Ads\Application\Registration\SignUpPosterInput;
 use Ads\Ports\Web\Slim\HAL\HalSerializerFactory;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
-use Ads\Registration\UnavailableUsername;
+use Ads\Registration\SignUp\SignUpPosterResponder;
+use Ads\Registration\SignUp\SignUpPosterAction;
+use Ads\Registration\SignUp\SignUpPosterInput;
+use Ads\Registration\SignUp\UnavailableUsername;
 use Psr\Http\Message\ResponseInterface as Response;
 use RuntimeException;
 use Slim\Http\Request;
 use Slim\Router;
 
-class SignUpPosterController implements CanSignUpPosters
+class SignUpPosterController implements SignUpPosterResponder
 {
     /** @var SignUpPosterAction */
     private $action;
