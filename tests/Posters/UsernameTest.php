@@ -37,6 +37,6 @@ class UsernameTest extends TestCase
     function it_has_more_than_5_characters_long_and_it_is_alphanumeric()
     {
         $username = new Username('thomas_anderson1');
-        $this->assertEquals('thomas_anderson1', $username->asText());
+        $this->assertEquals('thomas_anderson1', (string)$username);
     }
 }

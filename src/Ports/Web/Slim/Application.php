@@ -8,13 +8,19 @@
 namespace Ads\Ports\Web\Slim;
 
 use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;
+use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Slim\App;
 
 class Application extends App
 {
-    public function __construct($container = [])
+    public function __construct(ApplicationServices $provider, $container = [])
     {
         parent::__construct($container);
-        $this->post('/sign-up', SignUpPosterController::class . ':signUp');
+        $provider->register($this->getContainer());
+
+        $this->post('/sign-up', SignUpPosterController::class . ':signUp')
+            ->setName('signUp');
+        $this->get('/poster/{username}', SignUpPosterController::class . ':signUp')
+            ->setName('poster');
     }
 }

@@ -14,6 +14,6 @@ class UnavailableUsername extends RuntimeException
 {
     public function __construct(Username $username)
     {
-        parent::__construct(sprintf("Username {$username->asText()} already taken"));
+        parent::__construct(sprintf("Username {$username} already taken"));
     }
 }

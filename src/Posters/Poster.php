@@ -52,6 +52,6 @@ class Poster implements RecordsEvents
 
     public function hasUsername(Username $username): bool
     {
-        return $this->username->asText() === $username->asText();
+        return (string)$this->username === (string)$username;
     }
 }

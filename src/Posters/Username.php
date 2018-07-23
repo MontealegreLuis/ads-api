@@ -28,7 +28,7 @@ class Username
         $this->setUsername($username);
     }
 
-    public function asText(): string
+    public function __toString(): string
     {
         return $this->username;
     }
