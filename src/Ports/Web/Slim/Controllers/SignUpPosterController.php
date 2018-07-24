@@ -17,7 +17,6 @@ use Ads\Registration\SignUp\SignUpPosterInput;
 use Ads\Registration\SignUp\SignUpPosterResponder;
 use Ads\Registration\SignUp\UnavailableUsername;
 use Psr\Http\Message\ResponseInterface as Response;
-use RuntimeException;
 use Slim\Http\Request;
 use Slim\Router;
 
@@ -68,9 +67,12 @@ class SignUpPosterController implements SignUpPosterResponder
         $this->response = HALResponse::unprocessableEntity($this->response, Problem::forValidation($errors));
     }
 
-    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $exception): void
+    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void
     {
-        throw new RuntimeException('TODO');
+        $this->response = HALResponse::unprocessableEntity(
+            $this->response,
+            Problem::unavailableUsername($error)
+        );
     }
 
     private function pathFor(string $routeName, array $parameters): string

@@ -11,4 +11,5 @@ namespace Ads\Ports\Web\Slim\HAL\ApiProblems;
 interface ErrorCode
 {
     const INVALID_POSTER_INFORMATION = 1;
+    const UNAVAILABLE_USERNAME = 2;
 }

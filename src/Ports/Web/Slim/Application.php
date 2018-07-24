@@ -18,9 +18,9 @@ class Application extends App
         parent::__construct($container);
         $provider->register($this->getContainer());
 
-        $this->post('/sign-up', SignUpPosterController::class . ':signUp')
+        $this->post('/posters', SignUpPosterController::class . ':signUp')
             ->setName('signUp');
-        $this->get('/poster/{username}', SignUpPosterController::class . ':signUp')
+        $this->get('/posters/{username}', SignUpPosterController::class . ':signUp')
             ->setName('poster');
     }
 }
