@@ -9,7 +9,7 @@ use Ads\Ports\Web\Slim\Application;
 use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
-/** @var ClassLoader $loader */
+/** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__ . '/../vendor/autoload.php';
 
 AnnotationRegistry::registerLoader(Closure::fromCallable([$loader, 'loadClass']));

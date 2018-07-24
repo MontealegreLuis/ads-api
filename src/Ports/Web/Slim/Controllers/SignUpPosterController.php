@@ -8,11 +8,12 @@
 namespace Ads\Ports\Web\Slim\Controllers;
 
 use Ads\Ports\Web\Slim\HAL\HalSerializerFactory;
+use Ads\Ports\Web\Slim\HAL\Responses\HALResponse;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
-use Ads\Registration\SignUp\SignUpPosterResponder;
 use Ads\Registration\SignUp\SignUpPosterAction;
 use Ads\Registration\SignUp\SignUpPosterInput;
+use Ads\Registration\SignUp\SignUpPosterResponder;
 use Ads\Registration\SignUp\UnavailableUsername;
 use Psr\Http\Message\ResponseInterface as Response;
 use RuntimeException;
@@ -54,17 +55,11 @@ class SignUpPosterController implements SignUpPosterResponder
     {
         $serializer = HalSerializerFactory::createFor($this->request, $this->router);
 
-        $this->response->getBody()->write($serializer->serialize($poster));
-
-        $this->response = $this->response
-            ->withStatus(201)
-            ->withHeader('Content-Type', 'application/hal+json')
-            ->withHeader(
-                'Location',
-                (string)$this->request->getUri()->withPath($this->router->pathFor('poster', [
-                    'username' => (string)$poster->username()
-                ]))
-            );
+        $this->response = HALResponse::created(
+            $this->response,
+            $this->pathFor('poster', ['username' => $poster->username()]),
+            $serializer->serialize($poster)
+        );
     }
 
     public function respondToInvalidPosterInformation(array $errors): void
@@ -75,5 +70,10 @@ class SignUpPosterController implements SignUpPosterResponder
     public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $exception): void
     {
         throw new RuntimeException('TODO');
+    }
+
+    private function pathFor(string $routeName, array $parameters): string
+    {
+        return (string)$this->request->getUri()->withPath($this->router->pathFor($routeName, $parameters));
     }
 }
