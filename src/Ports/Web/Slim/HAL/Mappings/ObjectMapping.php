@@ -11,7 +11,7 @@ use NilPortugues\Api\Mapping\MappingFactory;
 use NilPortugues\Api\Mappings\HalMapping;
 use NilPortugues\Api\Mappings\JsonApiMapping;
 
-class ObjectMappingFactory extends MappingFactory
+class ObjectMapping extends MappingFactory
 {
     public static function fromMapper(HalMapping $mapper): array
     {

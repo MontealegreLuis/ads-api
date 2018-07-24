@@ -7,20 +7,19 @@
 
 namespace Ads\Ports\Web\Slim\HAL;
 
-use Ads\Ports\Web\Slim\HAL\Mappings\ObjectMappingFactory;
+use Ads\Ports\Web\Slim\HAL\Mappings\ObjectMapping;
 use Ads\Ports\Web\Slim\HAL\Mappings\PosterMapping;
+use Ads\Ports\Web\Slim\HAL\Mappings\UriBuilder;
 use NilPortugues\Api\Hal\HalSerializer;
 use NilPortugues\Api\Hal\JsonTransformer;
 use NilPortugues\Api\Mapping\Mapper;
-use Slim\Http\Request;
-use Slim\Router;
 
-class HalSerializerFactory
+class Serializer
 {
-    public static function createFor(Request $request, Router $router): HalSerializer
+    public static function hal(UriBuilder $uriBuilder): HalSerializer
     {
         $mappings = [
-            ObjectMappingFactory::fromMapper(new PosterMapping($request, $router)),
+            ObjectMapping::fromMapper(new PosterMapping($uriBuilder)),
         ];
         return new HalSerializer(new JsonTransformer(new Mapper($mappings)));
     }

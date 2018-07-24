@@ -8,8 +8,9 @@
 namespace Ads\Ports\Web\Slim\Controllers;
 
 use Ads\Ports\Web\Slim\HAL\ApiProblems\Problem;
-use Ads\Ports\Web\Slim\HAL\HalSerializerFactory;
+use Ads\Ports\Web\Slim\HAL\Mappings\SlimUriBuilder;
 use Ads\Ports\Web\Slim\HAL\Responses\HALResponse;
+use Ads\Ports\Web\Slim\HAL\Serializer;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
 use Ads\Registration\SignUp\SignUpPosterAction;
@@ -20,6 +21,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Http\Request;
 use Slim\Router;
 
+/***
+ * Creates a new Poster
+ *
+ * @see SignUpPosterControllerTest
+ */
 class SignUpPosterController implements SignUpPosterResponder
 {
     /** @var SignUpPosterAction */
@@ -53,11 +59,12 @@ class SignUpPosterController implements SignUpPosterResponder
 
     public function respondToPosterSignedUp(Poster $poster): void
     {
-        $serializer = HalSerializerFactory::createFor($this->request, $this->router);
+        $uriBuilder = new SlimUriBuilder($this->router, $this->request);
+        $serializer = Serializer::hal($uriBuilder);
 
         $this->response = HALResponse::created(
             $this->response,
-            $this->pathFor('poster', ['username' => $poster->username()]),
+            $uriBuilder->pathFor('poster', ['username' => $poster->username()]),
             $serializer->serialize($poster)
         );
     }
@@ -73,10 +80,5 @@ class SignUpPosterController implements SignUpPosterResponder
             $this->response,
             Problem::unavailableUsername($error)
         );
-    }
-
-    private function pathFor(string $routeName, array $parameters): string
-    {
-        return (string)$this->request->getUri()->withPath($this->router->pathFor($routeName, $parameters));
     }
 }

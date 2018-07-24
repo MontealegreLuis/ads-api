@@ -9,21 +9,15 @@ namespace Ads\Ports\Web\Slim\HAL\Mappings;
 
 use Ads\Posters\Poster;
 use NilPortugues\Api\Mappings\HalMapping;
-use Slim\Http\Request;
-use Slim\Router;
 
 class PosterMapping implements HalMapping
 {
-    /** @var Request */
-    private $request;
+    /** @var UriBuilder */
+    private $uriBuilder;
 
-    /** @var Router */
-    private $router;
-
-    public function __construct(Request $request, Router $router)
+    public function __construct(UriBuilder $uriBuilder)
     {
-        $this->request = $request;
-        $this->router = $router;
+        $this->uriBuilder = $uriBuilder;
     }
 
     /** @inheritdoc */
@@ -68,7 +62,7 @@ class PosterMapping implements HalMapping
     public function getUrls(): array
     {
         return [
-            'self' => $this->urlFor('poster', ['username' => '{username}']),
+            'self' => $this->escapedUrl('poster', ['username' => '{username}']),
         ];
     }
 
@@ -78,9 +72,9 @@ class PosterMapping implements HalMapping
         return [];
     }
 
-    private function urlFor(string $routeName, array $parameters): string
+    private function escapedUrl(string $routeName, array $parameters): string
     {
-        $url = (string)$this->request->getUri()->withPath($this->router->pathFor($routeName, $parameters));
+        $url = $this->uriBuilder->pathFor($routeName, $parameters);
         return str_replace(['%7B', '%7D'], ['{', '}'], $url);
     }
 }
