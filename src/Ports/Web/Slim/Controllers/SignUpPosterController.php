@@ -7,6 +7,7 @@
 
 namespace Ads\Ports\Web\Slim\Controllers;
 
+use Ads\Ports\Web\Slim\HAL\ApiProblems\Problem;
 use Ads\Ports\Web\Slim\HAL\HalSerializerFactory;
 use Ads\Ports\Web\Slim\HAL\Responses\HALResponse;
 use Ads\Posters\Poster;
@@ -64,7 +65,7 @@ class SignUpPosterController implements SignUpPosterResponder
 
     public function respondToInvalidPosterInformation(array $errors): void
     {
-        throw new RuntimeException('TODO');
+        $this->response = HALResponse::unprocessableEntity($this->response, Problem::forValidation($errors));
     }
 
     public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $exception): void

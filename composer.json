@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": ">=7.1",
+        "crell/api-problem": "^2.0",
         "doctrine/annotations": "^1.6",
         "doctrine/cache": "^1.7",
         "nesbot/carbon": "^1.32",
