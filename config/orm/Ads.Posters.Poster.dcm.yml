@@ -1,0 +1,23 @@
+Ads\Posters\Poster:
+  type: entity
+  table: posters
+  id:
+    username:
+      type: Username
+      generator:
+        strategy: NONE
+  embedded:
+    password:
+      class: Ads\Posters\Password
+      columnPrefix: false
+    name:
+      class: Ads\Posters\Name
+      columnPrefix: false
+    email:
+      class: Ads\Posters\Email
+      columnPrefix: false
+
+  Ads\Posters\Username:
+    type: embeddable
+    fields:
+      username: { type: string }

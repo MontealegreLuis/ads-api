@@ -8,12 +8,25 @@
 namespace Ads\ContractTests;
 
 use Ads\Builders\A;
+use Ads\Ports\Doctrine\EntityManagerFactory;
+use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
 use PHPUnit\Framework\TestCase;
 
 abstract class PostersTest extends TestCase
 {
+    use EntityManagerFactory;
+
+    /** @before */
+    function cleanup()
+    {
+        $this
+            ->entityManager(require __DIR__ . '/../../../config/options.php')
+            ->createQuery('DELETE FROM ' . Poster::class)
+            ->execute();
+    }
+
     /** @test */
     function it_finds_an_existing_poster_by_its_username()
     {

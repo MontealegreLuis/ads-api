@@ -8,8 +8,10 @@
 namespace Ads\Ports\Web\Slim\Controllers;
 
 use Ads\Builders\A;
+use Ads\Ports\Doctrine\EntityManagerFactory;
 use Ads\Ports\Web\Slim\Application;
 use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
+use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
@@ -18,10 +20,21 @@ use Teapot\StatusCode\All as Status;
 
 class SignUpPosterControllerTest extends TestCase
 {
+    use EntityManagerFactory;
+
+    /** @before */
+    function cleanup()
+    {
+        $this
+            ->entityManager(require __DIR__ . '/../../../../../../config/options.php')
+            ->createQuery('DELETE FROM ' . Poster::class)
+            ->execute();
+    }
+
     /** @test */
     function it_returns_successful_status_code_and_content_after_signing_up_a_poster()
     {
-        $app = new Application(new ApplicationServices());
+        $app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
@@ -46,7 +59,7 @@ class SignUpPosterControllerTest extends TestCase
     /** @test */
     function it_returns_an_api_problem_description_if_validation_fails()
     {
-        $app = new Application(new ApplicationServices());
+        $app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
@@ -71,7 +84,7 @@ class SignUpPosterControllerTest extends TestCase
     /** @test */
     function it_returns_an_api_problem_description_if_poster_username_is_unavailable()
     {
-        $app = new Application(new ApplicationServices());
+        $app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',

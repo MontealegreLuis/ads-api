@@ -12,10 +12,16 @@
     stopOnFailure="false"
 >
     <testsuites>
-        <testsuite name="All tests">
-            <directory>tests</directory>
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
+        </testsuite>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
         </testsuite>
     </testsuites>
+    <listeners>
+        <listener class="\Ads\PHPUnit\UpdateDatabaseSchemaListener"/>
+    </listeners>
     <filter>
         <whitelist>
             <directory suffix=".php">src/</directory>
