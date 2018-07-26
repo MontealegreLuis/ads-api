@@ -15,6 +15,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $container = new Container();
 $container->register(new ApplicationServices(require __DIR__ . '/options.php'));
 
-// need a username type since it is a primary key
-
 return ConsoleRunner::createHelperSet($container[EntityManager::class]);

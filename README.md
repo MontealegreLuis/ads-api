@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-composer install
+make setup
 ```
 
 ## Tests

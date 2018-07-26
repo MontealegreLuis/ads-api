@@ -31,7 +31,7 @@ class UsernameType extends StringType
         if (\is_string($value)) {
             return $value;
         }
-        throw ConversionException::conversionFailed($value, Type::GUID);
+        throw ConversionException::conversionFailed($value, Type::STRING);
     }
 
     /**

@@ -16,8 +16,3 @@ Ads\Posters\Poster:
     email:
       class: Ads\Posters\Email
       columnPrefix: false
-
-  Ads\Posters\Username:
-    type: embeddable
-    fields:
-      username: { type: string }
