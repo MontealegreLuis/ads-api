@@ -7,6 +7,7 @@
 
 namespace Ads\Ports\Web\Slim\Controllers;
 
+use Ads\CommandBus\Bus;
 use Ads\Ports\Web\Slim\HAL\ApiProblems\Problem;
 use Ads\Ports\Web\Slim\HAL\Mappings\SlimUriBuilder;
 use Ads\Ports\Web\Slim\HAL\Responses\HALResponse;
@@ -52,7 +53,8 @@ class SignUpPosterController implements SignUpPosterResponder
         $this->request = $request;
         $this->response = $response;
 
-        $this->action->signUp(SignUpPosterInput::withValues($request->getParsedBody()));
+        $bus = Bus::for($this->action, 'signUp', SignUpPosterInput::class);
+        $bus->handle(SignUpPosterInput::withValues($request->getParsedBody()));
 
         return $this->response;
     }
