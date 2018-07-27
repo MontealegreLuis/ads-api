@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\CommandBus;
+namespace Ads\Ports\CommandBus;
 
 use Doctrine\ORM\EntityManager;
 use League\Tactician\CommandBus;

@@ -7,7 +7,7 @@
 
 namespace Ads\Ports\Web\Slim\DependencyInjection;
 
-use Ads\CommandBus\Bus;
+use Ads\Ports\CommandBus\Bus;
 use Ads\Ports\Doctrine\EntityManagerFactory;
 use Ads\Ports\Doctrine\Posters\PosterRepository;
 use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;

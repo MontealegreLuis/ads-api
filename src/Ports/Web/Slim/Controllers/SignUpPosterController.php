@@ -7,7 +7,7 @@
 
 namespace Ads\Ports\Web\Slim\Controllers;
 
-use Ads\CommandBus\Bus;
+use Ads\Ports\CommandBus\Bus;
 use Ads\Ports\Web\Slim\HAL\ApiProblems\Problem;
 use Ads\Ports\Web\Slim\HAL\Mappings\SlimUriBuilder;
 use Ads\Ports\Web\Slim\HAL\Responses\HALResponse;
