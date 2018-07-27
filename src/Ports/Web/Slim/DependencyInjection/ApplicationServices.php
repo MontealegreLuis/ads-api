@@ -7,6 +7,7 @@
 
 namespace Ads\Ports\Web\Slim\DependencyInjection;
 
+use Ads\CommandBus\Bus;
 use Ads\Ports\Doctrine\EntityManagerFactory;
 use Ads\Ports\Doctrine\Posters\PosterRepository;
 use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;
@@ -39,9 +40,13 @@ class ApplicationServices implements ServiceProviderInterface
         };
         $container[SignUpPosterController::class] = function (Container $container) {
             return new SignUpPosterController(
+                $container[Bus::class],
                 new SignUpPosterAction(new SignUpPoster($container[Posters::class])),
                 $container['router']
             );
+        };
+        $container[Bus::class] = function (Container $container) {
+            return new Bus($container[EntityManager::class]);
         };
     }
 }

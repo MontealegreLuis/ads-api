@@ -29,6 +29,9 @@ use Slim\Router;
  */
 class SignUpPosterController implements SignUpPosterResponder
 {
+    /** @var Bus */
+    private $bus;
+
     /** @var SignUpPosterAction */
     private $action;
 
@@ -41,8 +44,9 @@ class SignUpPosterController implements SignUpPosterResponder
     /** @var Request */
     private $request;
 
-    public function __construct(SignUpPosterAction $action, Router $router)
+    public function __construct(Bus $bus, SignUpPosterAction $action, Router $router)
     {
+        $this->bus = $bus;
         $this->action = $action;
         $this->action->attach($this);
         $this->router = $router;
@@ -53,8 +57,8 @@ class SignUpPosterController implements SignUpPosterResponder
         $this->request = $request;
         $this->response = $response;
 
-        $bus = Bus::for($this->action, 'signUp', SignUpPosterInput::class);
-        $bus->handle(SignUpPosterInput::withValues($request->getParsedBody()));
+        $this->bus->addHandler($this->action, 'signUp', SignUpPosterInput::class);
+        $this->bus->handle(SignUpPosterInput::withValues($request->getParsedBody()));
 
         return $this->response;
     }
