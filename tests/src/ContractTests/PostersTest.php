@@ -9,6 +9,7 @@ namespace Ads\ContractTests;
 
 use Ads\Builders\A;
 use Ads\Ports\Doctrine\EntityManagerFactory;
+use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
@@ -21,6 +22,7 @@ abstract class PostersTest extends TestCase
     /** @before */
     function cleanup()
     {
+        EventPublisher::reset();
         $this
             ->entityManager(require __DIR__ . '/../../../config/options.php')
             ->createQuery('DELETE FROM ' . Poster::class)

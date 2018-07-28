@@ -15,6 +15,9 @@ class EventPublisher
     /** @var DomainEvent[] */
     private $events;
 
+    /** @var EventSubscriber[] */
+    private $subscribers;
+
     public static function instance(): EventPublisher
     {
         if (!self::$instance) {
@@ -28,9 +31,19 @@ class EventPublisher
         self::$instance = null;
     }
 
-    public function publish(DomainEvent $event): void
+    public function subscribe(EventSubscriber $subscriber): void
     {
-        $this->events[] = $event;
+        $this->subscribers[] = $subscriber;
+    }
+
+    public function publish(DomainEvent $aDomainEvent): void
+    {
+        $this->events[] = $aDomainEvent;
+        foreach ($this->subscribers as $aSubscriber) {
+            if ($aSubscriber->isSubscribedTo($aDomainEvent)) {
+                $aSubscriber->handle($aDomainEvent);
+            }
+        }
     }
 
     /** @return DomainEvent[] */
@@ -42,5 +55,6 @@ class EventPublisher
     private function __construct()
     {
         $this->events = [];
+        $this->subscribers = [];
     }
 }
