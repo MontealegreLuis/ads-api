@@ -15,6 +15,7 @@
         "doctrine/annotations": "^1.6",
         "doctrine/cache": "^1.7",
         "doctrine/orm": "^2.6",
+        "jms/serializer": "^1.13",
         "league/tactician": "^1.0",
         "league/tactician-doctrine": "^1.1",
         "nesbot/carbon": "^1.32",

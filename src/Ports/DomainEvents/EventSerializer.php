@@ -7,13 +7,8 @@
 
 namespace Ads\Ports\DomainEvents;
 
-abstract class DomainEvent
-{
-    /** @var int A UTC timestamp */
-    protected $occurredOn;
 
-    public function occurredOn(): int
-    {
-        return $this->occurredOn;
-    }
+interface EventSerializer
+{
+    public function serialize(DomainEvent $anEvent): string;
 }

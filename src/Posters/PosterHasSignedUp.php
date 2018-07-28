@@ -22,11 +22,11 @@ class PosterHasSignedUp extends DomainEvent
     /** @var Email */
     private $email;
 
-    public function __construct(Username $username, Name $name, Email $email, DateTime $occurredOn = null)
+    public function __construct(Username $username, Name $name, Email $email, int $occurredOn = 0)
     {
         $this->username = $username;
         $this->name = $name;
         $this->email = $email;
-        $this->occurredOn = $occurredOn ?? Carbon::now('UTC');
+        $this->occurredOn = $occurredOn ?? Carbon::now('UTC')->getTimestamp();
     }
 }
