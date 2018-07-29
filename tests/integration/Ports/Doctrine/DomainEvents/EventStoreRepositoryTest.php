@@ -49,10 +49,9 @@ class EventStoreRepositoryTest extends TestCase
     /** @before */
     function configure()
     {
-        $container = $this->container();
-        $this->store = $container[EventStoreRepository::class];
-        $container[EntityManager::class]
+        $this->container()[EntityManager::class]
             ->createQuery('DELETE FROM ' . StoredEvent::class)
             ->execute();
+        $this->store = $this->container()[EventStoreRepository::class];
     }
 }

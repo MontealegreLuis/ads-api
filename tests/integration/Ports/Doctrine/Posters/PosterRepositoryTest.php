@@ -17,12 +17,17 @@ class PosterRepositoryTest extends PostersTest
 {
     use WithContainer;
 
-    protected function posters(): Posters
+    /** @before */
+    function cleanup()
     {
-        $container = $this->container();
-        $container[EntityManager::class]
+        $this->container()[EntityManager::class]
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();
-        return $container[Posters::class];
+
+    }
+
+    protected function posters(): Posters
+    {
+        return $this->container()[Posters::class];
     }
 }

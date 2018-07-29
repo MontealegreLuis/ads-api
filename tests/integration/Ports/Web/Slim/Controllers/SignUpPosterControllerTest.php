@@ -8,11 +8,12 @@
 namespace Ads\Ports\Web\Slim\Controllers;
 
 use Ads\Builders\A;
-use Ads\Ports\Doctrine\EntityManagerFactory;
+use Ads\DependencyInjection\WithContainer;
 use Ads\Ports\Web\Slim\Application;
 use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
+use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -20,21 +21,14 @@ use Teapot\StatusCode\All as Status;
 
 class SignUpPosterControllerTest extends TestCase
 {
-    use EntityManagerFactory;
+    use WithContainer;
 
-    /** @before */
-    function cleanup()
-    {
-        $this
-            ->entityManager(require __DIR__ . '/../../../../../../config/options.php')
-            ->createQuery('DELETE FROM ' . Poster::class)
-            ->execute();
-    }
+    /** @var Application */
+    private $app;
 
     /** @test */
     function it_returns_successful_status_code_and_content_after_signing_up_a_poster()
     {
-        $app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
@@ -45,8 +39,8 @@ class SignUpPosterControllerTest extends TestCase
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
         ]);
-        $app->getContainer()['request'] = $req;
-        $response = $app->run(true);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
 
         $this->assertSame(Status::CREATED, $response->getStatusCode());
         $this->assertSame('application/hal+json', $response->getHeader('Content-Type')[0]);
@@ -59,7 +53,6 @@ class SignUpPosterControllerTest extends TestCase
     /** @test */
     function it_returns_an_api_problem_description_if_validation_fails()
     {
-        $app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
@@ -70,8 +63,8 @@ class SignUpPosterControllerTest extends TestCase
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson_at_thematrix.org' // not an email
         ]);
-        $app->getContainer()['request'] = $req;
-        $response = $app->run(true);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame('application/problem+json', $response->getHeader('Content-Type')[0]);
@@ -84,13 +77,12 @@ class SignUpPosterControllerTest extends TestCase
     /** @test */
     function it_returns_an_api_problem_description_if_poster_username_is_unavailable()
     {
-        $app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
         $env = Environment::mock([
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
         ]);
         $unavailableUsername = 'thomas_anderson';
-        $posters = $app->getContainer()->get(Posters::class);
+        $posters = $this->app->getContainer()->get(Posters::class);
         $posters->add(A::poster()->withUsername($unavailableUsername)->build());
         $req = Request::createFromEnvironment($env)->withParsedBody([
             'username' => $unavailableUsername,
@@ -98,8 +90,8 @@ class SignUpPosterControllerTest extends TestCase
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
         ]);
-        $app->getContainer()['request'] = $req;
-        $response = $app->run(true);
+        $this->app->getContainer()['request'] = $req;
+        $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame('application/problem+json', $response->getHeader('Content-Type')[0]);
@@ -107,5 +99,14 @@ class SignUpPosterControllerTest extends TestCase
             '{"errors":{"username":"Username thomas_anderson is already taken"},"code":2,"title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
         );
+    }
+
+    /** @before */
+    function configure()
+    {
+        $this->app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
+        $this->container()[EntityManager::class]
+            ->createQuery('DELETE FROM ' . Poster::class)
+            ->execute();
     }
 }

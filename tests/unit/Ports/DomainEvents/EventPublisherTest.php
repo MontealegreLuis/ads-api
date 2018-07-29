@@ -15,12 +15,6 @@ use PHPUnit\Framework\TestCase;
 
 class EventPublisherTest extends TestCase
 {
-    /** @before @after */
-    function configure()
-    {
-        EventPublisher::reset();
-    }
-
     /** @test */
     function it_notifies_subscribers_of_an_event()
     {
@@ -55,5 +49,11 @@ class EventPublisherTest extends TestCase
         EventPublisher::instance()->subscribe($subscriber->reveal());
 
         EventPublisher::instance()->publish($event);
+    }
+
+    /** @before @after */
+    function configure()
+    {
+        EventPublisher::reset();
     }
 }

@@ -12,11 +12,16 @@ use Pimple\Container;
 
 trait WithContainer
 {
+    /** @var Container */
+    private $container;
+
     public function container(): Container
     {
-        $container = new Container();
-        $container->register(new ApplicationServices(require __DIR__ . '/../../../config/options.php'));
+        if (!$this->container) {
+            $this->container = new Container();
+            $this->container->register(new ApplicationServices(require __DIR__ . '/../../../config/options.php'));
+        }
 
-        return $container;
+        return $this->container;
     }
 }

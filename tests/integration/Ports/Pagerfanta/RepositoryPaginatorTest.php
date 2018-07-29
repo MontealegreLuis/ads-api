@@ -11,12 +11,10 @@ use Ads\Builders\A;
 use Ads\DependencyInjection\WithContainer;
 use Ads\Ports\Pagination\InvalidPage;
 use Ads\Ports\Pagination\Page;
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
-use Pimple\Container;
 
 class RepositoryPaginatorTest extends TestCase
 {
@@ -64,8 +62,7 @@ class RepositoryPaginatorTest extends TestCase
     /** @before */
     function configure()
     {
-        $container = $this->container();
-        $this->entityManager = $container[EntityManager::class];
+        $this->entityManager = $this->container()[EntityManager::class];
         $this->entityManager
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();
@@ -73,7 +70,7 @@ class RepositoryPaginatorTest extends TestCase
             ->select('p')
             ->from(Poster::class, 'p')
             ->orderBy('p.username');
-        $this->posters = $container[Posters::class];
+        $this->posters = $this->container()[Posters::class];
     }
 
     /** @var Posters */
