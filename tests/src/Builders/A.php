@@ -13,4 +13,9 @@ class A
     {
         return new PosterBuilder();
     }
+
+    public static function posterHasSignedUpEvent(): PosterHasSignedUpEventBuilder
+    {
+        return new PosterHasSignedUpEventBuilder();
+    }
 }

@@ -7,21 +7,13 @@
 
 namespace Ads\Ports\Doctrine\Posters;
 
+use Ads\Ports\Doctrine\Repository;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
-use Doctrine\ORM\EntityManager;
 
-class PosterRepository implements Posters
+class PosterRepository extends Repository implements Posters
 {
-    /** @var EntityManager */
-    private $manager;
-
-    public function __construct(EntityManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
     /** @throws \Doctrine\ORM\NonUniqueResultException */
     public function withUsername(Username $username): ?Poster
     {

@@ -1,0 +1,15 @@
+Ads\Ports\DomainEvents\StoredEvent:
+  type: entity
+  table: events
+  id:
+    eventId:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    body:
+      length: 1500
+    type:
+      length: 300
+    occurredOn:
+      type: integer

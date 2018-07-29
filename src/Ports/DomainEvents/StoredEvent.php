@@ -10,7 +10,7 @@ namespace Ads\Ports\DomainEvents;
 class StoredEvent
 {
     /** @var int */
-    private $id;
+    private $eventId;
 
     /** @var string */
     private $body;
@@ -30,7 +30,7 @@ class StoredEvent
 
     public function id(): int
     {
-        return $this->id;
+        return $this->eventId;
     }
 
     public function body(): string
