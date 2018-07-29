@@ -1,4 +1,6 @@
 Ads\Posters\Email:
   type: embeddable
   fields:
-    address: { type: string }
+    address:
+      type: string
+      column: email

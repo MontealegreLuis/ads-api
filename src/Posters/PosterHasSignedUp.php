@@ -22,7 +22,7 @@ class PosterHasSignedUp extends DomainEvent
     /** @var Email */
     private $email;
 
-    public function __construct(Username $username, Name $name, Email $email, int $occurredOn = 0)
+    public function __construct(Username $username, Name $name, Email $email, ?int $occurredOn = null)
     {
         $this->username = $username;
         $this->name = $name;

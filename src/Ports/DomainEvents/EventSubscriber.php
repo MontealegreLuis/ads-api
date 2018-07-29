@@ -9,7 +9,7 @@ namespace Ads\Ports\DomainEvents;
 
 interface EventSubscriber
 {
-    public function isSubscribedTo(DomainEvent $event): bool;
+    public function isSubscribedTo(DomainEvent $anEvent): bool;
 
     public function handle(DomainEvent $event): void;
 }

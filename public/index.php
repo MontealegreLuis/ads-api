@@ -14,4 +14,4 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 
 AnnotationRegistry::registerLoader(Closure::fromCallable([$loader, 'loadClass']));
 
-(new Application(new ApplicationServices()))->run();
+(new Application(new ApplicationServices(require __DIR__ . '/../config/options.php')))->run();
