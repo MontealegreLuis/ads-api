@@ -20,6 +20,7 @@
         "league/tactician-doctrine": "^1.1",
         "nesbot/carbon": "^1.32",
         "nilportugues/hal": "^2.1",
+        "pagerfanta/pagerfanta": "^2.0",
         "slim/slim": "^3.10",
         "symfony/validator": "^4.1",
         "teapot/status-code": "^1.1",
