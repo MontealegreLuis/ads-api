@@ -45,7 +45,6 @@ class SignUpPosterActionTest extends TestCase
         $existingUsername = 'thomas_anderson';
 
         $this->posters->add(A::poster()->withUsername($existingUsername)->build());
-        EventPublisher::reset();
 
         $this->action->signUp(SignUpPosterInput::withValues([
             'username' => $existingUsername,

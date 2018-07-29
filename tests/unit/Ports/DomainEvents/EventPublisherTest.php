@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventPublisherTest extends TestCase
 {
-    /** @before */
+    /** @before @after */
     function configure()
     {
         EventPublisher::reset();

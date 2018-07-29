@@ -8,19 +8,12 @@
 namespace Ads\ContractTests;
 
 use Ads\Builders\A;
-use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
 use PHPUnit\Framework\TestCase;
 
 abstract class PostersTest extends TestCase
 {
-    /** @before */
-    function cleanup()
-    {
-        EventPublisher::reset();
-    }
-
     /** @test */
     function it_finds_an_existing_poster_by_its_username()
     {

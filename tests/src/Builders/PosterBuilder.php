@@ -7,6 +7,7 @@
 
 namespace Ads\Builders;
 
+use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
 use Faker\Factory;
@@ -33,11 +34,13 @@ class PosterBuilder
 
     public function build(): Poster
     {
-        return Poster::signUp(PosterInformation::fromInput([
+        $poster = Poster::signUp(PosterInformation::fromInput([
             'username' => $this->username ?? str_replace('.', '_', $this->faker->userName),
             'password' => $this->faker->password(8),
             'name' => $this->faker->name,
-            'email' =>  $this->faker->email,
+            'email' => $this->faker->email,
         ]));
+        EventPublisher::reset();
+        return $poster;
     }
 }
