@@ -8,16 +8,20 @@
 namespace Ads\Ports\Doctrine\Posters;
 
 use Ads\ContractTests\PostersTest;
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
+use Ads\DependencyInjection\WithContainer;
 use Ads\Posters\Posters;
-use Pimple\Container;
+use Doctrine\ORM\EntityManager;
 
 class PosterRepositoryTest extends PostersTest
 {
+    use WithContainer;
+
     protected function posters(): Posters
     {
-        $container = new Container();
-        $container->register(new ApplicationServices(require __DIR__ . '/../../../../../config/options.php'));
+        $container = $this->container();
+        $container[EntityManager::class]
+            ->createQuery('DELETE FROM ' . Poster::class)
+            ->execute();
         return $container[Posters::class];
     }
 }

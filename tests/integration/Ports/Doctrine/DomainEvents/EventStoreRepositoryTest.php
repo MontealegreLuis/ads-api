@@ -8,17 +8,18 @@
 namespace Ads\Ports\Doctrine\DomainEvents;
 
 use Ads\Builders\A;
+use Ads\DependencyInjection\WithContainer;
 use Ads\Ports\DomainEvents\StoredEvent;
 use Ads\Ports\DomainEvents\StoredEventFactory;
 use Ads\Ports\JmsSerializer\JSONSerializer;
 use Ads\Ports\Pagination\Page;
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
-use Pimple\Container;
 
 class EventStoreRepositoryTest extends TestCase
 {
+    use WithContainer;
+
     /** @var EventStoreRepository */
     private $store;
 
@@ -48,8 +49,7 @@ class EventStoreRepositoryTest extends TestCase
     /** @before */
     function configure()
     {
-        $container = new Container();
-        $container->register(new ApplicationServices(require __DIR__ . '/../../../../../config/options.php'));
+        $container = $this->container();
         $this->store = $container[EventStoreRepository::class];
         $container[EntityManager::class]
             ->createQuery('DELETE FROM ' . StoredEvent::class)

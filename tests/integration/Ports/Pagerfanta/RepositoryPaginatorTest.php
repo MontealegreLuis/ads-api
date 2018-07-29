@@ -8,6 +8,7 @@
 namespace Ads\Ports\Pagerfanta;
 
 use Ads\Builders\A;
+use Ads\DependencyInjection\WithContainer;
 use Ads\Ports\Pagination\InvalidPage;
 use Ads\Ports\Pagination\Page;
 use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
@@ -19,6 +20,8 @@ use Pimple\Container;
 
 class RepositoryPaginatorTest extends TestCase
 {
+    use WithContainer;
+
     /** @test */
     function it_cannot_get_a_page_greater_than_the_total_number_of_pages()
     {
@@ -61,8 +64,7 @@ class RepositoryPaginatorTest extends TestCase
     /** @before */
     function configure()
     {
-        $container = new Container();
-        $container->register(new ApplicationServices(require __DIR__ . '/../../../../config/options.php'));
+        $container = $this->container();
         $this->entityManager = $container[EntityManager::class];
         $this->entityManager
             ->createQuery('DELETE FROM ' . Poster::class)
