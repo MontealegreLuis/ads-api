@@ -21,4 +21,7 @@ return [
     'log' => [
         'path' => __DIR__ . '/../var/log/app.log',
     ],
+    'settings' => [
+        'determineRouteBeforeAppMiddleware' => true,
+    ],
 ];

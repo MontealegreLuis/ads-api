@@ -10,16 +10,18 @@ namespace Ads\Ports\Web\Slim;
 use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;
 use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Ads\Ports\Web\Slim\Middleware\EventSubscribersMiddleware;
+use Ads\Ports\Web\Slim\Middleware\RequestLoggerMiddleware;
 use Slim\App;
 
 class Application extends App
 {
-    public function __construct(ApplicationServices $provider, $options = [])
+    public function __construct($options = [])
     {
         parent::__construct($options);
         $container = $this->getContainer();
-        $provider->register($container);
+        (new ApplicationServices($options))->register($container);
 
+        $this->add($container[RequestLoggerMiddleware::class]);
         $this->add($container[EventSubscribersMiddleware::class]);
 
         $this->post('/posters', SignUpPosterController::class . ':signUp')

@@ -17,6 +17,7 @@ use Ads\Ports\JmsSerializer\JSONSerializer;
 use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;
 use Ads\Ports\Web\Slim\Handlers\ErrorHandler;
 use Ads\Ports\Web\Slim\Middleware\EventSubscribersMiddleware;
+use Ads\Ports\Web\Slim\Middleware\RequestLoggerMiddleware;
 use Ads\Posters\Posters;
 use Ads\Registration\SignUp\SignUpPoster;
 use Ads\Registration\SignUp\SignUpPosterAction;
@@ -71,9 +72,12 @@ class ApplicationServices implements ServiceProviderInterface
         $container[EventSubscribersMiddleware::class] = function (Container $container) {
             return new EventSubscribersMiddleware($container[StoredEventsSubscriber::class]);
         };
+        $container[RequestLoggerMiddleware::class] = function (Container $container) {
+            return new RequestLoggerMiddleware($container[Logger::class]);
+        };
         $container[Logger::class] = function () {
             $logger = new Logger('app');
-            $stream = new StreamHandler($this->options['log']['path'], Logger::CRITICAL);
+            $stream = new StreamHandler($this->options['log']['path'], Logger::INFO);
             $stream->pushProcessor(new WebProcessor());
             $stream->pushProcessor(new UidProcessor());
             $stream->pushProcessor(new MemoryUsageProcessor());

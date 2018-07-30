@@ -8,17 +8,17 @@
 namespace Ads\Ports\Web\Slim\Handlers;
 
 use Exception;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Slim\Handlers\Error;
 
 class ErrorHandler extends Error
 {
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(Logger $logger, bool $displayErrorDetails = false)
+    public function __construct(LoggerInterface $logger, bool $displayErrorDetails = false)
     {
         parent::__construct($displayErrorDetails);
         $this->logger = $logger;
