@@ -18,6 +18,7 @@
         "jms/serializer": "^1.13",
         "league/tactician": "^1.0",
         "league/tactician-doctrine": "^1.1",
+        "monolog/monolog": "^1.23",
         "nesbot/carbon": "^1.32",
         "nilportugues/hal": "^2.1",
         "pagerfanta/pagerfanta": "^2.0",

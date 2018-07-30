@@ -18,4 +18,7 @@ return [
             __DIR__ . '/orm',
         ]
     ],
+    'log' => [
+        'path' => __DIR__ . '/../var/log/app.log',
+    ],
 ];

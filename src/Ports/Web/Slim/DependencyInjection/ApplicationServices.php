@@ -15,11 +15,17 @@ use Ads\Ports\DomainEvents\StoredEventFactory;
 use Ads\Ports\DomainEvents\StoredEventsSubscriber;
 use Ads\Ports\JmsSerializer\JSONSerializer;
 use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;
+use Ads\Ports\Web\Slim\Handlers\ErrorHandler;
 use Ads\Ports\Web\Slim\Middleware\EventSubscribersMiddleware;
 use Ads\Posters\Posters;
 use Ads\Registration\SignUp\SignUpPoster;
 use Ads\Registration\SignUp\SignUpPosterAction;
 use Doctrine\ORM\EntityManager;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Processor\MemoryUsageProcessor;
+use Monolog\Processor\UidProcessor;
+use Monolog\Processor\WebProcessor;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -64,6 +70,19 @@ class ApplicationServices implements ServiceProviderInterface
         };
         $container[EventSubscribersMiddleware::class] = function (Container $container) {
             return new EventSubscribersMiddleware($container[StoredEventsSubscriber::class]);
+        };
+        $container[Logger::class] = function () {
+            $logger = new Logger('app');
+            $stream = new StreamHandler($this->options['log']['path'], Logger::CRITICAL);
+            $stream->pushProcessor(new WebProcessor());
+            $stream->pushProcessor(new UidProcessor());
+            $stream->pushProcessor(new MemoryUsageProcessor());
+            $logger->pushHandler($stream);
+
+            return $logger;
+        };
+        $container['errorHandler'] = function (Container $container) {
+            return new ErrorHandler($container[Logger::class], $this->options['debug']);
         };
     }
 }
