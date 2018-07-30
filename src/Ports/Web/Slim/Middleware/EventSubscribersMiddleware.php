@@ -24,7 +24,7 @@ class EventSubscribersMiddleware
 
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
-        EventPublisher::instance()->subscribe($this->storedEventsSubscriber);
+        EventPublisher::subscribe($this->storedEventsSubscriber);
 
         return $next($request, $response);
     }

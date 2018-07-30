@@ -28,9 +28,9 @@ class EventPublisherTest extends TestCase
         $subscriber = $this->prophesize(EventSubscriber::class);
         $subscriber->isSubscribedTo($event)->willReturn(true);
         $subscriber->handle($event)->shouldBeCalled();
-        EventPublisher::instance()->subscribe($subscriber->reveal());
+        EventPublisher::subscribe($subscriber->reveal());
 
-        EventPublisher::instance()->publish($event);
+        EventPublisher::publish($event);
     }
 
     /** @test */
@@ -46,9 +46,9 @@ class EventPublisherTest extends TestCase
         $subscriber = $this->prophesize(EventSubscriber::class);
         $subscriber->isSubscribedTo($event)->willReturn(false);
         $subscriber->handle($event)->shouldNotBeCalled();
-        EventPublisher::instance()->subscribe($subscriber->reveal());
+        EventPublisher::subscribe($subscriber->reveal());
 
-        EventPublisher::instance()->publish($event);
+        EventPublisher::publish($event);
     }
 
     /** @before @after */

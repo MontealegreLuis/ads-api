@@ -11,6 +11,6 @@ trait WithEventsRecording
 {
     public function recordThat(DomainEvent $event): void
     {
-        EventPublisher::instance()->publish($event);
+        EventPublisher::publish($event);
     }
 }

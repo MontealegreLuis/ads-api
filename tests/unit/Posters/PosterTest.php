@@ -12,23 +12,27 @@ use PHPUnit\Framework\TestCase;
 
 class PosterTest extends TestCase
 {
-    /** @before */
-    function reset()
-    {
-        EventPublisher::reset();
-    }
-
     /** @test */
     function it_can_sign_up()
     {
-        Poster::signUp(PosterInformation::fromInput([
+        $collector = new DomainEventsCollector();
+        EventPublisher::subscribe($collector);
+
+        $poster = Poster::signUp(PosterInformation::fromInput([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
         ]));
 
-        $this->assertCount(1, EventPublisher::instance()->events());
-        $this->assertInstanceOf(PosterHasSignedUp::class, EventPublisher::instance()->events()[0]);
+        $this->assertTrue($poster->hasUsername(new Username('thomas_anderson')));
+        $this->assertCount(1, $collector->events());
+        $this->assertInstanceOf(PosterHasSignedUp::class, $collector->events()[0]);
+    }
+
+    /** @before @after */
+    function reset()
+    {
+        EventPublisher::reset();
     }
 }

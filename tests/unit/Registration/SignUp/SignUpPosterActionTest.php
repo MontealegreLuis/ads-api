@@ -9,8 +9,10 @@ namespace Ads\Registration\SignUp;
 
 use Ads\Builders\A;
 use Ads\Ports\DomainEvents\EventPublisher;
+use Ads\Posters\DomainEventsCollector;
 use Ads\Posters\InMemoryPosters;
 use Ads\Posters\Poster;
+use Ads\Posters\PosterHasSignedUp;
 use Ads\Posters\PosterInformation;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;
@@ -25,6 +27,9 @@ class SignUpPosterActionTest extends TestCase
     /** @test */
     function it_signs_up_a_poster()
     {
+        $collector = new DomainEventsCollector();
+        EventPublisher::subscribe($collector);
+
         $this->action->signUp(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => '12345678',
@@ -33,7 +38,8 @@ class SignUpPosterActionTest extends TestCase
         ]));
 
         $this->assertNotNull($this->posters->withUsername(new Username('thomas_anderson')));
-        $this->assertCount(1, EventPublisher::instance()->events());
+        $this->assertCount(1, $collector->events());
+        $this->assertInstanceOf(PosterHasSignedUp::class, $collector->events()[0]);
         $this->responder
             ->respondToPosterSignedUp(Argument::type(Poster::class))
             ->shouldHaveBeenCalled();
@@ -43,8 +49,9 @@ class SignUpPosterActionTest extends TestCase
     function it_provides_feedback_if_a_username_is_taken()
     {
         $existingUsername = 'thomas_anderson';
-
         $this->posters->add(A::poster()->withUsername($existingUsername)->build());
+        $collector = new DomainEventsCollector();
+        EventPublisher::subscribe($collector);
 
         $this->action->signUp(SignUpPosterInput::withValues([
             'username' => $existingUsername,
@@ -53,7 +60,7 @@ class SignUpPosterActionTest extends TestCase
             'email' => 'thomas.anderson@thematrix.org',
         ]));
 
-        $this->assertEmpty(EventPublisher::instance()->events());
+        $this->assertEmpty($collector->events());
         $this->responder
             ->respondToUnavailableUsername(
                 Argument::type(PosterInformation::class),
@@ -65,6 +72,9 @@ class SignUpPosterActionTest extends TestCase
     /** @test */
     function it_provides_feedback_if_any_input_is_invalid()
     {
+        $collector = new DomainEventsCollector();
+        EventPublisher::subscribe($collector);
+
         $this->action->signUp(SignUpPosterInput::withValues([
             'username' => '',
             'password' => '',
@@ -72,7 +82,7 @@ class SignUpPosterActionTest extends TestCase
             'email' => '',
         ]));
 
-        $this->assertEmpty(EventPublisher::instance()->events());
+        $this->assertEmpty($collector->events());
         $this->responder
             ->respondToInvalidPosterInformation(Argument::type('array'))
             ->shouldHaveBeenCalled();
@@ -85,6 +95,12 @@ class SignUpPosterActionTest extends TestCase
         $this->posters = new InMemoryPosters();
         $this->action = new SignUpPosterAction(new SignUpPoster($this->posters));
         $this->action->attach($this->responder->reveal());
+        EventPublisher::reset();
+    }
+
+    /** @after */
+    function cleanup()
+    {
         EventPublisher::reset();
     }
 

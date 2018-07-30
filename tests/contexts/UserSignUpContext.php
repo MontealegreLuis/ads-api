@@ -7,6 +7,7 @@
 
 use Ads\Builders\A;
 use Ads\Ports\DomainEvents\EventPublisher;
+use Ads\Posters\DomainEventsCollector;
 use Ads\Posters\InMemoryPosters;
 use Ads\Posters\PosterHasSignedUp;
 use Ads\Posters\PosterInformation;
@@ -29,11 +30,17 @@ class UserSignUpContext implements Context
     /** @var bool */
     private $usernameIsUnavailable = false;
 
+    /** @var DomainEventsCollector */
+    private $collector;
+
     public function __construct()
     {
         $this->posters = new InMemoryPosters();
         $this->action = new SignUpPoster($this->posters);
+        $this->collector = new DomainEventsCollector();
         $this->faker = Factory::create();
+        EventPublisher::reset();
+        EventPublisher::subscribe($this->collector);
     }
 
     /**
@@ -75,7 +82,7 @@ class UserSignUpContext implements Context
      */
     public function iShouldBeNotifiedThatMyAccountWasCreated()
     {
-        assertCount(1, EventPublisher::instance()->events());
-        assertInstanceOf(PosterHasSignedUp::class, EventPublisher::instance()->events()[0]);
+        assertCount(1, $this->collector->events());
+        assertInstanceOf(PosterHasSignedUp::class, $this->collector->events()[0]);
     }
 }
