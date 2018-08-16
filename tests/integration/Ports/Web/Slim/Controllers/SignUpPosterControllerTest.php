@@ -104,7 +104,7 @@ class SignUpPosterControllerTest extends TestCase
     /** @before */
     function configure()
     {
-        $this->app = new Application(new ApplicationServices(require __DIR__ . '/../../../../../../config/options.php'));
+        $this->app = new Application(require __DIR__ . '/../../../../../../config/options.php');
         $this->container()[EntityManager::class]
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();
