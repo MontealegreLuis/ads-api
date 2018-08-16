@@ -1,0 +1,20 @@
+parameters:
+  git_dir: .
+  bin_dir: vendor/bin
+  tasks:
+    behat: ~
+    composer: ~
+    file_size: ~
+    phpunit: ~
+    git_blacklist:
+      keywords:
+        - "die("
+        - "var_dump("
+        - "exit;"
+      whitelist_patterns: []
+      triggered_by: ['php']
+      regexp_type: G
+    git_commit_message:
+      enforce_capitalized_subject: false
+      matchers:
+        'Commit message format': '/(test|refactor|docs|feature|chore|style|fix): */'
