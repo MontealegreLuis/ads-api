@@ -7,7 +7,7 @@
 
 namespace Ads\UI\Web\Slim;
 
-use Ads\Framework\DependencyInjection\ApplicationServices;
+use Ads\Application\DependencyInjection\ApplicationServices;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
 use Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware;

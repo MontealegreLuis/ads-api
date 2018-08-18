@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Framework\DependencyInjection;
+namespace Ads\Application\DependencyInjection;
 
 use Ads\Ports\CommandBus\Bus;
 use Ads\Ports\Doctrine\DomainEvents\EventStoreRepository;
