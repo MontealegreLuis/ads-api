@@ -15,7 +15,7 @@ return [
     ],
     'orm' => [
         'paths' => [
-            __DIR__ . '/orm',
+            __DIR__ . '/../src/CodeList/Posters/Ports/Resources',
             __DIR__ . '/../src/Application/DomainEvents/Ports/Resources',
         ]
     ],
