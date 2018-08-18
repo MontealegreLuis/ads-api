@@ -7,28 +7,25 @@
 
 namespace Ads\CodeList\Registration\SignUp;
 
+use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\PosterInformation;
+use Ads\CodeList\Posters\Posters;
 use LogicException;
 
 class SignUpPosterAction
 {
-    /** @var SignUpPoster */
-    private $useCase;
+    /** @var Posters */
+    private $posters;
 
     /** @var SignUpPosterResponder */
     private $responder;
 
-    public function __construct(SignUpPoster $useCase)
+    public function __construct(Posters $posters)
     {
-        $this->useCase = $useCase;
+        $this->posters = $posters;
     }
 
-    public function attach(SignUpPosterResponder $responder): void
-    {
-        $this->responder = $responder;
-    }
-
-    public function signUp(SignUpPosterInput $input): void
+    public function signUpPoster(SignUpPosterInput $input): void
     {
         if ($input->isValid()) {
             $this->tryToSignUpWith($input);
@@ -39,13 +36,32 @@ class SignUpPosterAction
 
     private function tryToSignUpWith(SignUpPosterInput $input): void
     {
-        $information = PosterInformation::fromInput($input->values());
         try {
-            $poster = $this->useCase->signUp($information);
+            $information = PosterInformation::fromInput($input->values());
+            $poster = $this->signUp($information);
             $this->responder()->respondToPosterSignedUp($poster);
         } catch (UnavailableUsername $exception) {
             $this->responder()->respondToUnavailableUsername($information, $exception);
         }
+    }
+
+    /** @throws UnavailableUsername */
+    private function signUp(PosterInformation $information): Poster
+    {
+        $registeredPoster = $this->posters->withUsername($information->username());
+        if ($registeredPoster) {
+            throw new UnavailableUsername($information->username());
+        }
+
+        $poster = Poster::signUp($information);
+        $this->posters->add($poster);
+
+        return $poster;
+    }
+
+    public function attach(SignUpPosterResponder $responder): void
+    {
+        $this->responder = $responder;
     }
 
     /** @throws LogicException */

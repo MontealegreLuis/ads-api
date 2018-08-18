@@ -57,7 +57,7 @@ class SignUpPosterController implements SignUpPosterResponder
         $this->request = $request;
         $this->response = $response;
 
-        $this->bus->addHandler($this->action, 'signUp', SignUpPosterInput::class);
+        $this->bus->addHandler($this->action, 'signUpPoster', SignUpPosterInput::class);
         $this->bus->handle(SignUpPosterInput::withValues($request->getParsedBody()));
 
         return $this->response;

@@ -40,7 +40,10 @@
     "autoload": {
         "psr-4": {
             "Ads\\": "src"
-        }
+        },
+        "files": [
+            "config/annotations.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -9,22 +9,25 @@ use Ads\Application\DomainEvents\DomainEventsCollector;
 use Ads\Application\DomainEvents\EventPublisher;
 use Ads\Builders\A;
 use Ads\CodeList\Posters\InMemoryPosters;
+use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\PosterHasSignedUp;
 use Ads\CodeList\Posters\PosterInformation;
-use Ads\CodeList\Registration\SignUp\SignUpPoster;
+use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
+use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
+use Ads\CodeList\Registration\SignUp\SignUpPosterResponder;
 use Ads\CodeList\Registration\SignUp\UnavailableUsername;
 use Behat\Behat\Context\Context;
 use Faker\Factory;
 
-class UserSignUpContext implements Context
+class UserSignUpContext implements Context, SignUpPosterResponder
 {
     /** @var \Ads\CodeList\Posters\Posters */
     private $posters;
 
-    /** @var SignUpPoster */
+    /** @var SignUpPosterAction */
     private $action;
 
-    /** @var \Faker\Generator  */
+    /** @var \Faker\Generator */
     private $faker;
 
     /** @var bool */
@@ -33,10 +36,14 @@ class UserSignUpContext implements Context
     /** @var DomainEventsCollector */
     private $collector;
 
+    /** @var Poster */
+    private $poster;
+
     public function __construct()
     {
         $this->posters = new InMemoryPosters();
-        $this->action = new SignUpPoster($this->posters);
+        $this->action = new SignUpPosterAction($this->posters);
+        $this->action->attach($this);
         $this->collector = new DomainEventsCollector();
         $this->faker = Factory::create();
         EventPublisher::reset();
@@ -57,16 +64,12 @@ class UserSignUpContext implements Context
      */
     public function iSignUpWithTheUsername(string $username)
     {
-        try {
-            $this->action->signUp(PosterInformation::fromInput([
-                'username' => $username,
-                'password' => $this->faker->password(8),
-                'name' => $this->faker->name,
-                'email' => $this->faker->email,
-            ]));
-        } catch (UnavailableUsername $exception) {
-            $this->usernameIsUnavailable = true;
-        }
+        $this->action->signUpPoster(SignUpPosterInput::withValues([
+            'username' => $username,
+            'password' => $this->faker->password(8),
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+        ]));
     }
 
     /**
@@ -84,5 +87,21 @@ class UserSignUpContext implements Context
     {
         assertCount(1, $this->collector->events());
         assertInstanceOf(PosterHasSignedUp::class, $this->collector->events()[0]);
+        assertInstanceOf(Poster::class, $this->poster);
+    }
+
+    public function respondToPosterSignedUp(Poster $poster): void
+    {
+        $this->poster = $poster;
+    }
+
+    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void
+    {
+        $this->usernameIsUnavailable = true;
+    }
+
+    public function respondToInvalidPosterInformation(array $errors): void
+    {
+        // this is covered by unit tests
     }
 }

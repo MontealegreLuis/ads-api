@@ -14,7 +14,6 @@ use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Application\DomainEvents\StoredEventsSubscriber;
 use Ads\CodeList\Posters\Ports\PosterRepository;
 use Ads\CodeList\Posters\Posters;
-use Ads\CodeList\Registration\SignUp\SignUpPoster;
 use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
 use Ads\Ports\CommandBus\Bus;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
@@ -56,7 +55,7 @@ class ApplicationServices implements ServiceProviderInterface
         $container[SignUpPosterController::class] = function (Container $container) {
             return new SignUpPosterController(
                 $container[Bus::class],
-                new SignUpPosterAction(new SignUpPoster($container[Posters::class])),
+                new SignUpPosterAction($container[Posters::class]),
                 $container['router']
             );
         };

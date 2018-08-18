@@ -30,7 +30,7 @@ class SignUpPosterActionTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $this->action->signUp(SignUpPosterInput::withValues([
+        $this->action->signUpPoster(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => '12345678',
             'name' => 'Thomas Anderson',
@@ -53,7 +53,7 @@ class SignUpPosterActionTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $this->action->signUp(SignUpPosterInput::withValues([
+        $this->action->signUpPoster(SignUpPosterInput::withValues([
             'username' => $existingUsername,
             'password' => '12345678',
             'name' => 'Thomas Anderson',
@@ -75,7 +75,7 @@ class SignUpPosterActionTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $this->action->signUp(SignUpPosterInput::withValues([
+        $this->action->signUpPoster(SignUpPosterInput::withValues([
             'username' => '',
             'password' => '',
             'name' => '',
@@ -93,7 +93,7 @@ class SignUpPosterActionTest extends TestCase
     {
         $this->responder = $this->prophesize(SignUpPosterResponder::class);
         $this->posters = new InMemoryPosters();
-        $this->action = new SignUpPosterAction(new SignUpPoster($this->posters));
+        $this->action = new SignUpPosterAction($this->posters);
         $this->action->attach($this->responder->reveal());
         EventPublisher::reset();
     }
