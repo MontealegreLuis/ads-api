@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\DependencyInjection;
+namespace Ads\Framework\DependencyInjection;
 
 use Ads\Ports\CommandBus\Bus;
 use Ads\Ports\Doctrine\DomainEvents\EventStoreRepository;
@@ -14,13 +14,13 @@ use Ads\Ports\Doctrine\Posters\PosterRepository;
 use Ads\Ports\DomainEvents\StoredEventFactory;
 use Ads\Ports\DomainEvents\StoredEventsSubscriber;
 use Ads\Ports\JmsSerializer\JSONSerializer;
-use Ads\Ports\Web\Slim\Controllers\SignUpPosterController;
-use Ads\Ports\Web\Slim\Handlers\ErrorHandler;
-use Ads\Ports\Web\Slim\Middleware\EventSubscribersMiddleware;
-use Ads\Ports\Web\Slim\Middleware\RequestLoggerMiddleware;
+use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\Posters\Posters;
 use Ads\Registration\SignUp\SignUpPoster;
 use Ads\Registration\SignUp\SignUpPosterAction;
+use Ads\UI\Web\Slim\Handlers\ErrorHandler;
+use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
+use Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

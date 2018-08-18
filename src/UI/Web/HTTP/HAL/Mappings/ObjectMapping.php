@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\HAL\Mappings;
+namespace Ads\UI\Web\HTTP\HAL\Mappings;
 
 use NilPortugues\Api\Mapping\MappingFactory;
 use NilPortugues\Api\Mappings\HalMapping;

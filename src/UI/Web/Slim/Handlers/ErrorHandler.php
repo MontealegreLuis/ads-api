@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\Handlers;
+namespace Ads\UI\Web\Slim\Handlers;
 
 use Exception;
 use Psr\Http\Message\ResponseInterface;

@@ -7,7 +7,7 @@
 
 namespace Ads\DependencyInjection;
 
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
+use Ads\Framework\DependencyInjection\ApplicationServices;
 use Pimple\Container;
 
 trait WithContainer

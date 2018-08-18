@@ -5,14 +5,13 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\Controllers;
+namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Builders\A;
 use Ads\DependencyInjection\WithContainer;
-use Ads\Ports\Web\Slim\Application;
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
+use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;

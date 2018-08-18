@@ -5,24 +5,24 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\Controllers;
+namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Ports\CommandBus\Bus;
-use Ads\Ports\Web\Slim\HAL\ApiProblems\Problem;
-use Ads\Ports\Web\Slim\HAL\Mappings\SlimUriBuilder;
-use Ads\Ports\Web\Slim\HAL\Responses\HALResponse;
-use Ads\Ports\Web\Slim\HAL\Serializer;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
 use Ads\Registration\SignUp\SignUpPosterAction;
 use Ads\Registration\SignUp\SignUpPosterInput;
 use Ads\Registration\SignUp\SignUpPosterResponder;
 use Ads\Registration\SignUp\UnavailableUsername;
+use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
+use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
+use Ads\UI\Web\HTTP\HAL\Responses\HALResponse;
+use Ads\UI\Web\HTTP\HAL\Serializer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Http\Request;
 use Slim\Router;
 
-/***
+/**
  * Creates a new Poster
  *
  * @see SignUpPosterControllerTest

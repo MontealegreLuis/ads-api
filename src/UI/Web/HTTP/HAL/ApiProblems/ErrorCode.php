@@ -5,8 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\HAL\ApiProblems;
-
+namespace Ads\UI\Web\HTTP\HAL\ApiProblems;
 
 interface ErrorCode
 {

@@ -5,11 +5,11 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Web\Slim\HAL;
+namespace Ads\UI\Web\HTTP\HAL;
 
-use Ads\Ports\Web\Slim\HAL\Mappings\ObjectMapping;
-use Ads\Ports\Web\Slim\HAL\Mappings\PosterMapping;
-use Ads\Ports\Web\Slim\HAL\Mappings\UriBuilder;
+use Ads\UI\Web\HTTP\HAL\Mappings\ObjectMapping;
+use Ads\UI\Web\HTTP\HAL\Mappings\PosterMapping;
+use Ads\UI\Web\HTTP\HAL\Mappings\UriBuilder;
 use NilPortugues\Api\Hal\HalSerializer;
 use NilPortugues\Api\Hal\JsonTransformer;
 use NilPortugues\Api\Mapping\Mapper;
