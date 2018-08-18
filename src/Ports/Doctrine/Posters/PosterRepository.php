@@ -7,7 +7,7 @@
 
 namespace Ads\Ports\Doctrine\Posters;
 
-use Ads\Ports\Doctrine\Repository;
+use Ads\Application\DataStorage\Repository;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use Ads\Posters\Username;

@@ -7,7 +7,7 @@
 
 namespace Ads\PHPUnit;
 
-use Ads\Ports\Doctrine\EntityManagerFactory;
+use Ads\Application\DataStorage\EntityManagerFactory;
 use Doctrine\ORM\Tools\SchemaTool;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;

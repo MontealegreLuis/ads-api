@@ -7,12 +7,12 @@
 
 namespace Ads\Application\DomainEvents\Ports;
 
+use Ads\Application\DataStorage\Repository;
 use Ads\Application\DomainEvents\EventStore;
 use Ads\Application\DomainEvents\StoredEvent;
 use Ads\Application\Pagination\Page;
 use Ads\Application\Pagination\Paginator;
 use Ads\Application\Pagination\Ports\RepositoryPaginator;
-use Ads\Ports\Doctrine\Repository;
 
 class EventStoreRepository extends Repository implements EventStore
 {

@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Doctrine;
+namespace Ads\Application\DataStorage;
 
 use Ads\Ports\Doctrine\Types\UsernameType;
 use Doctrine\DBAL\Types\Type;
@@ -14,6 +14,7 @@ use Doctrine\ORM\Tools\Setup;
 
 trait EntityManagerFactory
 {
+    /** @var EntityManager */
     private $entityManager;
 
     /**
