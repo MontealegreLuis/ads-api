@@ -1,0 +1,18 @@
+Ads\CodeList\Posters\Poster:
+  type: entity
+  table: posters
+  id:
+    username:
+      type: Username
+      generator:
+        strategy: NONE
+  embedded:
+    password:
+      class: Ads\CodeList\Posters\Password
+      columnPrefix: false
+    name:
+      class: Ads\CodeList\Posters\Name
+      columnPrefix: false
+    email:
+      class: Ads\CodeList\Posters\Email
+      columnPrefix: false

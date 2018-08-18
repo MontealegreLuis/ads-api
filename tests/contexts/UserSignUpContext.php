@@ -5,20 +5,20 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
+use Ads\Application\DomainEvents\DomainEventsCollector;
 use Ads\Application\DomainEvents\EventPublisher;
 use Ads\Builders\A;
-use Ads\Posters\DomainEventsCollector;
-use Ads\Posters\InMemoryPosters;
-use Ads\Posters\PosterHasSignedUp;
-use Ads\Posters\PosterInformation;
-use Ads\Registration\SignUp\SignUpPoster;
-use Ads\Registration\SignUp\UnavailableUsername;
+use Ads\CodeList\Posters\InMemoryPosters;
+use Ads\CodeList\Posters\PosterHasSignedUp;
+use Ads\CodeList\Posters\PosterInformation;
+use Ads\CodeList\Registration\SignUp\SignUpPoster;
+use Ads\CodeList\Registration\SignUp\UnavailableUsername;
 use Behat\Behat\Context\Context;
 use Faker\Factory;
 
 class UserSignUpContext implements Context
 {
-    /** @var \Ads\Posters\Posters */
+    /** @var \Ads\CodeList\Posters\Posters */
     private $posters;
 
     /** @var SignUpPoster */

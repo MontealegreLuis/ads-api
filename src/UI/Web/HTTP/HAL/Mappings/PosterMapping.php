@@ -7,7 +7,7 @@
 
 namespace Ads\UI\Web\HTTP\HAL\Mappings;
 
-use Ads\Posters\Poster;
+use Ads\CodeList\Posters\Poster;
 use NilPortugues\Api\Mappings\HalMapping;
 
 class PosterMapping implements HalMapping

@@ -7,10 +7,10 @@
 
 namespace Ads\Application\DomainEvents;
 
-use Ads\Posters\Email;
-use Ads\Posters\Name;
-use Ads\Posters\PosterHasSignedUp;
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Email;
+use Ads\CodeList\Posters\Name;
+use Ads\CodeList\Posters\PosterHasSignedUp;
+use Ads\CodeList\Posters\Username;
 use PHPUnit\Framework\TestCase;
 
 class EventPublisherTest extends TestCase

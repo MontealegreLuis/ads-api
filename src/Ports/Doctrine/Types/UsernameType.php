@@ -7,7 +7,7 @@
 
 namespace Ads\Ports\Doctrine\Types;
 
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Username;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\StringType;

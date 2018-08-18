@@ -9,10 +9,10 @@ namespace Ads\Ports\DomainEvents;
 
 use Ads\Application\DomainEvents\Ports\JSONSerializer;
 use Ads\Application\DomainEvents\StoredEventFactory;
-use Ads\Posters\Email;
-use Ads\Posters\Name;
-use Ads\Posters\PosterHasSignedUp;
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Email;
+use Ads\CodeList\Posters\Name;
+use Ads\CodeList\Posters\PosterHasSignedUp;
+use Ads\CodeList\Posters\Username;
 use PHPUnit\Framework\TestCase;
 
 class StoredEventFactoryTest extends TestCase

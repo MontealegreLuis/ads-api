@@ -8,9 +8,9 @@
 namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Builders\A;
+use Ads\CodeList\Posters\Poster;
+use Ads\CodeList\Posters\Posters;
 use Ads\DependencyInjection\WithContainer;
-use Ads\Posters\Poster;
-use Ads\Posters\Posters;
 use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;

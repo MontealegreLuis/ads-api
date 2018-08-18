@@ -1,4 +1,0 @@
-Ads\Posters\Name:
-  type: embeddable
-  fields:
-    name: { type: string }

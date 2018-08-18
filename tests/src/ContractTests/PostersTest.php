@@ -8,8 +8,8 @@
 namespace Ads\ContractTests;
 
 use Ads\Builders\A;
-use Ads\Posters\Posters;
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Posters;
+use Ads\CodeList\Posters\Username;
 use PHPUnit\Framework\TestCase;
 
 abstract class PostersTest extends TestCase

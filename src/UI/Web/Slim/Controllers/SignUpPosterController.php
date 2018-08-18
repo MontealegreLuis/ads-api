@@ -7,13 +7,13 @@
 
 namespace Ads\UI\Web\Slim\Controllers;
 
+use Ads\CodeList\Posters\Poster;
+use Ads\CodeList\Posters\PosterInformation;
+use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
+use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
+use Ads\CodeList\Registration\SignUp\SignUpPosterResponder;
+use Ads\CodeList\Registration\SignUp\UnavailableUsername;
 use Ads\Ports\CommandBus\Bus;
-use Ads\Posters\Poster;
-use Ads\Posters\PosterInformation;
-use Ads\Registration\SignUp\SignUpPosterAction;
-use Ads\Registration\SignUp\SignUpPosterInput;
-use Ads\Registration\SignUp\SignUpPosterResponder;
-use Ads\Registration\SignUp\UnavailableUsername;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
 use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
 use Ads\UI\Web\HTTP\HAL\Responses\HALResponse;

@@ -10,9 +10,9 @@ namespace Ads\Application\Pagination\Ports;
 use Ads\Application\Pagination\InvalidPage;
 use Ads\Application\Pagination\Page;
 use Ads\Builders\A;
+use Ads\CodeList\Posters\Poster;
+use Ads\CodeList\Posters\Posters;
 use Ads\DependencyInjection\WithContainer;
-use Ads\Posters\Poster;
-use Ads\Posters\Posters;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 

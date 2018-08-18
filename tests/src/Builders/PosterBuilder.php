@@ -8,8 +8,8 @@
 namespace Ads\Builders;
 
 use Ads\Application\DomainEvents\EventPublisher;
-use Ads\Posters\Poster;
-use Ads\Posters\PosterInformation;
+use Ads\CodeList\Posters\Poster;
+use Ads\CodeList\Posters\PosterInformation;
 use Faker\Factory;
 
 class PosterBuilder

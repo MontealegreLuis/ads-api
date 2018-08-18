@@ -7,7 +7,7 @@
 
 namespace Ads\UI\Web\HTTP\HAL\ApiProblems;
 
-use Ads\Registration\SignUp\UnavailableUsername;
+use Ads\CodeList\Registration\SignUp\UnavailableUsername;
 use Crell\ApiProblem\ApiProblem;
 use Symfony\Component\Validator\ConstraintViolation;
 use Teapot\StatusCode\All as Status;

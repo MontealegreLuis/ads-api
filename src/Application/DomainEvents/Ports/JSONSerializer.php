@@ -9,9 +9,9 @@ namespace Ads\Application\DomainEvents\Ports;
 
 use Ads\Application\DomainEvents\DomainEvent;
 use Ads\Application\DomainEvents\EventSerializer;
-use Ads\Posters\Email;
-use Ads\Posters\Name;
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Email;
+use Ads\CodeList\Posters\Name;
+use Ads\CodeList\Posters\Username;
 use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\SerializerBuilder;
 

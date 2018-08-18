@@ -1,6 +1,0 @@
-Ads\Posters\Email:
-  type: embeddable
-  fields:
-    address:
-      type: string
-      column: email

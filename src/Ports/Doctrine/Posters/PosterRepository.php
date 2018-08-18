@@ -8,9 +8,9 @@
 namespace Ads\Ports\Doctrine\Posters;
 
 use Ads\Application\DataStorage\Repository;
-use Ads\Posters\Poster;
-use Ads\Posters\Posters;
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Poster;
+use Ads\CodeList\Posters\Posters;
+use Ads\CodeList\Posters\Username;
 
 class PosterRepository extends Repository implements Posters
 {

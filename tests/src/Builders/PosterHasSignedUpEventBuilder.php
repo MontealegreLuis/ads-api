@@ -7,10 +7,10 @@
 
 namespace Ads\Builders;
 
-use Ads\Posters\Email;
-use Ads\Posters\Name;
-use Ads\Posters\PosterHasSignedUp;
-use Ads\Posters\Username;
+use Ads\CodeList\Posters\Email;
+use Ads\CodeList\Posters\Name;
+use Ads\CodeList\Posters\PosterHasSignedUp;
+use Ads\CodeList\Posters\Username;
 use Carbon\Carbon;
 use Faker\Factory;
 
@@ -47,8 +47,8 @@ class PosterHasSignedUpEventBuilder
     private function normalizeUsername(): string
     {
         $username = str_replace('.', '_', $this->faker->userName);
-        if (strlen($username) < 5) {
-            $username .= str_repeat('a', 5 - strlen($username));
+        if (\strlen($username) < 5) {
+            $username .= str_repeat('a', 5 - \strlen($username));
         }
         return $username;
     }
