@@ -5,16 +5,19 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Pagerfanta;
+namespace Ads\Application\Pagination\Ports;
 
-use Ads\Ports\Pagination\InvalidPage;
-use Ads\Ports\Pagination\Page;
-use Ads\Ports\Pagination\Paginator;
+use Ads\Application\Pagination\InvalidPage;
+use Ads\Application\Pagination\Page;
+use Ads\Application\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 
+/**
+ * Paginator implementation using Pagerfanta and its Doctrine 2 adapter
+ */
 class RepositoryPaginator implements Paginator
 {
     /** @var Pagerfanta  */

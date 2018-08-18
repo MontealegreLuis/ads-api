@@ -7,13 +7,12 @@
 
 namespace Ads\Ports\Doctrine\DomainEvents;
 
-
+use Ads\Application\Pagination\Page;
+use Ads\Application\Pagination\Paginator;
+use Ads\Application\Pagination\Ports\RepositoryPaginator;
 use Ads\Ports\Doctrine\Repository;
 use Ads\Ports\DomainEvents\EventStore;
 use Ads\Ports\DomainEvents\StoredEvent;
-use Ads\Ports\Pagerfanta\RepositoryPaginator;
-use Ads\Ports\Pagination\Page;
-use Ads\Ports\Pagination\Paginator;
 
 class EventStoreRepository extends Repository implements EventStore
 {
@@ -27,7 +26,7 @@ class EventStoreRepository extends Repository implements EventStore
         $this->manager->flush($aDomainEvent);
     }
 
-    /** @throws \Ads\Ports\Pagination\InvalidPage If the requested page is greater than the total number of pages */
+    /** @throws \Ads\Application\Pagination\InvalidPage If the requested page is greater than the total number of pages */
     public function eventsIn(Page $page): Paginator
     {
         $builder = $this->manager->createQueryBuilder()

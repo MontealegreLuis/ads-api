@@ -7,12 +7,12 @@
 
 namespace Ads\Ports\Doctrine\DomainEvents;
 
+use Ads\Application\Pagination\Page;
 use Ads\Builders\A;
 use Ads\DependencyInjection\WithContainer;
 use Ads\Ports\DomainEvents\StoredEvent;
 use Ads\Ports\DomainEvents\StoredEventFactory;
 use Ads\Ports\JmsSerializer\JSONSerializer;
-use Ads\Ports\Pagination\Page;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 

@@ -7,8 +7,8 @@
 
 namespace Ads\Ports\DomainEvents;
 
-use Ads\Ports\Pagination\Page;
-use Ads\Ports\Pagination\Paginator;
+use Ads\Application\Pagination\Page;
+use Ads\Application\Pagination\Paginator;
 
 interface EventStore
 {

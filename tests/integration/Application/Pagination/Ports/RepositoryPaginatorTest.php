@@ -5,12 +5,12 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Pagerfanta;
+namespace Ads\Application\Pagination\Ports;
 
+use Ads\Application\Pagination\InvalidPage;
+use Ads\Application\Pagination\Page;
 use Ads\Builders\A;
 use Ads\DependencyInjection\WithContainer;
-use Ads\Ports\Pagination\InvalidPage;
-use Ads\Ports\Pagination\Page;
 use Ads\Posters\Poster;
 use Ads\Posters\Posters;
 use Doctrine\ORM\EntityManager;
