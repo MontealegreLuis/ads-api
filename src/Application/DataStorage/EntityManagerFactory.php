@@ -7,7 +7,7 @@
 
 namespace Ads\Application\DataStorage;
 
-use Ads\Ports\Doctrine\Types\UsernameType;
+use Ads\Application\DataStorage\Doctrine\Types\UsernameType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;

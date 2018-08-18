@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Doctrine\Types;
+namespace Ads\Application\DataStorage\Doctrine\Types;
 
 use Ads\CodeList\Posters\Username;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
