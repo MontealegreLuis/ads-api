@@ -5,14 +5,14 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Doctrine\DomainEvents;
+namespace Ads\Application\DomainEvents\Ports;
 
+use Ads\Application\DomainEvents\EventStore;
+use Ads\Application\DomainEvents\StoredEvent;
 use Ads\Application\Pagination\Page;
 use Ads\Application\Pagination\Paginator;
 use Ads\Application\Pagination\Ports\RepositoryPaginator;
 use Ads\Ports\Doctrine\Repository;
-use Ads\Ports\DomainEvents\EventStore;
-use Ads\Ports\DomainEvents\StoredEvent;
 
 class EventStoreRepository extends Repository implements EventStore
 {

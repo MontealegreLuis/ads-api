@@ -16,6 +16,7 @@ return [
     'orm' => [
         'paths' => [
             __DIR__ . '/orm',
+            __DIR__ . '/../src/Application/DomainEvents/Ports/Resources',
         ]
     ],
     'log' => [

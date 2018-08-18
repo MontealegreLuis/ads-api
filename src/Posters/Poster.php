@@ -7,8 +7,8 @@
 
 namespace Ads\Posters;
 
-use Ads\Ports\DomainEvents\RecordsEvents;
-use Ads\Ports\DomainEvents\WithEventsRecording;
+use Ads\Application\DomainEvents\RecordsEvents;
+use Ads\Application\DomainEvents\WithEventsRecording;
 
 /**
  * A poster is a registered user who can post ads in the system

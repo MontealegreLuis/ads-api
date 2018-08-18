@@ -7,9 +7,8 @@
 
 namespace Ads\Posters;
 
-use Ads\Ports\DomainEvents\DomainEvent;
+use Ads\Application\DomainEvents\DomainEvent;
 use Carbon\Carbon;
-use DateTime;
 
 class PosterHasSignedUp extends DomainEvent
 {

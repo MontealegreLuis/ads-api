@@ -7,8 +7,8 @@
 
 namespace Ads\Posters;
 
-use Ads\Ports\DomainEvents\DomainEvent;
-use Ads\Ports\DomainEvents\EventSubscriber;
+use Ads\Application\DomainEvents\DomainEvent;
+use Ads\Application\DomainEvents\EventSubscriber;
 
 class DomainEventsCollector implements EventSubscriber
 {

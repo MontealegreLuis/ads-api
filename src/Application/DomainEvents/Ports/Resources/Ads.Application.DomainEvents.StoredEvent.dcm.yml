@@ -1,4 +1,4 @@
-Ads\Ports\DomainEvents\StoredEvent:
+Ads\Application\DomainEvents\StoredEvent:
   type: entity
   table: events
   id:

@@ -5,7 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
+use Ads\Application\DependencyInjection\ApplicationServices;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Pimple\Container;

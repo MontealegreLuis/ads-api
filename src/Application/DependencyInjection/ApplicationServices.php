@@ -7,13 +7,13 @@
 
 namespace Ads\Application\DependencyInjection;
 
+use Ads\Application\DomainEvents\Ports\EventStoreRepository;
+use Ads\Application\DomainEvents\Ports\JSONSerializer;
+use Ads\Application\DomainEvents\StoredEventFactory;
+use Ads\Application\DomainEvents\StoredEventsSubscriber;
 use Ads\Ports\CommandBus\Bus;
-use Ads\Ports\Doctrine\DomainEvents\EventStoreRepository;
 use Ads\Ports\Doctrine\EntityManagerFactory;
 use Ads\Ports\Doctrine\Posters\PosterRepository;
-use Ads\Ports\DomainEvents\StoredEventFactory;
-use Ads\Ports\DomainEvents\StoredEventsSubscriber;
-use Ads\Ports\JmsSerializer\JSONSerializer;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\Posters\Posters;
 use Ads\Registration\SignUp\SignUpPoster;

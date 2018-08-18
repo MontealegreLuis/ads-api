@@ -7,7 +7,7 @@
 
 namespace Ads\Builders;
 
-use Ads\Ports\DomainEvents\EventPublisher;
+use Ads\Application\DomainEvents\EventPublisher;
 use Ads\Posters\Poster;
 use Ads\Posters\PosterInformation;
 use Faker\Factory;

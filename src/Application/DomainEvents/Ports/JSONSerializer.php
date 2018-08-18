@@ -5,10 +5,10 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\JmsSerializer;
+namespace Ads\Application\DomainEvents\Ports;
 
-use Ads\Ports\DomainEvents\DomainEvent;
-use Ads\Ports\DomainEvents\EventSerializer;
+use Ads\Application\DomainEvents\DomainEvent;
+use Ads\Application\DomainEvents\EventSerializer;
 use Ads\Posters\Email;
 use Ads\Posters\Name;
 use Ads\Posters\Username;

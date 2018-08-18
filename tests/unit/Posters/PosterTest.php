@@ -7,7 +7,7 @@
 
 namespace Ads\Posters;
 
-use Ads\Ports\DomainEvents\EventPublisher;
+use Ads\Application\DomainEvents\EventPublisher;
 use PHPUnit\Framework\TestCase;
 
 class PosterTest extends TestCase

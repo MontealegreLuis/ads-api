@@ -5,14 +5,13 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\Doctrine\DomainEvents;
+namespace Ads\Application\DomainEvents\Ports;
 
+use Ads\Application\DomainEvents\StoredEvent;
+use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Application\Pagination\Page;
 use Ads\Builders\A;
 use Ads\DependencyInjection\WithContainer;
-use Ads\Ports\DomainEvents\StoredEvent;
-use Ads\Ports\DomainEvents\StoredEventFactory;
-use Ads\Ports\JmsSerializer\JSONSerializer;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 

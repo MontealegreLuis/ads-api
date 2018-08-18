@@ -7,8 +7,8 @@
 
 namespace Ads\Registration\SignUp;
 
+use Ads\Application\DomainEvents\EventPublisher;
 use Ads\Builders\A;
-use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\DomainEventsCollector;
 use Ads\Posters\InMemoryPosters;
 use Ads\Posters\Poster;

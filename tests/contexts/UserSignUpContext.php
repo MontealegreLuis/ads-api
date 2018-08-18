@@ -5,8 +5,8 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
+use Ads\Application\DomainEvents\EventPublisher;
 use Ads\Builders\A;
-use Ads\Ports\DomainEvents\EventPublisher;
 use Ads\Posters\DomainEventsCollector;
 use Ads\Posters\InMemoryPosters;
 use Ads\Posters\PosterHasSignedUp;

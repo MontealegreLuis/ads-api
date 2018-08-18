@@ -7,7 +7,8 @@
 
 namespace Ads\Ports\DomainEvents;
 
-use Ads\Ports\JmsSerializer\JSONSerializer;
+use Ads\Application\DomainEvents\Ports\JSONSerializer;
+use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Posters\Email;
 use Ads\Posters\Name;
 use Ads\Posters\PosterHasSignedUp;

@@ -7,8 +7,8 @@
 
 namespace Ads\UI\Web\Slim\Middleware;
 
-use Ads\Ports\DomainEvents\EventPublisher;
-use Ads\Ports\DomainEvents\StoredEventsSubscriber;
+use Ads\Application\DomainEvents\EventPublisher;
+use Ads\Application\DomainEvents\StoredEventsSubscriber;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
