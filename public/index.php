@@ -5,13 +5,8 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-use Ads\Ports\Web\Slim\Application;
-use Ads\Ports\Web\Slim\DependencyInjection\ApplicationServices;
-use Doctrine\Common\Annotations\AnnotationRegistry;
+require __DIR__ . '/../vendor/autoload.php';
 
-/** @var \Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__ . '/../vendor/autoload.php';
-
-AnnotationRegistry::registerLoader(Closure::fromCallable([$loader, 'loadClass']));
+use Ads\UI\Web\Slim\Application;
 
 (new Application(require __DIR__ . '/../config/options.php'))->run();

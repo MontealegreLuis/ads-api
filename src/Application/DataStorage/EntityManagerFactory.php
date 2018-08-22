@@ -8,6 +8,7 @@
 namespace Ads\Application\DataStorage;
 
 use Ads\Application\DataStorage\Doctrine\Types\UsernameType;
+use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
@@ -28,6 +29,7 @@ trait EntityManagerFactory
         }
 
         $config = Setup::createYAMLMetadataConfiguration($options['orm']['paths'], $options['debug']);
+        $config->setSQLLogger(new DebugStack());
         if (!Type::hasType('Username')) {
             Type::addType('Username', UsernameType::class);
         }

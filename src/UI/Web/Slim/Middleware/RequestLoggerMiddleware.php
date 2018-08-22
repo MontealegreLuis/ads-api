@@ -25,7 +25,7 @@ class RequestLoggerMiddleware
     /**
      * Log the current request information and its matched route, if any
      */
-    public function __invoke(Request $request, ResponseInterface $response, callable $next)
+    public function __invoke(Request $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $route = $request->getAttribute('route');
 
@@ -61,7 +61,7 @@ class RequestLoggerMiddleware
         $this->logger->info('Redirect', [
             'status' => $response->getStatusCode(),
             'phrase' => $response->getReasonPhrase(),
-            'location' => $response->getHeader('Location')[0],
+            'location' => $response->getHeaderLine('Location'),
         ]);
     }
 

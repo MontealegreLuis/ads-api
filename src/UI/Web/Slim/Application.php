@@ -10,6 +10,7 @@ namespace Ads\UI\Web\Slim;
 use Ads\Application\DependencyInjection\ApplicationServices;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
+use Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware;
 use Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware;
 use Slim\App;
 
@@ -23,6 +24,7 @@ class Application extends App
 
         $this->add($container[RequestLoggerMiddleware::class]);
         $this->add($container[EventSubscribersMiddleware::class]);
+        $this->add($container[QueryLoggerMiddleware::class]);
 
         $this->post('/posters', SignUpPosterController::class . ':signUp')
             ->setName('signUp');

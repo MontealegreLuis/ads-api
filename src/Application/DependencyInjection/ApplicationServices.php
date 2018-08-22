@@ -19,6 +19,7 @@ use Ads\Ports\CommandBus\Bus;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Handlers\ErrorHandler;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
+use Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware;
 use Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
@@ -76,13 +77,16 @@ class ApplicationServices implements ServiceProviderInterface
         };
         $container[Logger::class] = function () {
             $logger = new Logger('app');
-            $stream = new StreamHandler($this->options['log']['path'], Logger::INFO);
+            $stream = new StreamHandler($this->options['log']['path'], Logger::DEBUG);
             $stream->pushProcessor(new WebProcessor());
             $stream->pushProcessor(new UidProcessor());
             $stream->pushProcessor(new MemoryUsageProcessor());
             $logger->pushHandler($stream);
 
             return $logger;
+        };
+        $container[QueryLoggerMiddleware::class] = function (Container $container) {
+            return new QueryLoggerMiddleware($container[Logger::class], $container[EntityManager::class]);
         };
         $container['errorHandler'] = function (Container $container) {
             return new ErrorHandler($container[Logger::class], $this->options['debug']);
