@@ -5,14 +5,14 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\UI\Web\HTTP\HAL\Responses;
+namespace Ads\UI\Web\HTTP;
 
 use Crell\ApiProblem\ApiProblem;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Teapot\StatusCode\All as Status;
 
-class HALResponse
+class ApiResponse
 {
     public static function created(string $location, string $body): ResponseInterface
     {

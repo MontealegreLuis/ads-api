@@ -17,7 +17,7 @@ use Ads\Ports\CommandBus\Bus;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\ProblemDetails;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
 use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
-use Ads\UI\Web\HTTP\HAL\Responses\HALResponse;
+use Ads\UI\Web\HTTP\ApiResponse;
 use Ads\UI\Web\HTTP\HAL\Serializer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Http\Request;
@@ -64,7 +64,7 @@ class SignUpPosterController implements SignUpPosterResponder
         $uriBuilder = new SlimUriBuilder($this->router, $this->request);
         $serializer = Serializer::hal($uriBuilder);
 
-        $this->response = HALResponse::created(
+        $this->response = ApiResponse::created(
             $uriBuilder->pathFor('poster', ['username' => $poster->username()]),
             $serializer->serialize($poster)
         );
@@ -72,14 +72,14 @@ class SignUpPosterController implements SignUpPosterResponder
 
     public function respondToInvalidPosterInformation(array $errors): void
     {
-        $this->response = HALResponse::unprocessableEntity(
+        $this->response = ApiResponse::unprocessableEntity(
             Problem::failedValidation($errors, ProblemDetails::INVALID_POSTER_INFORMATION)
         );
     }
 
     public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void
     {
-        $this->response = HALResponse::unprocessableEntity(
+        $this->response = ApiResponse::unprocessableEntity(
             Problem::failedValidation(['username' => $error->getMessage()], ProblemDetails::UNAVAILABLE_USERNAME)
         );
     }
