@@ -9,21 +9,14 @@ namespace Ads\Builders;
 
 use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\PosterInformation;
-use Faker\Factory;
 use ReflectionClass;
 
 class PosterBuilder
 {
-    /** @var \Faker\Generator */
-    private $faker;
+    use WithFakeData;
 
     /** @var string */
     private $username;
-
-    public function __construct()
-    {
-        $this->faker = Factory::create();
-    }
 
     public function withUsername(string $username): PosterBuilder
     {

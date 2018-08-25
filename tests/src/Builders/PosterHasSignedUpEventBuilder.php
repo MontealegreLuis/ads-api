@@ -12,20 +12,13 @@ use Ads\CodeList\Posters\Name;
 use Ads\CodeList\Posters\PosterHasSignedUp;
 use Ads\CodeList\Posters\Username;
 use Carbon\Carbon;
-use Faker\Factory;
 
 class PosterHasSignedUpEventBuilder
 {
-    /** @var \Faker\Generator */
-    private $faker;
+    use WithFakeData;
 
     /** @var int */
     private $timestamp;
-
-    public function __construct()
-    {
-        $this->faker = Factory::create();
-    }
 
     public function occurredOn(int $timestamp): PosterHasSignedUpEventBuilder
     {
