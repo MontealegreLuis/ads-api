@@ -5,8 +5,7 @@
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 
-namespace Ads\Ports\CommandBus;
-
+namespace Ads\Application\CommandBus;
 
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 
