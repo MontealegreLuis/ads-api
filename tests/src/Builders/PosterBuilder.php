@@ -7,10 +7,10 @@
 
 namespace Ads\Builders;
 
-use Ads\Application\DomainEvents\EventPublisher;
 use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\PosterInformation;
 use Faker\Factory;
+use ReflectionClass;
 
 class PosterBuilder
 {
@@ -32,15 +32,23 @@ class PosterBuilder
         return $this;
     }
 
+    /** @throws \ReflectionException */
     public function build(): Poster
     {
-        $poster = Poster::signUp(PosterInformation::fromInput([
+        $information = PosterInformation::fromInput([
             'username' => $this->username ?? str_replace('.', '_', $this->faker->userName),
             'password' => $this->faker->password(8),
             'name' => $this->faker->name,
             'email' => $this->faker->email,
-        ]));
-        EventPublisher::reset();
+        ]);
+
+        $class = new ReflectionClass(Poster::class);
+        $constructor = $class->getConstructor();
+        $constructor->setAccessible(true);
+        /** @var Poster $poster */
+        $poster = $class->newInstanceWithoutConstructor();
+        $constructor->invoke($poster, $information);
+
         return $poster;
     }
 }

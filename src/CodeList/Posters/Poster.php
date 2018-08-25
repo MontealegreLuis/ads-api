@@ -33,21 +33,13 @@ class Poster implements RecordsEvents
 
     public static function signUp(PosterInformation $information): Poster
     {
-        return new Poster($information);
-    }
-
-    private function __construct(PosterInformation $information)
-    {
-        $this->username = $information->username();
-        $this->password = $information->password();
-        $this->name = $information->name();
-        $this->email = $information->email();
-
-        $this->recordThat(new PosterHasSignedUp(
-            $this->username,
-            $this->name,
-            $this->email
+        $poster = new Poster($information);
+        $poster->recordThat(new PosterHasSignedUp(
+            $poster->username,
+            $poster->name,
+            $poster->email
         ));
+        return $poster;
     }
 
     public function hasUsername(Username $username): bool
@@ -58,5 +50,13 @@ class Poster implements RecordsEvents
     public function username(): Username
     {
         return $this->username;
+    }
+
+    protected function __construct(PosterInformation $information)
+    {
+        $this->username = $information->username();
+        $this->password = $information->password();
+        $this->name = $information->name();
+        $this->email = $information->email();
     }
 }

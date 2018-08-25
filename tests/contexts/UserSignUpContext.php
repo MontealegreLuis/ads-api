@@ -56,7 +56,6 @@ class UserSignUpContext implements Context, SignUpPosterResponder
     public function aPosterWithTheUsername(string $username): void
     {
         $this->posters->add(A::poster()->withUsername($username)->build());
-        EventPublisher::reset(); // we're not interested in previous events
     }
 
     /**
