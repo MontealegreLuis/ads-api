@@ -14,9 +14,10 @@ use Teapot\StatusCode\All as Status;
 
 class HALResponse
 {
-    public static function created(ResponseInterface $response, string $location, string $body): ResponseInterface
+    public static function created(string $location, string $body): ResponseInterface
     {
-        $response->getBody()->write($body);
+        $response = new Response();
+        $response->write($body);
 
         return $response
             ->withStatus(Status::CREATED)

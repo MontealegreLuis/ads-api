@@ -33,9 +33,6 @@ class SignUpPosterController implements SignUpPosterResponder
     /** @var Bus */
     private $bus;
 
-    /** @var SignUpPosterAction */
-    private $action;
-
     /** @var Router */
     private $router;
 
@@ -47,18 +44,16 @@ class SignUpPosterController implements SignUpPosterResponder
 
     public function __construct(Bus $bus, SignUpPosterAction $action, Router $router)
     {
+        $action->attach($this);
         $this->bus = $bus;
-        $this->action = $action;
-        $this->action->attach($this);
+        $this->bus->addHandler($action, 'signUpPoster', SignUpPosterInput::class);
         $this->router = $router;
     }
 
-    public function signUp(Request $request, Response $response): Response
+    public function signUp(Request $request): Response
     {
         $this->request = $request;
-        $this->response = $response;
 
-        $this->bus->addHandler($this->action, 'signUpPoster', SignUpPosterInput::class);
         $this->bus->handle(SignUpPosterInput::withValues($request->getParsedBody()));
 
         return $this->response;
@@ -70,7 +65,6 @@ class SignUpPosterController implements SignUpPosterResponder
         $serializer = Serializer::hal($uriBuilder);
 
         $this->response = HALResponse::created(
-            $this->response,
             $uriBuilder->pathFor('poster', ['username' => $poster->username()]),
             $serializer->serialize($poster)
         );
