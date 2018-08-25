@@ -7,31 +7,17 @@
 
 namespace Ads\UI\Web\HTTP\HAL\ApiProblems;
 
-use Ads\CodeList\Registration\SignUp\UnavailableUsername;
 use Crell\ApiProblem\ApiProblem;
-use Symfony\Component\Validator\ConstraintViolation;
 use Teapot\StatusCode\All as Status;
 
 class Problem
 {
-    public static function forValidation(array $errors): ApiProblem
+    public static function failedValidation(array $errors, array $details): ApiProblem
     {
         $problem = self::unprocessableEntity();
-        $problem['errors'] = array_map(function (ConstraintViolation $error) {
-            return $error->getMessage();
-        }, $errors);
-        $problem['code'] = ErrorCode::INVALID_POSTER_INFORMATION;
-
-        return $problem;
-    }
-
-    public static function unavailableUsername(UnavailableUsername $error): ApiProblem
-    {
-        $problem = self::unprocessableEntity();
-        $problem['errors'] = [
-            'username' => $error->getMessage(),
-        ];
-        $problem['code'] = ErrorCode::UNAVAILABLE_USERNAME;
+        $problem['errors'] = $errors;
+        $problem['code'] = $details['code'];
+        $problem['details'] = $details['details'];
 
         return $problem;
     }

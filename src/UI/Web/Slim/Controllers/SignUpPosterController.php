@@ -14,6 +14,7 @@ use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
 use Ads\CodeList\Registration\SignUp\SignUpPosterResponder;
 use Ads\CodeList\Registration\SignUp\UnavailableUsername;
 use Ads\Ports\CommandBus\Bus;
+use Ads\UI\Web\HTTP\HAL\ApiProblems\ProblemDetails;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
 use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
 use Ads\UI\Web\HTTP\HAL\Responses\HALResponse;
@@ -77,14 +78,15 @@ class SignUpPosterController implements SignUpPosterResponder
 
     public function respondToInvalidPosterInformation(array $errors): void
     {
-        $this->response = HALResponse::unprocessableEntity($this->response, Problem::forValidation($errors));
+        $this->response = HALResponse::unprocessableEntity(
+            Problem::failedValidation($errors, ProblemDetails::INVALID_POSTER_INFORMATION)
+        );
     }
 
     public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void
     {
         $this->response = HALResponse::unprocessableEntity(
-            $this->response,
-            Problem::unavailableUsername($error)
+            Problem::failedValidation(['username' => $error->getMessage()], ProblemDetails::UNAVAILABLE_USERNAME)
         );
     }
 }

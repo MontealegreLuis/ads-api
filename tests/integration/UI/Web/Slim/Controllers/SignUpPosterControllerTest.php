@@ -68,7 +68,7 @@ class SignUpPosterControllerTest extends TestCase
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame('application/problem+json', $response->getHeader('Content-Type')[0]);
         $this->assertSame(
-            '{"errors":{"username":"This value is too short. It should have 5 characters or more.","email":"This value is not a valid email address."},"code":1,"title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
+            '{"errors":{"username":"This value is too short. It should have 5 characters or more.","email":"This value is not a valid email address."},"code":"REG-INV-INPUT","details":"Poster information is invalid","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
         );
     }
@@ -95,7 +95,7 @@ class SignUpPosterControllerTest extends TestCase
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame('application/problem+json', $response->getHeader('Content-Type')[0]);
         $this->assertSame(
-            '{"errors":{"username":"Username thomas_anderson is already taken"},"code":2,"title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
+            '{"errors":{"username":"Username thomas_anderson is already taken"},"code":"REG-DUP-USER","details":"Username is unavailable","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
         );
     }

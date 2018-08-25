@@ -9,6 +9,7 @@ namespace Ads\UI\Web\HTTP\HAL\Responses;
 
 use Crell\ApiProblem\ApiProblem;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Response;
 use Teapot\StatusCode\All as Status;
 
 class HALResponse
@@ -23,9 +24,10 @@ class HALResponse
             ->withHeader('Location', $location);
     }
 
-    public static function unprocessableEntity(ResponseInterface $response, ApiProblem $problem): ResponseInterface
+    public static function unprocessableEntity(ApiProblem $problem): ResponseInterface
     {
-        $response->getBody()->write($problem->asJson());
+        $response = new Response();
+        $response->write($problem->asJson());
 
         return $response
             ->withStatus(Status::UNPROCESSABLE_ENTITY)

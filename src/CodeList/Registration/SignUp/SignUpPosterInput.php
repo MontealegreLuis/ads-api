@@ -87,7 +87,7 @@ class SignUpPosterInput
         $violations = $validator->validate($this);
         /** @var ConstraintViolation $violation */
         foreach ($violations as $violation) {
-            $this->errors[$violation->getPropertyPath()] = $violation;
+            $this->errors[$violation->getPropertyPath()] = $violation->getMessage();
         }
     }
 }
