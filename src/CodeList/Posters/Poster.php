@@ -59,4 +59,9 @@ class Poster implements RecordsEvents
         $this->name = $information->name();
         $this->email = $information->email();
     }
+
+    public function verifyPassword(string $plainTextPassword): bool
+    {
+        return $this->password->verify($plainTextPassword);
+    }
 }

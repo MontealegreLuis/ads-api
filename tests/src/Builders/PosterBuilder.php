@@ -18,9 +18,19 @@ class PosterBuilder
     /** @var string */
     private $username;
 
+    /** @var string */
+    private $password;
+
     public function withUsername(string $username): PosterBuilder
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function withPassword(string $password): PosterBuilder
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -30,7 +40,7 @@ class PosterBuilder
     {
         $information = PosterInformation::fromInput([
             'username' => $this->username ?? str_replace('.', '_', $this->faker->userName),
-            'password' => $this->faker->password(8),
+            'password' => $this->password ?? $this->faker->password(8),
             'name' => $this->faker->name,
             'email' => $this->faker->email,
         ]);

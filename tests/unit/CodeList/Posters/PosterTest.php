@@ -31,6 +31,21 @@ class PosterTest extends TestCase
         $this->assertInstanceOf(PosterHasSignedUp::class, $collector->events()[0]);
     }
 
+    /** @test */
+    function it_can_verify_her_password()
+    {
+        $password = 'ilovemyjob';
+        $poster = Poster::signUp(PosterInformation::fromInput([
+            'username' => 'thomas_anderson',
+            'password' => $password,
+            'name' => 'Thomas Anderson',
+            'email' => 'thomas.anderson@thematrix.org'
+        ]));
+
+        $this->assertTrue($poster->verifyPassword($password));
+        $this->assertFalse($poster->verifyPassword('incorrect password'));
+    }
+
     /** @before @after */
     function reset()
     {
