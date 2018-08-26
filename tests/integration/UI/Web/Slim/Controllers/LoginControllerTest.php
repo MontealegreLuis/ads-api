@@ -11,6 +11,7 @@ use Ads\Application\DependencyInjection\ContainerFactory;
 use Ads\Builders\A;
 use Ads\CodeList\Posters\Ports\PosterRepository;
 use Ads\CodeList\Posters\Poster;
+use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +37,7 @@ class LoginControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('application/problem+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::PROBLEM_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"errors":{"username":"This value is too short. It should have 5 characters or more.","password":"This value should not be blank."},"code":"LOGIN-INV-INPUT","details":"Login credentials are invalid","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
@@ -58,7 +59,7 @@ class LoginControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNAUTHORIZED, $response->getStatusCode());
-        $this->assertSame('application/problem+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::PROBLEM_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"errors":{"username":"Either password or username are incorrect"},"code":"INV_CRED_LOGIN","details":"Either password or username are incorrect","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
@@ -82,7 +83,7 @@ class LoginControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNAUTHORIZED, $response->getStatusCode());
-        $this->assertSame('application/problem+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::PROBLEM_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"errors":{"username":"Either password or username are incorrect"},"code":"INV_CRED_LOGIN","details":"Either password or username are incorrect","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
@@ -106,7 +107,7 @@ class LoginControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::OK, $response->getStatusCode());
-        $this->assertSame('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
 
         $body = json_decode((string)$response->getBody(), true);
         $this->assertTrue(Token::validate($body['token'], '!1234567890aB'));

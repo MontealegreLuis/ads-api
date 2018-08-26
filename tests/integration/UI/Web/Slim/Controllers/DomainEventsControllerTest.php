@@ -13,6 +13,7 @@ use Ads\Application\DomainEvents\StoredEvent;
 use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Builders\A;
 use Ads\DependencyInjection\WithContainer;
+use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class DomainEventsControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::OK, $response->getStatusCode());
-        $this->assertSame('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"count":0,"total":0,"_embedded":[],"_links":{"self":{"href":"http://localhost/events?page=1"},"first":{"href":"http://localhost/events?page=1"},"last":{"href":"http://localhost/events?page=1"}}}',
             (string)$response->getBody()
@@ -59,7 +60,7 @@ class DomainEventsControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('application/problem+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::PROBLEM_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"errors":{"page":"This value should be greater than or equal to 1."},"code":"EVT-INV-PAGE","details":"Invalid events page number","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
@@ -94,7 +95,7 @@ class DomainEventsControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::OK, $response->getStatusCode());
-        $this->assertSame('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"count":5,"total":15,"_embedded":[{"event_id":12,"body":"{\"occurred_on\":1535249942,\"username\":\"f12345\",\"name\":\"F\",\"email\":\"f@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535249942},{"event_id":13,"body":"{\"occurred_on\":1535250002,\"username\":\"g12345\",\"name\":\"G\",\"email\":\"g@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250002},{"event_id":14,"body":"{\"occurred_on\":1535250062,\"username\":\"h12345\",\"name\":\"H\",\"email\":\"h@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250062},{"event_id":15,"body":"{\"occurred_on\":1535250122,\"username\":\"i12345\",\"name\":\"I\",\"email\":\"i@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250122},{"event_id":16,"body":"{\"occurred_on\":1535250182,\"username\":\"j12345\",\"name\":\"J\",\"email\":\"j@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250182}],"_links":{"self":{"href":"http://localhost/events?page=2"},"first":{"href":"http://localhost/events?page=1"},"next":{"href":"http://localhost/events?page=3"},"prev":{"href":"http://localhost/events?page=1"},"last":{"href":"http://localhost/events?page=3"}}}',
             (string)$response->getBody()

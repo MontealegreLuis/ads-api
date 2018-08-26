@@ -21,7 +21,7 @@ class ApiResponse
 
         return $response
             ->withStatus(Status::CREATED)
-            ->withHeader('Content-Type', 'application/hal+json')
+            ->withHeader('Content-Type', ContentType::HAL_JSON)
             ->withHeader('Location', $location);
     }
 
@@ -32,7 +32,7 @@ class ApiResponse
 
         return $response
             ->withStatus(Status::UNPROCESSABLE_ENTITY)
-            ->withHeader('Content-Type','application/problem+json');
+            ->withHeader('Content-Type',ContentType::PROBLEM_JSON);
     }
 
     public static function unathorized(ApiProblem $problem): ResponseInterface
@@ -42,7 +42,7 @@ class ApiResponse
 
         return $response
             ->withStatus(Status::UNAUTHORIZED)
-            ->withHeader('Content-Type', 'application/problem+json');
+            ->withHeader('Content-Type', ContentType::PROBLEM_JSON);
     }
 
     public static function ok(string $body): ResponseInterface
@@ -52,6 +52,6 @@ class ApiResponse
 
         return $response
             ->withStatus(Status::OK)
-            ->withHeader('Content-Type', 'application/hal+json');
+            ->withHeader('Content-Type', ContentType::HAL_JSON);
     }
 }

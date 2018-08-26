@@ -12,6 +12,7 @@ use Ads\Builders\A;
 use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\Posters;
 use Ads\DependencyInjection\WithContainer;
+use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,7 @@ class SignUpPosterControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::CREATED, $response->getStatusCode());
-        $this->assertSame('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"username":"thomas_anderson","name":"Thomas Anderson","email":"thomas.anderson@thematrix.org","_links":{"self":{"href":"http://localhost/posters/thomas_anderson"}}}',
             (string)$response->getBody()
@@ -64,7 +65,7 @@ class SignUpPosterControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('application/problem+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::PROBLEM_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"errors":{"username":"This value is too short. It should have 5 characters or more.","email":"This value is not a valid email address."},"code":"REG-INV-INPUT","details":"Poster information is invalid","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
@@ -91,7 +92,7 @@ class SignUpPosterControllerTest extends TestCase
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('application/problem+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame(ContentType::PROBLEM_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
             '{"errors":{"username":"Username thomas_anderson is already taken"},"code":"REG-DUP-USER","details":"Username is unavailable","title":"Unprocessable Entity","type":"http:\/\/www.w3.org\/Protocols\/rfc2616\/rfc2616-sec10.html","status":422}',
             (string)$response->getBody()
