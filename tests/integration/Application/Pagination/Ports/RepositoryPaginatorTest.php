@@ -48,7 +48,8 @@ class RepositoryPaginatorTest extends TestCase
 
         $pageResults = $paginator->pageResults();
 
-        $this->assertCount(2, $pageResults);
+        $this->assertEquals(2, $paginator->count());
+        $this->assertEquals(6, $paginator->total());
         $this->assertEquals($secondPageResults, $pageResults);
         $this->assertEquals(2, $paginator->currentPage());
         $this->assertTrue($paginator->hasPages());

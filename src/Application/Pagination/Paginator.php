@@ -27,4 +27,12 @@ interface Paginator
     public function lastPage(): int;
 
     public function pageResults(): array;
+
+    /** All the elements count */
+    public function total(): int;
+
+    /** Elements in this page count */
+    public function count(): int;
+
+    public function pageSize(): int;
 }

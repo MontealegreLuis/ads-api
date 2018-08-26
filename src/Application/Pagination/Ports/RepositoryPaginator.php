@@ -75,6 +75,23 @@ class RepositoryPaginator implements Paginator
         return $this->paginator->getCurrentPageResults()->getArrayCopy();
     }
 
+    /** All the elements count */
+    public function total(): int
+    {
+        return $this->paginator->count();
+    }
+
+    /** Elements in this page count */
+    public function count(): int
+    {
+        return \count($this->paginator->getCurrentPageResults()->getArrayCopy());
+    }
+
+    public function pageSize(): int
+    {
+        return $this->paginator->getMaxPerPage();
+    }
+
     private function __construct(QueryBuilder $builder)
     {
         $this->paginator = new Pagerfanta(new DoctrineORMAdapter($builder));
