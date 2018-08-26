@@ -35,6 +35,16 @@ class ApiResponse
             ->withHeader('Content-Type','application/problem+json');
     }
 
+    public static function unathorized(ApiProblem $problem): ResponseInterface
+    {
+        $response = new Response();
+        $response->write($problem->asJson());
+
+        return $response
+            ->withStatus(Status::UNAUTHORIZED)
+            ->withHeader('Content-Type', 'application/problem+json');
+    }
+
     public static function ok(string $body): ResponseInterface
     {
         $response = new Response();

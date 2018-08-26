@@ -21,4 +21,12 @@ interface ProblemDetails
         'code' => 'EVT-INV-PAGE',
         'details' => 'Invalid events page number',
     ];
+    public const INVALID_LOGIN_INFORMATION = [
+        'code' => 'LOGIN-INV-INPUT',
+        'details' => 'Login credentials are invalid',
+    ];
+    public const INVALID_CREDENTIALS = [
+        'code' => 'INV_CRED_LOGIN',
+        'details' => 'Either password or username are incorrect',
+    ];
 }

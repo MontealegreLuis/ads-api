@@ -15,10 +15,12 @@ use Ads\Application\DomainEvents\Ports\JSONSerializer;
 use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Application\DomainEvents\StoredEventsSubscriber;
 use Ads\Application\StoredEvents\ViewEventsInPageAction;
+use Ads\CodeList\Authentication\Login\LoginAction;
 use Ads\CodeList\Posters\Ports\PosterRepository;
 use Ads\CodeList\Posters\Posters;
 use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
 use Ads\UI\Web\Slim\Controllers\DomainEventsController;
+use Ads\UI\Web\Slim\Controllers\LoginController;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Handlers\ErrorHandler;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
@@ -107,6 +109,16 @@ class ApplicationServices implements ServiceProviderInterface
         };
         $container[EventStore::class] = function (Container $container) {
             return new EventStoreRepository($container[EntityManager::class]);
+        };
+        $container[LoginController::class] = function (Container $container) {
+            return new LoginController(
+                $container[Bus::class],
+                $container[LoginAction::class],
+                $container['router']
+            );
+        };
+        $container[LoginAction::class] = function (Container $container) {
+            return new LoginAction($container[Posters::class]);
         };
     }
 }
