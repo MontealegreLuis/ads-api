@@ -24,8 +24,10 @@ class SlimUriBuilder implements UriBuilder
         $this->request = $request;
     }
 
-    public function pathFor(string $routeName, array $routeParameters): string
+    public function pathFor(string $routeName, array $routeParameters = [], array $queryParameters = []): string
     {
-        return (string)$this->request->getUri()->withPath($this->router->pathFor($routeName, $routeParameters));
+        return (string)$this->request->getUri()
+            ->withPath($this->router->pathFor($routeName, $routeParameters))
+            ->withQuery(http_build_query($queryParameters));
     }
 }
