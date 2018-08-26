@@ -9,6 +9,7 @@ namespace Ads\CodeList\Posters;
 
 use Ads\Application\DomainEvents\DomainEventsCollector;
 use Ads\Application\DomainEvents\EventPublisher;
+use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
 use PHPUnit\Framework\TestCase;
 
 class PosterTest extends TestCase
@@ -19,12 +20,12 @@ class PosterTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $poster = Poster::signUp(PosterInformation::fromInput([
+        $poster = Poster::signUp(PosterInformation::fromInput(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
-        ]));
+        ])));
 
         $this->assertTrue($poster->hasUsername(new Username('thomas_anderson')));
         $this->assertCount(1, $collector->events());
@@ -35,12 +36,12 @@ class PosterTest extends TestCase
     function it_can_verify_her_password()
     {
         $password = 'ilovemyjob';
-        $poster = Poster::signUp(PosterInformation::fromInput([
+        $poster = Poster::signUp(PosterInformation::fromInput(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => $password,
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
-        ]));
+        ])));
 
         $this->assertTrue($poster->verifyPassword($password));
         $this->assertFalse($poster->verifyPassword('incorrect password'));

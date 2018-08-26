@@ -35,7 +35,7 @@ class LoginAction
 
     private function attemptLogin(LoginInput $input): void
     {
-        $credentials = Credentials::from($input->values());
+        $credentials = Credentials::from($input);
 
         /** @var Poster $poster */
         $poster = $this->posters->withUsername($credentials->username());

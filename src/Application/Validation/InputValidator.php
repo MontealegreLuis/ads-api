@@ -16,18 +16,24 @@ class InputValidator
     /** @var ConstraintViolation[] */
     private $errors;
 
+    private $hasRunValidations;
+
     protected function __construct()
     {
+        $this->hasRunValidations = false;
         $this->errors = [];
     }
 
     public function isValid(): bool
     {
-        $validator = Validation::createValidatorBuilder()
-            ->enableAnnotationMapping()
-            ->getValidator();
+        if (!$this->hasRunValidations) {
+            $validator = Validation::createValidatorBuilder()
+                ->enableAnnotationMapping()
+                ->getValidator();
 
-        $this->violationsToErrors($validator);
+            $this->violationsToErrors($validator);
+            $this->hasRunValidations = true;
+        }
 
         return empty($this->errors);
     }

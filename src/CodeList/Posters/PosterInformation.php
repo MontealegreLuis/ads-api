@@ -7,6 +7,9 @@
 
 namespace Ads\CodeList\Posters;
 
+use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
+use InvalidArgumentException;
+
 class PosterInformation
 {
     /** @var Username  */
@@ -21,9 +24,12 @@ class PosterInformation
     /** @var Email */
     private $email;
 
-    public static function fromInput(array $validInput): PosterInformation
+    public static function fromInput(SignUpPosterInput $input): PosterInformation
     {
-        return new PosterInformation($validInput);
+        if (!$input->isValid()) {
+            throw new InvalidArgumentException(sprintf('Input is invalid, it has %d errors', \count($input->errors())));
+        }
+        return new PosterInformation($input->values());
     }
 
     public function username(): Username

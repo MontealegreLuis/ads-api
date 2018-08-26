@@ -8,6 +8,7 @@
 namespace Ads\CodeList\Authentication\Login;
 
 use Ads\CodeList\Posters\Username;
+use InvalidArgumentException;
 
 class Credentials
 {
@@ -17,9 +18,12 @@ class Credentials
     /** @var string */
     private $plainTextPassword;
 
-    public static function from(array $values): Credentials
+    public static function from(LoginInput $input): Credentials
     {
-        return new Credentials($values);
+        if (!$input->isValid()) {
+            throw new InvalidArgumentException(sprintf('Input is invalid, it has %d errors', \count($input->errors())));
+        }
+        return new Credentials($input->values());
     }
 
     public function username(): Username
