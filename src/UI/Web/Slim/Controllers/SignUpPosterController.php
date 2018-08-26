@@ -66,7 +66,7 @@ class SignUpPosterController implements SignUpPosterResponder
 
         $this->response = ApiResponse::created(
             $uriBuilder->pathFor('poster', ['username' => $poster->username()]),
-            $serializer->serialize($poster)
+            $serializer->serializeItem($poster)
         );
     }
 
