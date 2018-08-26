@@ -29,6 +29,8 @@ class PosterRepository extends Repository implements Posters
     public function add(Poster $poster): void
     {
         $this->manager->persist($poster);
-        $this->manager->flush($poster);
+        if (!$this->manager->getConnection()->isTransactionActive()) {
+            $this->manager->flush($poster);
+        }
     }
 }

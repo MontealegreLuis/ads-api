@@ -23,7 +23,9 @@ class EventStoreRepository extends Repository implements EventStore
     public function append(StoredEvent $aDomainEvent): void
     {
         $this->manager->persist($aDomainEvent);
-        $this->manager->flush($aDomainEvent);
+        if (!$this->manager->getConnection()->isTransactionActive()) {
+            $this->manager->flush($aDomainEvent);
+        }
     }
 
     /** @throws \Ads\Application\Pagination\InvalidPage If the requested page is greater than the total number of pages */
