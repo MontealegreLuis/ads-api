@@ -7,20 +7,19 @@
 
 namespace Ads\UI\Web\Slim;
 
-use Ads\Application\DependencyInjection\ApplicationServices;
+use Ads\UI\Web\Slim\Controllers\DomainEventsController;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
 use Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware;
 use Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware;
 use Slim\App;
+use Slim\Container;
 
 class Application extends App
 {
-    public function __construct($options = [])
+    public function __construct(Container $container)
     {
-        parent::__construct($options);
-        $container = $this->getContainer();
-        (new ApplicationServices($options))->register($container);
+        parent::__construct($container);
 
         $this->add($container[RequestLoggerMiddleware::class]);
         $this->add($container[EventSubscribersMiddleware::class]);

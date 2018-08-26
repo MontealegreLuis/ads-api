@@ -7,6 +7,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Ads\Application\DependencyInjection\ContainerFactory;
 use Ads\UI\Web\Slim\Application;
 
-(new Application(require __DIR__ . '/../config/options.php'))->run();
+(new Application(ContainerFactory::new()))->run();
