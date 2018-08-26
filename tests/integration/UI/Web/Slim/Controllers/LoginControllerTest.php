@@ -14,6 +14,7 @@ use Ads\CodeList\Posters\Poster;
 use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
+use ReallySimpleJWT\Token;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Teapot\StatusCode\All as Status;
@@ -106,10 +107,9 @@ class LoginControllerTest extends TestCase
 
         $this->assertSame(Status::OK, $response->getStatusCode());
         $this->assertSame('application/hal+json', $response->getHeaderLine('Content-Type'));
-        $this->assertSame(
-            '',
-            (string)$response->getBody()
-        );
+
+        $body = json_decode((string)$response->getBody(), true);
+        $this->assertTrue(Token::validate($body['token'], '!1234567890aB'));
     }
 
     /** @before */

@@ -2,7 +2,7 @@
     "name": "montealegreluis/ads-api",
     "type": "project",
     "description": "API to post Ads like Craiglist",
-    "license": "BSD 3-Clause",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Luis Montealegre",
@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": ">=7.1",
+        "ext-json": "*",
         "crell/api-problem": "^2.0",
         "doctrine/annotations": "^1.6",
         "doctrine/cache": "^1.7",
@@ -22,6 +23,7 @@
         "nesbot/carbon": "^1.32",
         "nilportugues/hal": "^2.1",
         "pagerfanta/pagerfanta": "^2.0",
+        "rbdwllr/reallysimplejwt": "^1.0",
         "slim/slim": "^3.10",
         "symfony/validator": "^4.1",
         "teapot/status-code": "^1.1",

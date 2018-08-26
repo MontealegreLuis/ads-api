@@ -16,6 +16,8 @@ use Ads\CodeList\Posters\Poster;
 use Ads\UI\Web\HTTP\ApiResponse;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\ProblemDetails;
+use Carbon\Carbon;
+use ReallySimpleJWT\Token;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Router;
@@ -80,6 +82,13 @@ class LoginController implements LoginResponder
 
     public function respondToSuccessfulAuthentication(Poster $poster): void
     {
-        $this->response = ApiResponse::ok('');
+        $thirtyMinutes = 60 * 30;
+        $token = Token::getToken(
+            (string)$poster->username(),
+            '!1234567890aB',
+            Carbon::now('UTC')->getTimestamp() + $thirtyMinutes,
+            (string)$this->request->getUri()
+        );
+        $this->response = ApiResponse::ok(json_encode(['token' => $token]));
     }
 }
