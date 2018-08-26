@@ -7,12 +7,10 @@
 
 namespace Ads\CodeList\Registration\SignUp;
 
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validation;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Ads\Application\Validation\InputValidator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SignUpPosterInput
+class SignUpPosterInput extends InputValidator
 {
     /**
      * @Assert\NotBlank()
@@ -38,28 +36,9 @@ class SignUpPosterInput
      */
     private $email;
 
-    /** @var ConstraintViolation[] */
-    private $errors;
-
     public static function withValues(array $values): SignUpPosterInput
     {
         return new SignUpPosterInput($values);
-    }
-
-    public function isValid(): bool
-    {
-        $validator = Validation::createValidatorBuilder()
-            ->enableAnnotationMapping()
-            ->getValidator();
-
-        $this->violationsToErrors($validator);
-
-        return empty($this->errors);
-    }
-
-    public function errors(): array
-    {
-        return $this->errors;
     }
 
     /** @return string[] */
@@ -73,21 +52,12 @@ class SignUpPosterInput
         ];
     }
 
-    private function __construct(array $input)
+    protected function __construct(array $input)
     {
+        parent::__construct();
         $this->username = $input['username'];
         $this->password = $input['password'];
         $this->name = $input['name'];
         $this->email = $input['email'];
-        $this->errors = [];
-    }
-
-    private function violationsToErrors(ValidatorInterface $validator): void
-    {
-        $violations = $validator->validate($this);
-        /** @var ConstraintViolation $violation */
-        foreach ($violations as $violation) {
-            $this->errors[$violation->getPropertyPath()] = $violation->getMessage();
-        }
     }
 }
