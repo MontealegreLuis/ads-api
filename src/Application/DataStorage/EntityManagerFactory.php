@@ -13,19 +13,19 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 
-trait EntityManagerFactory
+class EntityManagerFactory
 {
     /** @var EntityManager */
-    private $entityManager;
+    private static $entityManager;
 
     /**
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\ORM\ORMException
      */
-    public function entityManager(array $options): EntityManager
+    public static function new(array $options): EntityManager
     {
-        if ($this->entityManager) {
-            return $this->entityManager;
+        if (self::$entityManager) {
+            return self::$entityManager;
         }
 
         $config = Setup::createYAMLMetadataConfiguration($options['orm']['paths'], $options['debug']);
@@ -33,8 +33,8 @@ trait EntityManagerFactory
         if (!Type::hasType('Username')) {
             Type::addType('Username', UsernameType::class);
         }
-        $this->entityManager =  EntityManager::create($options['db']['connection'], $config);
+        self::$entityManager =  EntityManager::create($options['db']['connection'], $config);
 
-        return $this->entityManager;
+        return self::$entityManager;
     }
 }

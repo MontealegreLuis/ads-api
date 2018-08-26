@@ -58,6 +58,7 @@ class Serializer
     {
         $mappings = [
             ObjectMapping::fromMapper(new PosterMapping($uriBuilder)),
+            ObjectMapping::fromMapper(new StoredEventMapping()),
         ];
         $this->halSerializer = new HalSerializer(new JsonTransformer(new Mapper($mappings)));
         $this->uriBuilder = $uriBuilder;

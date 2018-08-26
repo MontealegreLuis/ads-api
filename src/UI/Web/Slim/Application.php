@@ -29,5 +29,8 @@ class Application extends App
             ->setName('signUp');
         $this->get('/posters/{username}', SignUpPosterController::class . ':signUp')
             ->setName('poster');
+
+        $this->get('/events', DomainEventsController::class . ':showPage')
+            ->setName('events');
     }
 }

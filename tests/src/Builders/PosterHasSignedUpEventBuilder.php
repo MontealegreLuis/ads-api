@@ -20,6 +20,36 @@ class PosterHasSignedUpEventBuilder
     /** @var int */
     private $timestamp;
 
+    /** @var string */
+    private $name;
+
+    /** @var string */
+    private $username;
+
+    /** @var string */
+    private $email;
+
+    public function withName(string $name): PosterHasSignedUpEventBuilder
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function withUsername(string $username): PosterHasSignedUpEventBuilder
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function withEmail(string $email): PosterHasSignedUpEventBuilder
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
     public function occurredOn(int $timestamp): PosterHasSignedUpEventBuilder
     {
         $this->timestamp = $timestamp;
@@ -31,8 +61,8 @@ class PosterHasSignedUpEventBuilder
     {
         return new PosterHasSignedUp(
             new Username($this->username ?? $this->normalizeUsername()),
-            new Name($this->faker->name),
-            Email::withAddress($this->faker->email),
+            new Name($this->name ?? $this->faker->name),
+            Email::withAddress($this->email ?? $this->faker->email),
             $this->timestamp ?? Carbon::now('UTC')->getTimestamp()
         );
     }

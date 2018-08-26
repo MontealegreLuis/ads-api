@@ -18,8 +18,6 @@ use Throwable;
 
 class UpdateDatabaseSchemaListener implements TestListener
 {
-    use EntityManagerFactory;
-
     public function addError(Test $test, Throwable $e, float $time): void {}
 
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void {}
@@ -39,7 +37,7 @@ class UpdateDatabaseSchemaListener implements TestListener
             return;
         }
 
-        $entityManager = $this->entityManager(require __DIR__ . '/../../../config/options.php');
+        $entityManager = EntityManagerFactory::new(require __DIR__ . '/../../../config/options.php');
         $tool = new SchemaTool($entityManager);
         $tool->updateSchema($entityManager->getMetadataFactory()->getAllMetadata(), true);
     }

@@ -9,13 +9,16 @@ namespace Ads\Application\DependencyInjection;
 
 use Ads\Application\CommandBus\Bus;
 use Ads\Application\DataStorage\EntityManagerFactory;
+use Ads\Application\DomainEvents\EventStore;
 use Ads\Application\DomainEvents\Ports\EventStoreRepository;
 use Ads\Application\DomainEvents\Ports\JSONSerializer;
 use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Application\DomainEvents\StoredEventsSubscriber;
+use Ads\Application\StoredEvents\ViewEventsInPageAction;
 use Ads\CodeList\Posters\Ports\PosterRepository;
 use Ads\CodeList\Posters\Posters;
 use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
+use Ads\UI\Web\Slim\Controllers\DomainEventsController;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Handlers\ErrorHandler;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
@@ -32,8 +35,6 @@ use Pimple\ServiceProviderInterface;
 
 class ApplicationServices implements ServiceProviderInterface
 {
-    use EntityManagerFactory;
-
     /** @var array */
     private $options;
 
@@ -45,7 +46,7 @@ class ApplicationServices implements ServiceProviderInterface
     public function register(Container $container): void
     {
         $container[EntityManager::class] = function () {
-            return $this->entityManager($this->options);
+            return EntityManagerFactory::new($this->options);
         };
         $container[Posters::class] = function (Container $container) {
             return new PosterRepository($container[EntityManager::class]);
@@ -66,8 +67,11 @@ class ApplicationServices implements ServiceProviderInterface
         $container[StoredEventsSubscriber::class] = function (Container $container) {
             return new StoredEventsSubscriber(
                 $container[EventStoreRepository::class],
-                new StoredEventFactory(new JSONSerializer())
+                $container[StoredEventFactory::class]
             );
+        };
+        $container[StoredEventFactory::class] = function () {
+            return new StoredEventFactory(new JSONSerializer());
         };
         $container[EventSubscribersMiddleware::class] = function (Container $container) {
             return new EventSubscribersMiddleware($container[StoredEventsSubscriber::class]);
@@ -90,6 +94,19 @@ class ApplicationServices implements ServiceProviderInterface
         };
         $container['errorHandler'] = function (Container $container) {
             return new ErrorHandler($container[Logger::class], $this->options['debug']);
+        };
+        $container[DomainEventsController::class] = function (Container $container) {
+            return new DomainEventsController(
+                $container[Bus::class],
+                $container[ViewEventsInPageAction::class],
+                $container['router']
+            );
+        };
+        $container[ViewEventsInPageAction::class] = function (Container $container) {
+            return new ViewEventsInPageAction($container[EventStore::class]);
+        };
+        $container[EventStore::class] = function (Container $container) {
+            return new EventStoreRepository($container[EntityManager::class]);
         };
     }
 }

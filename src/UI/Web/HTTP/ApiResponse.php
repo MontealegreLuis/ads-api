@@ -34,4 +34,14 @@ class ApiResponse
             ->withStatus(Status::UNPROCESSABLE_ENTITY)
             ->withHeader('Content-Type','application/problem+json');
     }
+
+    public static function ok(string $body): ResponseInterface
+    {
+        $response = new Response();
+        $response->write($body);
+
+        return $response
+            ->withStatus(Status::OK)
+            ->withHeader('Content-Type', 'application/hal+json');
+    }
 }
