@@ -26,7 +26,7 @@ class ErrorHandler extends Error
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
     {
-        $this->logger->critical($exception);
+        $this->logger->error($exception);
 
         return parent::__invoke($request, $response, $exception);
     }
