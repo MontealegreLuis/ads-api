@@ -10,4 +10,6 @@ namespace Ads\UI\Web\HTTP\HAL\Mappings;
 interface UriBuilder
 {
     public function pathFor(string $routeName, array $routeParameters, array $queryParameters = []): string;
+
+    public function baseUri(): string;
 }

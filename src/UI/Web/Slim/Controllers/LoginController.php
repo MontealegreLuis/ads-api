@@ -16,8 +16,9 @@ use Ads\CodeList\Posters\Poster;
 use Ads\UI\Web\HTTP\ApiResponse;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\ProblemDetails;
-use Carbon\Carbon;
-use ReallySimpleJWT\Token;
+use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
+use Ads\UI\Web\HTTP\HAL\Serializer;
+use Ads\UI\Web\HTTP\JWT\TokenFactory;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Router;
@@ -36,12 +37,16 @@ class LoginController implements LoginResponder
     /** @var Request */
     private $request;
 
-    public function __construct(Bus $bus, LoginAction $action, Router $router)
+    /** @var TokenFactory */
+    private $factory;
+
+    public function __construct(Bus $bus, LoginAction $action, Router $router, TokenFactory $factory)
     {
         $action->attach($this);
         $this->bus = $bus;
         $this->bus->addHandler($action, 'authenticatePoster', LoginInput::class);
         $this->router = $router;
+        $this->factory = $factory;
     }
 
     public function authenticate(Request $request): Response
@@ -80,15 +85,12 @@ class LoginController implements LoginResponder
         );
     }
 
+    /** @throws \ReallySimpleJWT\Exception\TokenBuilderException */
     public function respondToSuccessfulAuthentication(Poster $poster): void
     {
-        $thirtyMinutes = 60 * 30;
-        $token = Token::getToken(
-            (string)$poster->username(),
-            '!1234567890aB',
-            Carbon::now('UTC')->getTimestamp() + $thirtyMinutes,
-            (string)$this->request->getUri()
-        );
-        $this->response = ApiResponse::ok(json_encode(['token' => $token]));
+        $uriBuilder = new SlimUriBuilder($this->router, $this->request);
+        $serializer = Serializer::hal($uriBuilder);
+
+        $this->response = ApiResponse::ok($serializer->serializeToken($this->factory->builderFor($poster)));
     }
 }

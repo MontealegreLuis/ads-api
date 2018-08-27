@@ -30,4 +30,9 @@ class SlimUriBuilder implements UriBuilder
             ->withPath($this->router->pathFor($routeName, $routeParameters))
             ->withQuery(http_build_query($queryParameters));
     }
+
+    public function baseUri(): string
+    {
+        return $this->request->getUri()->withPath('');
+    }
 }

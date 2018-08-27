@@ -16,6 +16,7 @@ use NilPortugues\Api\Hal\HalPagination;
 use NilPortugues\Api\Hal\HalSerializer;
 use NilPortugues\Api\Hal\JsonTransformer;
 use NilPortugues\Api\Mapping\Mapper;
+use ReallySimpleJWT\TokenBuilder;
 
 class Serializer
 {
@@ -28,6 +29,11 @@ class Serializer
     public static function hal(UriBuilder $uriBuilder): Serializer
     {
         return new Serializer($uriBuilder);
+    }
+
+    public function serializeToken(TokenBuilder $builder): string
+    {
+        return json_encode(['token' => $builder->setIssuer($this->uriBuilder->baseUri())->build()]);
     }
 
     public function serializeItem($item): string

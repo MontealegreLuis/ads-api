@@ -19,6 +19,7 @@ use Ads\CodeList\Authentication\Login\LoginAction;
 use Ads\CodeList\Posters\Ports\PosterRepository;
 use Ads\CodeList\Posters\Posters;
 use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
+use Ads\UI\Web\HTTP\JWT\TokenFactory;
 use Ads\UI\Web\Slim\Controllers\DomainEventsController;
 use Ads\UI\Web\Slim\Controllers\LoginController;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
@@ -114,8 +115,12 @@ class ApplicationServices implements ServiceProviderInterface
             return new LoginController(
                 $container[Bus::class],
                 $container[LoginAction::class],
-                $container['router']
+                $container['router'],
+                $container[TokenFactory::class]
             );
+        };
+        $container[TokenFactory::class] = function () {
+            return new TokenFactory('!1234567890aB');
         };
         $container[LoginAction::class] = function (Container $container) {
             return new LoginAction($container[Posters::class]);
