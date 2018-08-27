@@ -12,6 +12,7 @@ use Ads\Builders\A;
 use Ads\CodeList\Posters\Ports\PosterRepository;
 use Ads\CodeList\Posters\Poster;
 use Ads\UI\Web\HTTP\ContentType;
+use Ads\UI\Web\HTTP\JWT\TokenFactory;
 use Ads\UI\Web\Slim\Application;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
@@ -110,7 +111,7 @@ class LoginControllerTest extends TestCase
         $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
 
         $body = json_decode((string)$response->getBody(), true);
-        $this->assertTrue(Token::validate($body['token'], '!1234567890aB'));
+        $this->assertTrue(Token::validate($body['token'], $this->factory->secret()));
     }
 
     /** @before */
@@ -120,6 +121,7 @@ class LoginControllerTest extends TestCase
         $this->app = new Application($container);
         $manager = $container[EntityManager::class];
         $this->posters = new PosterRepository($manager);
+        $this->factory = $container[TokenFactory::class];
         $manager
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();
@@ -130,4 +132,7 @@ class LoginControllerTest extends TestCase
 
     /** @var \Ads\CodeList\Posters\Posters */
     private $posters;
+
+    /** @var TokenFactory */
+    private $factory;
 }

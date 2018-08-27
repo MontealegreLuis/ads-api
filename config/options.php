@@ -6,7 +6,7 @@
  */
 
 return [
-    'debug' => true,
+    'debug' => $_ENV['APP_DEBUG'] === 'true',
     'db' => [
         'connection' => [
             'driver' => 'pdo_sqlite',
@@ -24,5 +24,8 @@ return [
     ],
     'settings' => [
         'determineRouteBeforeAppMiddleware' => true,
+    ],
+    'jwt' => [
+        'secret' => $_ENV['JWT_SECRET'],
     ],
 ];

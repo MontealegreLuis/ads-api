@@ -120,7 +120,7 @@ class ApplicationServices implements ServiceProviderInterface
             );
         };
         $container[TokenFactory::class] = function () {
-            return new TokenFactory('!1234567890aB');
+            return new TokenFactory($this->options['jwt']['secret']);
         };
         $container[LoginAction::class] = function (Container $container) {
             return new LoginAction($container[Posters::class]);
