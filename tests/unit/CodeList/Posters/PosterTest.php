@@ -9,6 +9,8 @@ namespace Ads\CodeList\Posters;
 
 use Ads\Application\DomainEvents\DomainEventsCollector;
 use Ads\Application\DomainEvents\EventPublisher;
+use Ads\CodeList\Ads\AdInformation;
+use Ads\CodeList\Listings\DraftAd\DraftAdInput;
 use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
 use PHPUnit\Framework\TestCase;
 
@@ -45,6 +47,24 @@ class PosterTest extends TestCase
 
         $this->assertTrue($poster->verifyPassword($password));
         $this->assertFalse($poster->verifyPassword('incorrect password'));
+    }
+
+    /** @test */
+    function it_can_draft_a_post()
+    {
+        $poster = Poster::signUp(PosterInformation::fromInput(SignUpPosterInput::withValues([
+            'username' => 'thomas_anderson',
+            'password' => 'ilovemyjob',
+            'name' => 'Thomas Anderson',
+            'email' => 'thomas.anderson@thematrix.org'
+        ])));
+
+        $ad = $poster->draft(AdInformation::fromInput(DraftAdInput::withValues([
+            'title' => 'Test title',
+            'description' => 'Test description',
+        ])));
+
+        $this->assertTrue($ad->isDraft());
     }
 
     /** @before @after */
