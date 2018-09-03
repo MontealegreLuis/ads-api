@@ -1,0 +1,8 @@
+parameters:
+  slim.config.httpVersion: '1.1'
+  slim.config.outputBuffering: append
+  slim.config.determineRouteBeforeAppMiddleware: 1
+  slim.config.displayErrorDetails: '%app.debug%'
+  slim.config.response.defaultContentType: text/html; charset=UTF-8
+  slim.config.response.defaultStatus: 200
+  slim.config.response.chunkSize: 4096
