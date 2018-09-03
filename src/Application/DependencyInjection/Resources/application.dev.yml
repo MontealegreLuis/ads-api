@@ -54,11 +54,11 @@ services:
   Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware:
     public: true
     arguments:
-    - '@Monolog\Logger'
+    - '@Psr\Log\LoggerInterface'
   Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware:
     public: true
     arguments:
-    - '@Monolog\Logger'
+    - '@Psr\Log\LoggerInterface'
     - '@Doctrine\ORM\EntityManager'
   Ads\Application\DomainEvents\StoredEventsSubscriber:
     arguments:
@@ -78,10 +78,11 @@ services:
     public: true
     class: Ads\UI\Web\Slim\Handlers\ErrorHandler
     arguments:
-    - '@Monolog\Logger'
+    - '@Psr\Log\LoggerInterface'
     - '%app.debug%'
   # Application Logging
-  Monolog\Logger:
+  Psr\Log\LoggerInterface:
+    class: Monolog\Logger
     arguments:
     - 'app'
     calls:

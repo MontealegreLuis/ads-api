@@ -54,11 +54,11 @@ services:
   Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware:
     public: true
     arguments:
-    - '@Monolog\Logger'
+    - '@Psr\Log\LoggerInterface'
   Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware:
     public: true
     arguments:
-    - '@Monolog\Logger'
+    - '@Psr\Log\LoggerInterface'
     - '@Doctrine\ORM\EntityManager'
   Ads\Application\DomainEvents\StoredEventsSubscriber:
     arguments:
@@ -82,33 +82,11 @@ services:
     public: true
     class: Ads\UI\Web\Slim\Handlers\ErrorHandler
     arguments:
-    - '@Monolog\Logger'
+    - '@Psr\Log\LoggerInterface'
     - '%app.debug%'
   # Application Logging
-  Monolog\Logger:
-    arguments:
-    - 'app'
-    calls:
-    - method: 'pushHandler'
-      arguments:
-      - '@Monolog\Handler\StreamHandler'
-  Monolog\Handler\StreamHandler:
-    arguments:
-    - '%log.path%'
-    - !php/const Monolog\Logger::DEBUG
-    calls:
-    - method: 'pushProcessor'
-      arguments:
-      - '@Monolog\Processor\WebProcessor'
-    - method: 'pushProcessor'
-      arguments:
-      - '@Monolog\Processor\UidProcessor'
-    - method: 'pushProcessor'
-      arguments:
-      - '@Monolog\Processor\MemoryUsageProcessor'
-  Monolog\Processor\WebProcessor:
-  Monolog\Processor\UidProcessor:
-  Monolog\Processor\MemoryUsageProcessor:
+  Psr\Log\LoggerInterface:
+    class: Psr\Log\NullLogger
   # Command Bus
   Ads\Application\CommandBus\Bus:
     arguments:
