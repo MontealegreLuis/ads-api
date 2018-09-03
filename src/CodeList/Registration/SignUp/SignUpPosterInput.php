@@ -55,9 +55,9 @@ class SignUpPosterInput extends InputValidator
     protected function __construct(array $input)
     {
         parent::__construct();
-        $this->username = $input['username'];
-        $this->password = $input['password'];
-        $this->name = $input['name'];
-        $this->email = $input['email'];
+        $this->username = $input['username'] ?? '';
+        $this->password = $input['password'] ?? '';
+        $this->name = $input['name'] ?? '';
+        $this->email = $input['email'] ?? '';
     }
 }

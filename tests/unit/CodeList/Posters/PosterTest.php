@@ -22,7 +22,7 @@ class PosterTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $poster = Poster::signUp(PosterInformation::fromInput(SignUpPosterInput::withValues([
+        $poster = Poster::signUp(PosterInformation::from(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
@@ -38,7 +38,7 @@ class PosterTest extends TestCase
     function it_can_verify_her_password()
     {
         $password = 'ilovemyjob';
-        $poster = Poster::signUp(PosterInformation::fromInput(SignUpPosterInput::withValues([
+        $poster = Poster::signUp(PosterInformation::from(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => $password,
             'name' => 'Thomas Anderson',
@@ -52,7 +52,7 @@ class PosterTest extends TestCase
     /** @test */
     function it_can_draft_a_post()
     {
-        $poster = Poster::signUp(PosterInformation::fromInput(SignUpPosterInput::withValues([
+        $poster = Poster::signUp(PosterInformation::from(SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',

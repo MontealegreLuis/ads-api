@@ -37,7 +37,7 @@ class SignUpPosterAction
     private function tryToSignUpWith(SignUpPosterInput $input): void
     {
         try {
-            $information = PosterInformation::fromInput($input);
+            $information = PosterInformation::from($input);
             $poster = $this->signUp($information);
             $this->responder()->respondToPosterSignedUp($poster);
         } catch (UnavailableUsername $exception) {

@@ -12,7 +12,7 @@ use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\Posters;
 use Ads\CodeList\Posters\Username;
 
-class PosterRepository extends Repository implements Posters
+class PostersRepository extends Repository implements Posters
 {
     /** @throws \Doctrine\ORM\NonUniqueResultException */
     public function withUsername(Username $username): ?Poster

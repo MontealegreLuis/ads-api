@@ -39,7 +39,7 @@ class PosterBuilder
     /** @throws \ReflectionException */
     public function build(): Poster
     {
-        $information = PosterInformation::fromInput(SignUpPosterInput::withValues([
+        $information = PosterInformation::from(SignUpPosterInput::withValues([
             'username' => $this->username ?? str_replace('.', '_', $this->faker->userName),
             'password' => $this->password ?? $this->faker->password(8),
             'name' => $this->faker->name,

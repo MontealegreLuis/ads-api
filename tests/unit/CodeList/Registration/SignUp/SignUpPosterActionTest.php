@@ -16,6 +16,7 @@ use Ads\CodeList\Posters\PosterHasSignedUp;
 use Ads\CodeList\Posters\PosterInformation;
 use Ads\CodeList\Posters\Posters;
 use Ads\CodeList\Posters\Username;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -25,8 +26,21 @@ class SignUpPosterActionTest extends TestCase
     private $action;
 
     /** @test */
+    function it_cannot_sign_up_a_poster_without_a_responder()
+    {
+        $this->expectException(LogicException::class);
+        $this->action->signUpPoster(SignUpPosterInput::withValues([
+            'username' => 'thomas_anderson',
+            'password' => '12345678',
+            'name' => 'Thomas Anderson',
+            'email' => 'thomas.anderson@thematrix.org',
+        ]));
+    }
+
+    /** @test */
     function it_signs_up_a_poster()
     {
+        $this->action->attach($this->responder->reveal());
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
@@ -48,6 +62,7 @@ class SignUpPosterActionTest extends TestCase
     /** @test */
     function it_provides_feedback_if_a_username_is_taken()
     {
+        $this->action->attach($this->responder->reveal());
         $existingUsername = 'thomas_anderson';
         $this->posters->add(A::poster()->withUsername($existingUsername)->build());
         $collector = new DomainEventsCollector();
@@ -72,6 +87,7 @@ class SignUpPosterActionTest extends TestCase
     /** @test */
     function it_provides_feedback_if_any_input_is_invalid()
     {
+        $this->action->attach($this->responder->reveal());
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
@@ -94,7 +110,6 @@ class SignUpPosterActionTest extends TestCase
         $this->responder = $this->prophesize(SignUpPosterResponder::class);
         $this->posters = new InMemoryPosters();
         $this->action = new SignUpPosterAction($this->posters);
-        $this->action->attach($this->responder->reveal());
         EventPublisher::reset();
     }
 

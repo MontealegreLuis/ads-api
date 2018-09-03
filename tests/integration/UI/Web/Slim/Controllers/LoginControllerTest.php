@@ -9,7 +9,7 @@ namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Application\DependencyInjection\ContainerFactory;
 use Ads\Builders\A;
-use Ads\CodeList\Posters\Ports\PosterRepository;
+use Ads\CodeList\Posters\Ports\PostersRepository;
 use Ads\CodeList\Posters\Poster;
 use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\HTTP\JWT\TokenFactory;
@@ -120,7 +120,7 @@ class LoginControllerTest extends TestCase
         $container = ContainerFactory::new();
         $this->app = new Application($container);
         $manager = $container->get(EntityManager::class);
-        $this->posters = new PosterRepository($manager);
+        $this->posters = new PostersRepository($manager);
         $this->factory = $container->get(TokenFactory::class);
         $manager
             ->createQuery('DELETE FROM ' . Poster::class)

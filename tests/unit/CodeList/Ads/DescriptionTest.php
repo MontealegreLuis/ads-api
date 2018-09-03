@@ -29,8 +29,8 @@ class DescriptionTest extends TestCase
     /** @test */
     function it_gets_its_text_value()
     {
-        $title = Title::fromText('This is a test description');
+        $description = Description::fromText('This is a test description');
 
-        $this->assertEquals('This is a test description', $title->text());
+        $this->assertEquals('This is a test description', $description->text());
     }
 }

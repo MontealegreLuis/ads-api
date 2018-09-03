@@ -68,7 +68,7 @@ services:
   Ads\CodeList\Posters\Posters:
     public: true
     shared: false
-    class: 'Ads\CodeList\Posters\Ports\PosterRepository'
+    class: 'Ads\CodeList\Posters\Ports\PostersRepository'
     arguments:
       - '@Doctrine\ORM\EntityManager'
   Ads\Application\DomainEvents\EventStore:
@@ -116,6 +116,7 @@ services:
   # ORM
   Doctrine\ORM\EntityManager:
     public: true
+    shared: false
     factory: ['Ads\Application\DataStorage\EntityManagerFactory', 'create']
     arguments:
     - '%em.options%'

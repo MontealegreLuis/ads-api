@@ -24,7 +24,7 @@ class PosterInformation
     /** @var Email */
     private $email;
 
-    public static function fromInput(SignUpPosterInput $input): PosterInformation
+    public static function from(SignUpPosterInput $input): PosterInformation
     {
         if (!$input->isValid()) {
             throw new InvalidArgumentException(sprintf('Input is invalid, it has %d errors', \count($input->errors())));

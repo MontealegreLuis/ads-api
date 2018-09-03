@@ -9,7 +9,7 @@ namespace Ads\CodeList\Registration\SignUp;
 
 use PHPUnit\Framework\TestCase;
 
-class SignUpUserInputTest extends TestCase
+class SignUpPosterInputTest extends TestCase
 {
     /** @test */
     function it_fails_validation_if_all_input_are_empty()
@@ -20,6 +20,18 @@ class SignUpUserInputTest extends TestCase
             'name' => '',
             'email' => '',
         ]);
+
+        $this->assertFalse($input->isValid());
+        $this->assertArrayHasKey('username', $input->errors());
+        $this->assertArrayHasKey('password', $input->errors());
+        $this->assertArrayHasKey('name', $input->errors());
+        $this->assertArrayHasKey('email', $input->errors());
+    }
+
+    /** @test */
+    function it_fails_validation_if_no_input_is_present()
+    {
+        $input = SignUpPosterInput::withValues([]);
 
         $this->assertFalse($input->isValid());
         $this->assertArrayHasKey('username', $input->errors());
