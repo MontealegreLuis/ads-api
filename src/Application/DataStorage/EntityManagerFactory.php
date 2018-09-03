@@ -19,6 +19,8 @@ class EntityManagerFactory
     private static $entityManager;
 
     /**
+     * Singleton instance
+     *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\ORM\ORMException
      */
@@ -27,13 +29,23 @@ class EntityManagerFactory
         if (self::$entityManager) {
             return self::$entityManager;
         }
+
+        self::$entityManager = self::create($options);
+
+        return self::$entityManager;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public static function create(array $options): EntityManager
+    {
         $config = Setup::createYAMLMetadataConfiguration($options['mappingPaths'], $options['debug']);
         $config->setSQLLogger(new DebugStack());
         if (!Type::hasType('Username')) {
             Type::addType('Username', UsernameType::class);
         }
-        self::$entityManager =  EntityManager::create($options['connection'], $config);
-
-        return self::$entityManager;
+        return EntityManager::create($options['connection'], $config);
     }
 }

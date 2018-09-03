@@ -14,11 +14,19 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class ApplicationExtension implements ExtensionInterface
 {
+    /** @var string */
+    private $appEnv;
+
+    public function __construct(string $appEnv)
+    {
+        $this->appEnv = $appEnv;
+    }
+
     /** @throws \Exception If configuration file cannot be loaded */
     public function load(array $configs, ContainerBuilder $builder): void
     {
         $loader = new YamlFileLoader($builder, new FileLocator(__DIR__ . '/../Resources'));
-        $loader->load('application.yml');
+        $loader->load("application.{$this->appEnv}.yml");
     }
 
     /**

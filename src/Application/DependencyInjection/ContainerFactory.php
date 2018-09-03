@@ -31,10 +31,10 @@ class ContainerFactory
         return self::$container;
     }
 
-
     private static function initializeContainer(): void
     {
-        $file = dirname(__DIR__, 3) . '/var/container.php';
+        $appEnv = $_ENV['APP_ENV'] ?? 'dev';
+        $file = dirname(__DIR__, 3) . "/var/container-{$appEnv}.php";
         $cache = new ConfigCache($file, true);
         if (!$cache->isFresh()) {
             self::buildContainer($cache);
@@ -51,12 +51,14 @@ class ContainerFactory
     private static function buildContainer(ConfigCache $cache): void
     {
         $builder = new ContainerBuilder();
-        $builder->setParameter('app.debug', $_ENV['APP_DEBUG'] === 'true');
+        $appEnv = $_ENV['APP_ENV'] ?? 'dev';
+        $appDebug = $_ENV['APP_DEBUG'] === 'true';
+        $builder->setParameter('app.debug', $appDebug);
         $builder->setParameter('app.basePath', dirname(__DIR__, 3) . '/');
         $builder->setParameter('jwt.secret', $_ENV['JWT_SECRET']);
 
         $slimExtension = new SlimExtension();
-        $applicationExtension = new ApplicationExtension();
+        $applicationExtension = new ApplicationExtension($appEnv);
         $builder->registerExtension($slimExtension);
         $builder->registerExtension($applicationExtension);
         $builder->loadFromExtension($slimExtension->getAlias());

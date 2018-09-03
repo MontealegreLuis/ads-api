@@ -66,12 +66,10 @@ services:
     - '@Ads\Application\DomainEvents\StoredEventFactory'
   # Repositories
   Ads\CodeList\Posters\Posters:
-    public: true
     class: 'Ads\CodeList\Posters\Ports\PosterRepository'
     arguments:
       - '@Doctrine\ORM\EntityManager'
   Ads\Application\DomainEvents\EventStore:
-    public: true
     class: 'Ads\Application\DomainEvents\Ports\EventStoreRepository'
     arguments:
       - '@Doctrine\ORM\EntityManager'
@@ -113,7 +111,6 @@ services:
       - '@Doctrine\ORM\EntityManager'
   # ORM
   Doctrine\ORM\EntityManager:
-    public: true
     factory: ['Ads\Application\DataStorage\EntityManagerFactory', 'new']
     arguments:
     - '%em.options%'

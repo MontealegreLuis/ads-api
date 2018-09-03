@@ -36,5 +36,6 @@
     </logging>
     <php>
         <env name="APP_DEBUG" value="true"/>
+        <env name="APP_ENV" value="test"/>
     </php>
 </phpunit>
