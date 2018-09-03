@@ -8,11 +8,11 @@
 namespace Ads\DependencyInjection;
 
 use Ads\Application\DependencyInjection\ContainerFactory;
-use Pimple\Container;
+use Psr\Container\ContainerInterface;
 
 trait WithContainer
 {
-    public function container(): Container
+    public function container(): ContainerInterface
     {
         return ContainerFactory::new();
     }

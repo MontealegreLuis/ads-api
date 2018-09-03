@@ -31,13 +31,13 @@ class SignUpPosterControllerTest extends TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::CREATED, $response->getStatusCode());
@@ -55,13 +55,13 @@ class SignUpPosterControllerTest extends TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/posters',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => 'neo', // name is too short
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson_at_thematrix.org' // not an email
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -82,13 +82,13 @@ class SignUpPosterControllerTest extends TestCase
         $unavailableUsername = 'thomas_anderson';
         $posters = $this->app->getContainer()->get(Posters::class);
         $posters->add(A::poster()->withUsername($unavailableUsername)->build());
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => $unavailableUsername,
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -103,7 +103,7 @@ class SignUpPosterControllerTest extends TestCase
     function configure()
     {
         $this->app = new Application(ContainerFactory::new());
-        $this->container()[EntityManager::class]
+        $this->container()->get(EntityManager::class)
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();
     }

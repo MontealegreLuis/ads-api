@@ -1,0 +1,132 @@
+parameters:
+  slim.config.httpVersion: '1.1'
+  slim.config.outputBuffering: append
+  slim.config.determineRouteBeforeAppMiddleware: 1
+  slim.config.displayErrorDetails: '%app.debug%'
+  slim.config.response.defaultContentType: text/html; charset=UTF-8
+  slim.config.response.defaultStatus: 200
+  slim.config.response.chunkSize: 4096
+
+  db.connection.driver: pdo_sqlite
+  db.connection.path: '%app.basePath%var/db.sqlite'
+
+  orm.paths:
+    - '%app.basePath%src/CodeList/Posters/Ports/Resources'
+    - '%app.basePath%src/Application/DomainEvents/Ports/Resources'
+
+  em.options:
+    connection:
+      driver: '%db.connection.driver%'
+      path: '%db.connection.path%'
+    mappingPaths: '%orm.paths%'
+    debug: '%app.debug%'
+
+  log.path: '%app.basePath%var/log/app.log'
+
+services:
+  # Controllers
+  Ads\UI\Web\Slim\Controllers\SignUpPosterController:
+    public: true
+    arguments:
+      - '@Ads\Application\CommandBus\Bus'
+      - '@Ads\CodeList\Registration\SignUp\SignUpPosterAction'
+      - '@router'
+  Ads\UI\Web\Slim\Controllers\DomainEventsController:
+    public: true
+    arguments:
+      - '@Ads\Application\CommandBus\Bus'
+      - '@Ads\Application\StoredEvents\ViewEventsInPageAction'
+      - '@router'
+  Ads\UI\Web\Slim\Controllers\LoginController:
+    public: true
+    arguments:
+      - '@Ads\Application\CommandBus\Bus'
+      - '@Ads\CodeList\Authentication\Login\LoginAction'
+      - '@router'
+      - '@Ads\UI\Web\HTTP\JWT\TokenFactory'
+  Ads\Application\CommandBus\Bus:
+    arguments:
+      - '@Doctrine\ORM\EntityManager'
+  Ads\CodeList\Registration\SignUp\SignUpPosterAction:
+    arguments:
+      - '@Ads\CodeList\Posters\Posters'
+  Ads\Application\StoredEvents\ViewEventsInPageAction:
+    arguments:
+      - '@Ads\Application\DomainEvents\EventStore'
+  Ads\CodeList\Authentication\Login\LoginAction:
+    arguments:
+      - '@Ads\CodeList\Posters\Posters'
+  Ads\CodeList\Posters\Posters:
+    public: true
+    class: 'Ads\CodeList\Posters\Ports\PosterRepository'
+    arguments:
+      - '@Doctrine\ORM\EntityManager'
+  Ads\UI\Web\HTTP\JWT\TokenFactory:
+    public: true
+    arguments:
+      - '%jwt.secret%'
+  # Middleware
+  Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware:
+    public: true
+    arguments:
+      - '@Ads\Application\DomainEvents\StoredEventsSubscriber'
+  Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware:
+    public: true
+    arguments:
+      - '@Monolog\Logger'
+  Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware:
+    public: true
+    arguments:
+      - '@Monolog\Logger'
+      - '@Doctrine\ORM\EntityManager'
+  Ads\Application\DomainEvents\StoredEventsSubscriber:
+    arguments:
+      - '@Ads\Application\DomainEvents\EventStore'
+      - '@Ads\Application\DomainEvents\StoredEventFactory'
+  # Slim handlers
+  errors:
+    public: true
+    class: Ads\UI\Web\Slim\Handlers\ErrorHandler
+    arguments:
+      - '@Monolog\Logger'
+      - '%app.debug%'
+  Ads\Application\DomainEvents\EventStore:
+    public: true
+    class: 'Ads\Application\DomainEvents\Ports\EventStoreRepository'
+    arguments:
+      - '@Doctrine\ORM\EntityManager'
+  Ads\Application\DomainEvents\StoredEventFactory:
+    public: true
+    arguments:
+      - '@Ads\Application\DomainEvents\Ports\JSONSerializer'
+  Ads\Application\DomainEvents\Ports\JSONSerializer:
+  Monolog\Logger:
+    arguments:
+      - 'app'
+    calls:
+      - method: 'pushHandler'
+        arguments:
+          - '@Monolog\Handler\StreamHandler'
+  Monolog\Handler\StreamHandler:
+    arguments:
+      - '%log.path%'
+      - !php/const Monolog\Logger::DEBUG
+    calls:
+      - method: 'pushProcessor'
+        arguments:
+          - '@Monolog\Processor\WebProcessor'
+      - method: 'pushProcessor'
+        arguments:
+          - '@Monolog\Processor\UidProcessor'
+      - method: 'pushProcessor'
+        arguments:
+          - '@Monolog\Processor\MemoryUsageProcessor'
+  Monolog\Processor\WebProcessor:
+  Monolog\Processor\UidProcessor:
+  Monolog\Processor\MemoryUsageProcessor:
+  Doctrine\ORM\EntityManager:
+    public: true
+    factory: ['Ads\Application\DataStorage\EntityManagerFactory', 'new']
+    arguments:
+      - '%em.options%'
+  Ads\Application\DataStorage\EntityManagerFactory:

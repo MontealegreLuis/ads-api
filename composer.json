@@ -25,7 +25,10 @@
         "pagerfanta/pagerfanta": "^2.0",
         "rbdwllr/reallysimplejwt": "^1.0",
         "slim/slim": "^3.10",
+        "symfony/config": "^4.1",
+        "symfony/dependency-injection": "^4.1",
         "symfony/validator": "^4.1",
+        "symfony/yaml": "^4.1",
         "teapot/status-code": "^1.1",
         "vlucas/phpdotenv": "^2.5",
         "webmozart/assert": "^1.3"

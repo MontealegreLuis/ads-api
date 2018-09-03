@@ -32,10 +32,10 @@ class DomainEventsControllerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI' => '/events',
         ]);
-        $req = Request::createFromEnvironment($env)->withQueryParams([
+        $request = Request::createFromEnvironment($env)->withQueryParams([
             'page' => 1,
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::OK, $response->getStatusCode());
@@ -53,10 +53,10 @@ class DomainEventsControllerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI' => '/events',
         ]);
-        $req = Request::createFromEnvironment($env)->withQueryParams([
+        $request = Request::createFromEnvironment($env)->withQueryParams([
             'page' => 'NaN',
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -88,10 +88,10 @@ class DomainEventsControllerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI' => '/events',
         ]);
-        $req = Request::createFromEnvironment($env)->withQueryParams([
+        $request = Request::createFromEnvironment($env)->withQueryParams([
             'page' => 2,
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::OK, $response->getStatusCode());
@@ -107,10 +107,10 @@ class DomainEventsControllerTest extends TestCase
     {
         $container = ContainerFactory::new();
         $this->app = new Application($container);
-        $this->eventStore = $container[EventStore::class];
-        $this->factory = $container[StoredEventFactory::class];
+        $this->eventStore = $container->get(EventStore::class);
+        $this->factory = $container->get(StoredEventFactory::class);
         /** @var EntityManager $manager */
-        $manager = $container[EntityManager::class];
+        $manager = $container->get(EntityManager::class);
         $manager->createQuery('DELETE FROM ' . StoredEvent::class)->execute();
         $sql = $manager->getConnection()->getDatabasePlatform()->getTruncateTableSQL('events');
         $manager->getConnection()->executeUpdate($sql);

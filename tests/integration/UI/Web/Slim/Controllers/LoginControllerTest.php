@@ -30,11 +30,11 @@ class LoginControllerTest extends TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/authenticate',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => 'neo', // name is too short
             'password' => '', // password is empty
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -52,11 +52,11 @@ class LoginControllerTest extends TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/authenticate',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => 'elliot_alderson', // there is no poster with this username
             'password' => 'ilovemyjob',
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNAUTHORIZED, $response->getStatusCode());
@@ -76,11 +76,11 @@ class LoginControllerTest extends TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/authenticate',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => 'elliot_alderson',
             'password' => 'wrong password', // wrong password
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::UNAUTHORIZED, $response->getStatusCode());
@@ -100,11 +100,11 @@ class LoginControllerTest extends TestCase
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI' => '/authenticate',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody([
+        $request = Request::createFromEnvironment($env)->withParsedBody([
             'username' => 'elliot_alderson',
             'password' => 'ilovemyjob',
         ]);
-        $this->app->getContainer()['request'] = $req;
+        $this->app->getContainer()->set('request', $request);
         $response = $this->app->run(true);
 
         $this->assertSame(Status::OK, $response->getStatusCode());
@@ -119,9 +119,9 @@ class LoginControllerTest extends TestCase
     {
         $container = ContainerFactory::new();
         $this->app = new Application($container);
-        $manager = $container[EntityManager::class];
+        $manager = $container->get(EntityManager::class);
         $this->posters = new PosterRepository($manager);
-        $this->factory = $container[TokenFactory::class];
+        $this->factory = $container->get(TokenFactory::class);
         $manager
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();

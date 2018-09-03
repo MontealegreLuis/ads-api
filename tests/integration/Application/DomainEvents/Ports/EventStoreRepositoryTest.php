@@ -7,6 +7,7 @@
 
 namespace Ads\Application\DomainEvents\Ports;
 
+use Ads\Application\DomainEvents\EventStore;
 use Ads\Application\DomainEvents\StoredEvent;
 use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Application\Pagination\Page;
@@ -48,9 +49,9 @@ class EventStoreRepositoryTest extends TestCase
     /** @before */
     function configure()
     {
-        $this->container()[EntityManager::class]
+        $this->container()->get(EntityManager::class)
             ->createQuery('DELETE FROM ' . StoredEvent::class)
             ->execute();
-        $this->store = $this->container()[EventStoreRepository::class];
+        $this->store = $this->container()->get(EventStore::class);
     }
 }

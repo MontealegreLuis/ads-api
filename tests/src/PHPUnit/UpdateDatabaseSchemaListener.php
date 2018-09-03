@@ -8,6 +8,8 @@
 namespace Ads\PHPUnit;
 
 use Ads\Application\DataStorage\EntityManagerFactory;
+use Ads\Application\DependencyInjection\ContainerFactory;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
@@ -37,7 +39,7 @@ class UpdateDatabaseSchemaListener implements TestListener
             return;
         }
 
-        $entityManager = EntityManagerFactory::new(require __DIR__ . '/../../../config/options.php');
+        $entityManager = ContainerFactory::new()->get(EntityManager::class);
         $tool = new SchemaTool($entityManager);
         $tool->updateSchema($entityManager->getMetadataFactory()->getAllMetadata(), true);
     }

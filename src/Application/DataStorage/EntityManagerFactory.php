@@ -27,13 +27,12 @@ class EntityManagerFactory
         if (self::$entityManager) {
             return self::$entityManager;
         }
-
-        $config = Setup::createYAMLMetadataConfiguration($options['orm']['paths'], $options['debug']);
+        $config = Setup::createYAMLMetadataConfiguration($options['mappingPaths'], $options['debug']);
         $config->setSQLLogger(new DebugStack());
         if (!Type::hasType('Username')) {
             Type::addType('Username', UsernameType::class);
         }
-        self::$entityManager =  EntityManager::create($options['db']['connection'], $config);
+        self::$entityManager =  EntityManager::create($options['connection'], $config);
 
         return self::$entityManager;
     }

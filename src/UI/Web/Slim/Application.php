@@ -13,18 +13,18 @@ use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
 use Ads\UI\Web\Slim\Middleware\QueryLoggerMiddleware;
 use Ads\UI\Web\Slim\Middleware\RequestLoggerMiddleware;
+use Psr\Container\ContainerInterface;
 use Slim\App;
-use Slim\Container;
 
 class Application extends App
 {
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
 
-        $this->add($container[RequestLoggerMiddleware::class]);
-        $this->add($container[EventSubscribersMiddleware::class]);
-        $this->add($container[QueryLoggerMiddleware::class]);
+        $this->add($container->get(RequestLoggerMiddleware::class));
+        $this->add($container->get(EventSubscribersMiddleware::class));
+        $this->add($container->get(QueryLoggerMiddleware::class));
 
         $this->post('/posters', SignUpPosterController::class . ':signUp')
             ->setName('signUp');

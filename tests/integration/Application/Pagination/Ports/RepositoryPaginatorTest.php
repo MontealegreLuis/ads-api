@@ -63,7 +63,7 @@ class RepositoryPaginatorTest extends TestCase
     /** @before */
     function configure()
     {
-        $this->entityManager = $this->container()[EntityManager::class];
+        $this->entityManager = $this->container()->get(EntityManager::class);
         $this->entityManager
             ->createQuery('DELETE FROM ' . Poster::class)
             ->execute();
@@ -71,7 +71,7 @@ class RepositoryPaginatorTest extends TestCase
             ->select('p')
             ->from(Poster::class, 'p')
             ->orderBy('p.username');
-        $this->posters = $this->container()[Posters::class];
+        $this->posters = $this->container()->get(Posters::class);
     }
 
     /** @var Posters */
