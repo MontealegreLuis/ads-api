@@ -19,6 +19,32 @@ use Teapot\StatusCode\All as Status;
 class RequestLoggerMiddlewareTest extends TestCase
 {
     /** @test */
+    function it_logs_a_not_found_error()
+    {
+        $logHandler = new TestHandler();
+        $middleware = new RequestLoggerMiddleware(new Logger('test', [$logHandler]));
+        $request = Request::createFromEnvironment(Environment::mock([
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => '/foo',
+        ]));
+        $response = new Response(Status::NOT_FOUND);
+        $next = function () use ($response) {
+            return $response;
+        };
+
+        $middleware->__invoke($request, $response, $next);
+
+        $this->assertTrue($logHandler->hasInfoRecords());
+        $this->assertCount(1, $logHandler->getRecords());
+        $this->assertEquals('No route matched', $logHandler->getRecords()[0]['message']);
+        $context = $logHandler->getRecords()[0]['context'];
+        $this->assertEquals([
+            'status' => 404,
+            'phrase' => 'Not Found',
+        ], $context);
+    }
+
+    /** @test */
     function it_logs_a_redirect()
     {
         $logHandler = new TestHandler();
