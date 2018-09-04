@@ -36,8 +36,8 @@ class Username
     private function setUsername(string $username): void
     {
         Assert::notEmpty($username, 'The username should not be blank.');
-        Assert::minLength($username, self::MIN_LENGTH, "The username $username should contains at least %2\$s characters.");
-        Assert::regex($username, self::FORMAT, "The username $username is invalid.");
+        Assert::minLength($username, self::MIN_LENGTH, "The username '$username' should contains at least %2\$s characters.");
+        Assert::regex($username, self::FORMAT, "The username '$username' is invalid.");
         $this->username = $username;
     }
 }

@@ -35,13 +35,20 @@ class QueryLoggerMiddleware
         /** @var DebugStack $sqlLogger */
         $sqlLogger = $this->manager->getConfiguration()->getSQLLogger();
 
+        if ($sqlLogger) {
+            $this->logQueries($sqlLogger);
+        }
+
+        return $response;
+    }
+
+    private function logQueries(DebugStack $sqlLogger): void
+    {
         foreach ($sqlLogger->queries as $query) {
             $this->logger->debug($query['sql'], [
                 'params' => $query['params'],
                 'types' => $query['types']
             ]);
         }
-
-        return $response;
     }
 }

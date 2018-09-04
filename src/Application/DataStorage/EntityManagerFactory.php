@@ -41,8 +41,11 @@ class EntityManagerFactory
      */
     public static function create(array $options): EntityManager
     {
-        $config = Setup::createYAMLMetadataConfiguration($options['mappingPaths'], $options['debug']);
-        $config->setSQLLogger(new DebugStack());
+        $debug = $options['debug'];
+        $config = Setup::createYAMLMetadataConfiguration($options['mappingPaths'], $debug);
+        if ($debug) {
+            $config->setSQLLogger(new DebugStack());
+        }
         if (!Type::hasType('Username')) {
             Type::addType('Username', UsernameType::class);
         }

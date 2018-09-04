@@ -31,7 +31,11 @@ class UsernameType extends StringType
         if (\is_string($value)) {
             return $value;
         }
-        throw ConversionException::conversionFailed($value, Type::STRING);
+        throw ConversionException::conversionFailedInvalidType(
+            $value,
+            'Username',
+            ['null', 'string', Username::class]
+        );
     }
 
     /**
@@ -45,8 +49,8 @@ class UsernameType extends StringType
         }
         try {
             return new Username($value);
-        } catch (InvalidArgumentException $e) {
-            throw ConversionException::conversionFailed($value, Type::STRING);
+        } catch (InvalidArgumentException $exception) {
+            throw ConversionException::conversionFailed($exception->getMessage(), 'Username');
         }
     }
 }
