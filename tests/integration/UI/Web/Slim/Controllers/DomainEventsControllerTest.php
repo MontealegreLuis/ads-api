@@ -9,13 +9,12 @@ namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Application\DependencyInjection\ContainerFactory;
 use Ads\Application\DomainEvents\EventStore;
-use Ads\Application\DomainEvents\StoredEvent;
 use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Builders\A;
+use Ads\DataStorage\WithTableCleanup;
 use Ads\DependencyInjection\WithContainer;
 use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\Slim\Application;
-use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -23,7 +22,7 @@ use Teapot\StatusCode\All as Status;
 
 class DomainEventsControllerTest extends TestCase
 {
-    use WithContainer;
+    use WithContainer, WithTableCleanup;
 
     /** @test */
     function it_returns_empty_paginator_if_no_event_has_been_published()
@@ -97,7 +96,7 @@ class DomainEventsControllerTest extends TestCase
         $this->assertSame(Status::OK, $response->getStatusCode());
         $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
-            '{"count":5,"total":15,"_embedded":[{"event_id":12,"body":"{\"occurred_on\":1535249942,\"username\":\"f12345\",\"name\":\"F\",\"email\":\"f@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535249942},{"event_id":13,"body":"{\"occurred_on\":1535250002,\"username\":\"g12345\",\"name\":\"G\",\"email\":\"g@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250002},{"event_id":14,"body":"{\"occurred_on\":1535250062,\"username\":\"h12345\",\"name\":\"H\",\"email\":\"h@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250062},{"event_id":15,"body":"{\"occurred_on\":1535250122,\"username\":\"i12345\",\"name\":\"I\",\"email\":\"i@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250122},{"event_id":16,"body":"{\"occurred_on\":1535250182,\"username\":\"j12345\",\"name\":\"J\",\"email\":\"j@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250182}],"_links":{"self":{"href":"http://localhost/events?page=2"},"first":{"href":"http://localhost/events?page=1"},"next":{"href":"http://localhost/events?page=3"},"prev":{"href":"http://localhost/events?page=1"},"last":{"href":"http://localhost/events?page=3"}}}',
+            '{"count":5,"total":15,"_embedded":[{"event_id":6,"body":"{\"occurred_on\":1535249942,\"username\":\"f12345\",\"name\":\"F\",\"email\":\"f@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535249942},{"event_id":7,"body":"{\"occurred_on\":1535250002,\"username\":\"g12345\",\"name\":\"G\",\"email\":\"g@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250002},{"event_id":8,"body":"{\"occurred_on\":1535250062,\"username\":\"h12345\",\"name\":\"H\",\"email\":\"h@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250062},{"event_id":9,"body":"{\"occurred_on\":1535250122,\"username\":\"i12345\",\"name\":\"I\",\"email\":\"i@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250122},{"event_id":10,"body":"{\"occurred_on\":1535250182,\"username\":\"j12345\",\"name\":\"J\",\"email\":\"j@example.com\"}","type":"Ads\\\\CodeList\\\\Posters\\\\PosterHasSignedUp","occurred_on":1535250182}],"_links":{"self":{"href":"http://localhost/events?page=2"},"first":{"href":"http://localhost/events?page=1"},"next":{"href":"http://localhost/events?page=3"},"prev":{"href":"http://localhost/events?page=1"},"last":{"href":"http://localhost/events?page=3"}}}',
             (string)$response->getBody()
         );
     }
@@ -105,15 +104,11 @@ class DomainEventsControllerTest extends TestCase
     /** @before */
     function configure()
     {
+        $this->empty('events');
         $container = ContainerFactory::new();
         $this->app = new Application($container);
         $this->eventStore = $container->get(EventStore::class);
         $this->factory = $container->get(StoredEventFactory::class);
-        /** @var EntityManager $manager */
-        $manager = $container->get(EntityManager::class);
-        $manager->createQuery('DELETE FROM ' . StoredEvent::class)->execute();
-        $sql = $manager->getConnection()->getDatabasePlatform()->getTruncateTableSQL('events');
-        $manager->getConnection()->executeUpdate($sql);
     }
 
     /** @var Application */

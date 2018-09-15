@@ -9,13 +9,12 @@ namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Application\DependencyInjection\ContainerFactory;
 use Ads\Builders\A;
-use Ads\CodeList\Ads\Ad;
 use Ads\CodeList\Clock;
-use Ads\CodeList\Posters\Ports\PostersRepository;
+use Ads\CodeList\Posters\Posters;
+use Ads\DataStorage\WithTableCleanup;
 use Ads\DependencyInjection\WithContainer;
 use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\Slim\Application;
-use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -23,7 +22,7 @@ use Teapot\StatusCode\All as Status;
 
 class DraftAdControllerTest extends TestCase
 {
-    use WithContainer;
+    use WithContainer, WithTableCleanup;
 
     /** @test */
     function it_returns_api_problem_if_validation_fails()
@@ -95,7 +94,7 @@ class DraftAdControllerTest extends TestCase
         $this->assertSame(Status::CREATED, $response->getStatusCode());
         $this->assertSame(ContentType::HAL_JSON, $response->getHeaderLine('Content-Type'));
         $this->assertSame(
-            '{"id":2,"title":"Test title","description":"Test description","created_at":1537052912,"last_updated_at":null,"published_on":null,"_embedded":{"author":{"username":"elliot_alderson","name":"Elliot Alderson","email":"elliot@example.com","_links":{"self":{"href":"http://localhost/posters/elliot_alderson"}}}},"_links":{"author":{"href":"http://localhost/posters/elliot_alderson"},"self":{"href":"http://localhost/draft-ads/2"}}}',
+            '{"id":1,"title":"Test title","description":"Test description","created_at":1537052912,"last_updated_at":null,"published_on":null,"_embedded":{"author":{"username":"elliot_alderson","name":"Elliot Alderson","email":"elliot@example.com","_links":{"self":{"href":"http://localhost/posters/elliot_alderson"}}}},"_links":{"author":{"href":"http://localhost/posters/elliot_alderson"},"self":{"href":"http://localhost/draft-ads/1"}}}',
             (string)$response->getBody()
         );
     }
@@ -103,14 +102,10 @@ class DraftAdControllerTest extends TestCase
     /** @before */
     function configure()
     {
+        $this->empty('ads');
         Clock::unfreezeTime();
         $this->app = new Application(ContainerFactory::new());
-        $container = $this->container();
-        $manager = $container->get(EntityManager::class);
-        $this->posters = new PostersRepository($manager);
-        $container->get(EntityManager::class)
-            ->createQuery('DELETE FROM ' . Ad::class)
-            ->execute();
+        $this->posters = $this->container()->get(Posters::class);
     }
 
     /** @after */

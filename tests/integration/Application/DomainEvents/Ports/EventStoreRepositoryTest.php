@@ -12,13 +12,14 @@ use Ads\Application\DomainEvents\StoredEvent;
 use Ads\Application\DomainEvents\StoredEventFactory;
 use Ads\Application\Pagination\Page;
 use Ads\Builders\A;
+use Ads\DataStorage\WithTableCleanup;
 use Ads\DependencyInjection\WithContainer;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 
 class EventStoreRepositoryTest extends TestCase
 {
-    use WithContainer;
+    use WithContainer, WithTableCleanup;
 
     /** @var EventStoreRepository */
     private $store;
@@ -49,9 +50,7 @@ class EventStoreRepositoryTest extends TestCase
     /** @before */
     function configure()
     {
-        $this->container()->get(EntityManager::class)
-            ->createQuery('DELETE FROM ' . StoredEvent::class)
-            ->execute();
+        $this->empty('events');
         $this->store = $this->container()->get(EventStore::class);
     }
 }

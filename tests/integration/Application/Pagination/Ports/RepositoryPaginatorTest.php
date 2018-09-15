@@ -12,13 +12,14 @@ use Ads\Application\Pagination\Page;
 use Ads\Builders\A;
 use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\Posters;
+use Ads\DataStorage\WithTableCleanup;
 use Ads\DependencyInjection\WithContainer;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 
 class RepositoryPaginatorTest extends TestCase
 {
-    use WithContainer;
+    use WithContainer, WithTableCleanup;
 
     /** @test */
     function it_cannot_get_a_page_greater_than_the_total_number_of_pages()
@@ -63,10 +64,8 @@ class RepositoryPaginatorTest extends TestCase
     /** @before */
     function configure()
     {
+        $this->empty('posters');
         $this->entityManager = $this->container()->get(EntityManager::class);
-        $this->entityManager
-            ->createQuery('DELETE FROM ' . Poster::class)
-            ->execute();
         $this->builder = $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from(Poster::class, 'p')

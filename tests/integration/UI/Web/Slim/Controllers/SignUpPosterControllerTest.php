@@ -7,14 +7,12 @@
 
 namespace Ads\UI\Web\Slim\Controllers;
 
-use Ads\Application\DependencyInjection\ContainerFactory;
 use Ads\Builders\A;
-use Ads\CodeList\Posters\Poster;
 use Ads\CodeList\Posters\Posters;
+use Ads\DataStorage\WithTableCleanup;
 use Ads\DependencyInjection\WithContainer;
 use Ads\UI\Web\HTTP\ContentType;
 use Ads\UI\Web\Slim\Application;
-use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -22,7 +20,7 @@ use Teapot\StatusCode\All as Status;
 
 class SignUpPosterControllerTest extends TestCase
 {
-    use WithContainer;
+    use WithContainer, WithTableCleanup;
 
     /** @test */
     function it_returns_successful_status_code_and_content_after_signing_up_a_poster()
@@ -102,10 +100,8 @@ class SignUpPosterControllerTest extends TestCase
     /** @before */
     function configure()
     {
-        $this->app = new Application(ContainerFactory::new());
-        $this->container()->get(EntityManager::class)
-            ->createQuery('DELETE FROM ' . Poster::class)
-            ->execute();
+        $this->empty('posters');
+        $this->app = new Application($this->container());
     }
 
     /** @var Application */
