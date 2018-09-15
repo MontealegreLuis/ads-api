@@ -51,7 +51,7 @@ class LoginActionTest extends TestCase
         $this->action->authenticatePoster($input);
 
         $this->responder
-            ->respondToUserNotFound(Argument::type(Credentials::class))
+            ->respondToUserNotFound($input)
             ->shouldHaveBeenCalled();
         $this->assertEmpty($input->errors());
     }
@@ -70,7 +70,7 @@ class LoginActionTest extends TestCase
         $this->action->authenticatePoster($input);
 
         $this->responder
-            ->respondToIncorrectPassword(Argument::type(Credentials::class))
+            ->respondToIncorrectPassword($input)
             ->shouldHaveBeenCalled();
         $this->assertEmpty($input->errors());
     }

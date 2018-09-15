@@ -8,7 +8,6 @@
 namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Application\CommandBus\Bus;
-use Ads\CodeList\Authentication\Login\Credentials;
 use Ads\CodeList\Authentication\Login\LoginAction;
 use Ads\CodeList\Authentication\Login\LoginInput;
 use Ads\CodeList\Authentication\Login\LoginResponder;
@@ -65,7 +64,7 @@ class LoginController implements LoginResponder
         );
     }
 
-    public function respondToUserNotFound(Credentials $credentials): void
+    public function respondToUserNotFound(LoginInput $input): void
     {
         $this->response = ApiResponse::unathorized(
             Problem::failedValidation(
@@ -75,7 +74,7 @@ class LoginController implements LoginResponder
         );
     }
 
-    public function respondToIncorrectPassword(Credentials $credentials): void
+    public function respondToIncorrectPassword(LoginInput $input): void
     {
         $this->response = ApiResponse::unathorized(
             Problem::failedValidation(

@@ -8,6 +8,7 @@
 namespace Ads\CodeList\Authentication\Login;
 
 use Ads\Application\Validation\InputValidator;
+use Ads\CodeList\Posters\Username;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class LoginInput extends InputValidator
@@ -35,6 +36,16 @@ class LoginInput extends InputValidator
             'username' => $this->username,
             'password' => $this->password,
         ];
+    }
+
+    public function username(): Username
+    {
+        return new Username($this->username);
+    }
+
+    public function plainTextPassword(): string
+    {
+        return $this->password;
     }
 
     protected function __construct(array $values)

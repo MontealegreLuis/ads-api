@@ -35,17 +35,15 @@ class LoginAction
 
     private function attemptLogin(LoginInput $input): void
     {
-        $credentials = Credentials::from($input);
-
         /** @var Poster $poster */
-        $poster = $this->posters->withUsername($credentials->username());
+        $poster = $this->posters->withUsername($input->username());
         if (!$poster) {
-            $this->responder()->respondToUserNotFound($credentials);
+            $this->responder()->respondToUserNotFound($input);
             return;
         }
 
-        if (!$poster->verifyPassword($credentials->plainTextPassword())) {
-            $this->responder()->respondToIncorrectPassword($credentials);
+        if (!$poster->verifyPassword($input->plainTextPassword())) {
+            $this->responder()->respondToIncorrectPassword($input);
             return;
         }
 

@@ -13,9 +13,9 @@ interface LoginResponder
 {
     public function respondToInvalidInput(array $errors): void;
 
-    public function respondToUserNotFound(Credentials $credentials): void;
+    public function respondToUserNotFound(LoginInput $input): void;
 
-    public function respondToIncorrectPassword(Credentials $credentials): void;
+    public function respondToIncorrectPassword(LoginInput $input): void;
 
     public function respondToSuccessfulAuthentication(Poster $poster): void;
 }
