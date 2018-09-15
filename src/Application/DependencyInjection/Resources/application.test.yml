@@ -21,20 +21,20 @@ services:
     public: true
     arguments:
     - '@Ads\Application\CommandBus\Bus'
-    - '@Ads\CodeList\Registration\SignUp\SignUpPosterAction'
     - '@router'
+    - '@Ads\CodeList\Registration\SignUp\SignUpPosterAction'
   Ads\UI\Web\Slim\Controllers\DomainEventsController:
     public: true
     arguments:
     - '@Ads\Application\CommandBus\Bus'
-    - '@Ads\Application\StoredEvents\ViewEventsInPageAction'
     - '@router'
+    - '@Ads\Application\StoredEvents\ViewEventsInPageAction'
   Ads\UI\Web\Slim\Controllers\LoginController:
     public: true
     arguments:
     - '@Ads\Application\CommandBus\Bus'
-    - '@Ads\CodeList\Authentication\Login\LoginAction'
     - '@router'
+    - '@Ads\CodeList\Authentication\Login\LoginAction'
     - '@Ads\UI\Web\HTTP\JWT\TokenFactory'
   # Actions
   Ads\CodeList\Registration\SignUp\SignUpPosterAction:

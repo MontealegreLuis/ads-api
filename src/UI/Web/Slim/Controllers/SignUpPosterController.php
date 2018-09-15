@@ -9,7 +9,6 @@ namespace Ads\UI\Web\Slim\Controllers;
 
 use Ads\Application\CommandBus\Bus;
 use Ads\CodeList\Posters\Poster;
-use Ads\CodeList\Posters\PosterInformation;
 use Ads\CodeList\Registration\SignUp\SignUpPosterAction;
 use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
 use Ads\CodeList\Registration\SignUp\SignUpPosterResponder;
@@ -19,7 +18,7 @@ use Ads\UI\Web\HTTP\HAL\ApiProblems\Problem;
 use Ads\UI\Web\HTTP\HAL\ApiProblems\ProblemDetails;
 use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
 use Ads\UI\Web\HTTP\HAL\Serializer;
-use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Router;
 
@@ -28,35 +27,18 @@ use Slim\Router;
  *
  * @see SignUpPosterControllerTest
  */
-class SignUpPosterController implements SignUpPosterResponder
+class SignUpPosterController extends ApiController implements SignUpPosterResponder
 {
-    /** @var Bus */
-    private $bus;
-
-    /** @var Router */
-    private $router;
-
-    /** @var Response */
-    private $response;
-
-    /** @var Request */
-    private $request;
-
-    public function __construct(Bus $bus, SignUpPosterAction $action, Router $router)
+    public function __construct(Bus $bus, Router $router, SignUpPosterAction $action)
     {
+        parent::__construct($bus, $router);
         $action->attach($this);
-        $this->bus = $bus;
         $this->bus->addHandler($action, 'signUpPoster', SignUpPosterInput::class);
-        $this->router = $router;
     }
 
-    public function signUp(Request $request): Response
+    public function signUp(Request $request): ResponseInterface
     {
-        $this->request = $request;
-
-        $this->bus->handle(SignUpPosterInput::withValues($request->getParsedBody()));
-
-        return $this->response;
+        return $this->run($request, SignUpPosterInput::withValues($request->getParsedBody()));
     }
 
     public function respondToPosterSignedUp(Poster $poster): void

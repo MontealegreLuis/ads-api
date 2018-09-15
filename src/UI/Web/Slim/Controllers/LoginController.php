@@ -18,43 +18,26 @@ use Ads\UI\Web\HTTP\HAL\ApiProblems\ProblemDetails;
 use Ads\UI\Web\HTTP\HAL\Mappings\SlimUriBuilder;
 use Ads\UI\Web\HTTP\HAL\Serializer;
 use Ads\UI\Web\HTTP\JWT\TokenFactory;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
-use Slim\Http\Response;
 use Slim\Router;
 
-class LoginController implements LoginResponder
+class LoginController extends ApiController implements LoginResponder
 {
-    /** @var Bus */
-    private $bus;
-
-    /** @var Router */
-    private $router;
-
-    /** @var Response */
-    private $response;
-
-    /** @var Request */
-    private $request;
-
     /** @var TokenFactory */
     private $factory;
 
-    public function __construct(Bus $bus, LoginAction $action, Router $router, TokenFactory $factory)
+    public function __construct(Bus $bus, Router $router, LoginAction $action, TokenFactory $factory)
     {
+        parent::__construct($bus, $router);
         $action->attach($this);
-        $this->bus = $bus;
         $this->bus->addHandler($action, 'authenticatePoster', LoginInput::class);
-        $this->router = $router;
         $this->factory = $factory;
     }
 
-    public function authenticate(Request $request): Response
+    public function authenticate(Request $request): ResponseInterface
     {
-        $this->request = $request;
-
-        $this->bus->handle(LoginInput::withValues($request->getParsedBody()));
-
-        return $this->response;
+        return $this->run($request, LoginInput::withValues($request->getParsedBody()));
     }
 
     public function respondToInvalidInput(array $errors): void

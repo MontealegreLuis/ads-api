@@ -21,35 +21,18 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Router;
 
-class DomainEventsController implements ViewEventsInPageResponder
+class DomainEventsController extends ApiController implements ViewEventsInPageResponder
 {
-    /** @var Router */
-    private $router;
-
-    /** @var Bus */
-    private $bus;
-
-    /** @var Request */
-    private $request;
-
-    /** @var ResponseInterface */
-    private $response;
-
-    public function __construct(Bus $bus, ViewEventsInPageAction $action, Router $router)
+    public function __construct(Bus $bus, Router $router, ViewEventsInPageAction $action)
     {
-        $this->bus = $bus;
+        parent::__construct($bus, $router);
         $action->attach($this);
         $this->bus->addHandler($action, 'viewPage', ViewEventsInPageInput::class);
-        $this->router = $router;
     }
 
     public function showPage(Request $request): ResponseInterface
     {
-        $this->request = $request;
-
-        $this->bus->handle(ViewEventsInPageInput::withValues($request->getQueryParams()));
-
-        return $this->response;
+        return $this->run($request, ViewEventsInPageInput::withValues($request->getQueryParams()));
     }
 
     public function respondToEventsInPage(Paginator $events): void
