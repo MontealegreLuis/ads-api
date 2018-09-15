@@ -28,7 +28,7 @@ abstract class PostersTest extends TestCase
     }
 
     /** @test */
-    function it_does_not_find_a_poster_by_username_if_it_has_not_been_registed_previously()
+    function it_does_not_find_a_poster_by_username_if_it_has_not_been_registered_previously()
     {
         $posters = $this->posters();
 

@@ -25,6 +25,9 @@ class DraftAdInput extends InputValidator
      */
     private $description;
 
+    /** @var string */
+    private $author;
+
     /** @var int */
     private $createdAt;
 
@@ -42,11 +45,17 @@ class DraftAdInput extends InputValidator
         ];
     }
 
+    public function author(): string
+    {
+        return $this->author;
+    }
+
     public function __construct(array $values)
     {
         parent::__construct();
         $this->title = trim($values['title'] ?? '');
         $this->description = trim($values['description'] ?? '');
+        $this->author = trim($values['author'] ?? '');
         $this->createdAt = $values['createdAt'] ?? Carbon::now('UTC')->getTimestamp();;
     }
 }
