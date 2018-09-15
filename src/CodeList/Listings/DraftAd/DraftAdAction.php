@@ -7,7 +7,6 @@
 
 namespace Ads\CodeList\Listings\DraftAd;
 
-use Ads\CodeList\Ads\AdInformation;
 use Ads\CodeList\Ads\Ads;
 use Ads\CodeList\Listings\UnknownPoster;
 use Ads\CodeList\Posters\Posters;
@@ -51,7 +50,7 @@ class DraftAdAction
             return;
         }
 
-        $ad = $poster->draft(AdInformation::fromInput($input));
+        $ad = $poster->draft($input->title(), $input->description(), $input->createdAt());
         $this->ads->add($ad);
         $this->responder()->respondToAdDrafted($ad);
     }

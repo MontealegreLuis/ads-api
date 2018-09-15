@@ -29,9 +29,9 @@ class Ad
     /** @var Poster */
     private $author;
 
-    public static function draft(AdInformation $information, Poster $author): Ad
+    public static function draft(Title $title, Description $description, int $createdAt, Poster $author): Ad
     {
-        return new Ad($information->title(), $information->description(), $information->createdAt(), $author);
+        return new Ad($title, $description, $createdAt, $author);
     }
 
     public function isDraft(): bool

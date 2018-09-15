@@ -8,6 +8,8 @@
 namespace Ads\CodeList\Listings\DraftAd;
 
 use Ads\Application\Validation\InputValidator;
+use Ads\CodeList\Ads\Description;
+use Ads\CodeList\Ads\Title;
 use Carbon\Carbon;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,13 +38,19 @@ class DraftAdInput extends InputValidator
         return new DraftAdInput($values);
     }
 
-    public function values(): array
+    public function title(): Title
     {
-        return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'createdAt' => $this->createdAt
-        ];
+        return Title::fromText($this->title);
+    }
+
+    public function description(): Description
+    {
+        return Description::fromText($this->description);
+    }
+
+    public function createdAt(): int
+    {
+        return $this->createdAt;
     }
 
     public function author(): string

@@ -10,7 +10,8 @@ namespace Ads\CodeList\Posters;
 use Ads\Application\DomainEvents\RecordsEvents;
 use Ads\Application\DomainEvents\WithEventsRecording;
 use Ads\CodeList\Ads\Ad;
-use Ads\CodeList\Ads\AdInformation;
+use Ads\CodeList\Ads\Description;
+use Ads\CodeList\Ads\Title;
 
 /**
  * A poster is a registered user who can post ads in the system
@@ -59,9 +60,9 @@ class Poster implements RecordsEvents
         return $this->password->verify($plainTextPassword);
     }
 
-    public function draft(AdInformation $adInformation): Ad
+    public function draft(Title $title, Description $description, int $createdAt): Ad
     {
-        return Ad::draft($adInformation, $this);
+        return Ad::draft($title, $description, $createdAt, $this);
     }
 
     protected function __construct(Username $username, Password $password, Name $name, Email $email)

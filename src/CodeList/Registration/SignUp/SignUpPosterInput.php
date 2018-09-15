@@ -45,17 +45,6 @@ class SignUpPosterInput extends InputValidator
         return new SignUpPosterInput($values);
     }
 
-    /** @return string[] */
-    public function values(): array
-    {
-        return [
-            'username' => $this->username,
-            'password' => $this->password,
-            'name' => $this->name,
-            'email' => $this->email,
-        ];
-    }
-
     public function username(): Username
     {
         return new Username($this->username);

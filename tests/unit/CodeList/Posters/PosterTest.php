@@ -61,11 +61,12 @@ class PosterTest extends TestCase
             'email' => 'thomas.anderson@thematrix.org'
         ]);
         $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
-
-        $ad = $poster->draft(AdInformation::fromInput(DraftAdInput::withValues([
+        $input = DraftAdInput::withValues([
             'title' => 'Test title',
             'description' => 'Test description',
-        ])));
+        ]);
+
+        $ad = $poster->draft($input->title(), $input->description(), $input->createdAt());
 
         $this->assertTrue($ad->isDraft());
     }
