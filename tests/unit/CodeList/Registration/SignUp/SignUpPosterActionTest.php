@@ -67,20 +67,18 @@ class SignUpPosterActionTest extends TestCase
         $this->posters->add(A::poster()->withUsername($existingUsername)->build());
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
-
-        $this->action->signUpPoster(SignUpPosterInput::withValues([
+        $input = SignUpPosterInput::withValues([
             'username' => $existingUsername,
             'password' => '12345678',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org',
-        ]));
+        ]);
+
+        $this->action->signUpPoster($input);
 
         $this->assertEmpty($collector->events());
         $this->responder
-            ->respondToUnavailableUsername(
-                Argument::type(PosterInformation::class),
-                Argument::type(UnavailableUsername::class)
-            )
+            ->respondToUnavailableUsername($input, Argument::type(UnavailableUsername::class))
             ->shouldHaveBeenCalled();
     }
 

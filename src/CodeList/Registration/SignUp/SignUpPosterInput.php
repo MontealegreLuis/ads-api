@@ -8,6 +8,10 @@
 namespace Ads\CodeList\Registration\SignUp;
 
 use Ads\Application\Validation\InputValidator;
+use Ads\CodeList\Posters\Email;
+use Ads\CodeList\Posters\Name;
+use Ads\CodeList\Posters\Password;
+use Ads\CodeList\Posters\Username;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SignUpPosterInput extends InputValidator
@@ -50,6 +54,26 @@ class SignUpPosterInput extends InputValidator
             'name' => $this->name,
             'email' => $this->email,
         ];
+    }
+
+    public function username(): Username
+    {
+        return new Username($this->username);
+    }
+
+    public function password(): Password
+    {
+        return Password::fromPlainText($this->password);
+    }
+
+    public function name(): Name
+    {
+        return new Name($this->name);
+    }
+
+    public function email(): Email
+    {
+        return Email::withAddress($this->email);
     }
 
     protected function __construct(array $input)

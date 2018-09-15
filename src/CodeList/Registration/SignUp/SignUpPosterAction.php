@@ -8,7 +8,6 @@
 namespace Ads\CodeList\Registration\SignUp;
 
 use Ads\CodeList\Posters\Poster;
-use Ads\CodeList\Posters\PosterInformation;
 use Ads\CodeList\Posters\Posters;
 use LogicException;
 
@@ -37,23 +36,21 @@ class SignUpPosterAction
     private function tryToSignUpWith(SignUpPosterInput $input): void
     {
         try {
-            $information = PosterInformation::from($input);
-            $poster = $this->signUp($information);
+            $poster = $this->signUp($input);
             $this->responder()->respondToPosterSignedUp($poster);
         } catch (UnavailableUsername $exception) {
-            $this->responder()->respondToUnavailableUsername($information, $exception);
+            $this->responder()->respondToUnavailableUsername($input, $exception);
         }
     }
 
-    /** @throws UnavailableUsername */
-    private function signUp(PosterInformation $information): Poster
+    private function signUp(SignUpPosterInput $input): Poster
     {
-        $registeredPoster = $this->posters->withUsername($information->username());
+        $registeredPoster = $this->posters->withUsername($input->username());
         if ($registeredPoster) {
-            throw new UnavailableUsername($information->username());
+            throw new UnavailableUsername($input->username());
         }
 
-        $poster = Poster::signUp($information);
+        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
         $this->posters->add($poster);
 
         return $poster;

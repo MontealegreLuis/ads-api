@@ -94,7 +94,7 @@ class UserSignUpContext implements Context, SignUpPosterResponder
         $this->poster = $poster;
     }
 
-    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void
+    public function respondToUnavailableUsername(SignUpPosterInput $input, UnavailableUsername $error): void
     {
         $this->usernameIsUnavailable = true;
     }

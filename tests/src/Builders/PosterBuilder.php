@@ -8,7 +8,6 @@
 namespace Ads\Builders;
 
 use Ads\CodeList\Posters\Poster;
-use Ads\CodeList\Posters\PosterInformation;
 use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
 use ReflectionClass;
 
@@ -39,19 +38,25 @@ class PosterBuilder
     /** @throws \ReflectionException */
     public function build(): Poster
     {
-        $information = PosterInformation::from(SignUpPosterInput::withValues([
+        $input = SignUpPosterInput::withValues([
             'username' => $this->username ?? str_replace('.', '_', $this->faker->userName),
             'password' => $this->password ?? $this->faker->password(8),
             'name' => $this->faker->name,
             'email' => $this->faker->email,
-        ]));
+        ]);
 
         $class = new ReflectionClass(Poster::class);
         $constructor = $class->getConstructor();
         $constructor->setAccessible(true);
         /** @var Poster $poster */
         $poster = $class->newInstanceWithoutConstructor();
-        $constructor->invoke($poster, $information);
+        $constructor->invoke(
+            $poster,
+            $input->username(),
+            $input->password(),
+            $input->name(),
+            $input->email()
+        );
 
         return $poster;
     }

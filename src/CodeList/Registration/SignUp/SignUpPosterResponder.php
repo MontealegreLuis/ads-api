@@ -16,5 +16,5 @@ interface SignUpPosterResponder
 
     public function respondToPosterSignedUp(Poster $poster): void;
 
-    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void;
+    public function respondToUnavailableUsername(SignUpPosterInput $input, UnavailableUsername $error): void;
 }

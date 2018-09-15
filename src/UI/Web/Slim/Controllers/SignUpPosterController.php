@@ -77,7 +77,7 @@ class SignUpPosterController implements SignUpPosterResponder
         );
     }
 
-    public function respondToUnavailableUsername(PosterInformation $information, UnavailableUsername $error): void
+    public function respondToUnavailableUsername(SignUpPosterInput $input, UnavailableUsername $error): void
     {
         $this->response = ApiResponse::unprocessableEntity(
             Problem::failedValidation(['username' => $error->getMessage()], ProblemDetails::UNAVAILABLE_USERNAME)

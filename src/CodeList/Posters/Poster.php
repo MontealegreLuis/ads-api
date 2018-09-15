@@ -33,9 +33,9 @@ class Poster implements RecordsEvents
     /** @var Email */
     private $email;
 
-    public static function signUp(PosterInformation $information): Poster
+    public static function signUp(Username $username, Password $password, Name $name, Email $email): Poster
     {
-        $poster = new Poster($information);
+        $poster = new Poster($username, $password, $name, $email);
         $poster->recordThat(new PosterHasSignedUp(
             $poster->username,
             $poster->name,
@@ -64,11 +64,11 @@ class Poster implements RecordsEvents
         return Ad::draft($adInformation, $this);
     }
 
-    protected function __construct(PosterInformation $information)
+    protected function __construct(Username $username, Password $password, Name $name, Email $email)
     {
-        $this->username = $information->username();
-        $this->password = $information->password();
-        $this->name = $information->name();
-        $this->email = $information->email();
+        $this->username = $username;
+        $this->password = $password;
+        $this->name = $name;
+        $this->email = $email;
     }
 }

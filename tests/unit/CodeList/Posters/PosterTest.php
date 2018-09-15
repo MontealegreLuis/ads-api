@@ -22,12 +22,13 @@ class PosterTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $poster = Poster::signUp(PosterInformation::from(SignUpPosterInput::withValues([
+        $input = SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
-        ])));
+        ]);
+        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
 
         $this->assertTrue($poster->hasUsername(new Username('thomas_anderson')));
         $this->assertCount(1, $collector->events());
@@ -38,12 +39,13 @@ class PosterTest extends TestCase
     function it_can_verify_her_password()
     {
         $password = 'ilovemyjob';
-        $poster = Poster::signUp(PosterInformation::from(SignUpPosterInput::withValues([
+        $input = SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => $password,
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
-        ])));
+        ]);
+        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
 
         $this->assertTrue($poster->verifyPassword($password));
         $this->assertFalse($poster->verifyPassword('incorrect password'));
@@ -52,12 +54,13 @@ class PosterTest extends TestCase
     /** @test */
     function it_can_draft_a_post()
     {
-        $poster = Poster::signUp(PosterInformation::from(SignUpPosterInput::withValues([
+        $input = SignUpPosterInput::withValues([
             'username' => 'thomas_anderson',
             'password' => 'ilovemyjob',
             'name' => 'Thomas Anderson',
             'email' => 'thomas.anderson@thematrix.org'
-        ])));
+        ]);
+        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
 
         $ad = $poster->draft(AdInformation::fromInput(DraftAdInput::withValues([
             'title' => 'Test title',
