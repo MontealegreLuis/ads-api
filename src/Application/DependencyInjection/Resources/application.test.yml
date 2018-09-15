@@ -4,6 +4,7 @@ parameters:
 
   orm.paths:
     - '%app.basePath%src/CodeList/Posters/Ports/Resources'
+    - '%app.basePath%src/CodeList/Ads/Ports/Resources'
     - '%app.basePath%src/Application/DomainEvents/Ports/Resources'
 
   em.options:

@@ -1,0 +1,6 @@
+Ads\CodeList\Ads\Description:
+  type: embeddable
+  fields:
+    text:
+      type: string
+      column: description

@@ -18,4 +18,9 @@ class A
     {
         return new PosterHasSignedUpEventBuilder();
     }
+
+    public static function ad(): AdBuilder
+    {
+        return new AdBuilder();
+    }
 }

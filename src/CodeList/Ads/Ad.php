@@ -11,6 +11,9 @@ use Ads\CodeList\Posters\Poster;
 
 class Ad
 {
+    /** @var int */
+    private $id;
+
     /** @var Title */
     private $title;
 
@@ -32,6 +35,11 @@ class Ad
     public static function draft(Title $title, Description $description, int $createdAt, Poster $author): Ad
     {
         return new Ad($title, $description, $createdAt, $author);
+    }
+
+    public function id(): int
+    {
+        return $this->id;
     }
 
     public function isDraft(): bool

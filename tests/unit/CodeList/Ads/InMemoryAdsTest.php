@@ -7,10 +7,12 @@
 
 namespace Ads\CodeList\Ads;
 
-interface Ads
-{
-    public function add(Ad $ad): void;
+use Ads\ContractTests\AdsTest;
 
-    /** @throws UnknownAd When the ad cannot be found */
-    public function with(int $id): Ad;
+class InMemoryAdsTest extends AdsTest
+{
+    public function ads(): Ads
+    {
+        return new InMemoryAds();
+    }
 }

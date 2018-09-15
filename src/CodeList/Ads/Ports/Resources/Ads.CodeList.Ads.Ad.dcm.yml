@@ -1,0 +1,19 @@
+Ads\CodeList\Ads\Ad:
+  type: entity
+  table: ads
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    createdAt:
+      type: integer
+      column: created_at
+  embedded:
+    title:
+      class: Ads\CodeList\Ads\Title
+      columnPrefix: false
+    description:
+      class: Ads\CodeList\Ads\Description
+      columnPrefix: false
