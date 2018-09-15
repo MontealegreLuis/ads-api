@@ -9,9 +9,9 @@ namespace Ads\CodeList\Posters;
 
 use Ads\Application\DomainEvents\DomainEventsCollector;
 use Ads\Application\DomainEvents\EventPublisher;
-use Ads\CodeList\Ads\AdInformation;
-use Ads\CodeList\Listings\DraftAd\DraftAdInput;
-use Ads\CodeList\Registration\SignUp\SignUpPosterInput;
+use Ads\Builders\A;
+use Ads\CodeList\Ads\Description;
+use Ads\CodeList\Ads\Title;
 use PHPUnit\Framework\TestCase;
 
 class PosterTest extends TestCase
@@ -22,13 +22,12 @@ class PosterTest extends TestCase
         $collector = new DomainEventsCollector();
         EventPublisher::subscribe($collector);
 
-        $input = SignUpPosterInput::withValues([
-            'username' => 'thomas_anderson',
-            'password' => 'ilovemyjob',
-            'name' => 'Thomas Anderson',
-            'email' => 'thomas.anderson@thematrix.org'
-        ]);
-        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
+        $poster = Poster::signUp(
+            new Username('thomas_anderson'),
+            Password::fromPlainText('ilovemyjob'),
+            new Name('Thomas Anderson'),
+            Email::withAddress('thomas.anderson@thematrix.org')
+        );
 
         $this->assertTrue($poster->hasUsername(new Username('thomas_anderson')));
         $this->assertCount(1, $collector->events());
@@ -39,13 +38,12 @@ class PosterTest extends TestCase
     function it_can_verify_her_password()
     {
         $password = 'ilovemyjob';
-        $input = SignUpPosterInput::withValues([
-            'username' => 'thomas_anderson',
-            'password' => $password,
-            'name' => 'Thomas Anderson',
-            'email' => 'thomas.anderson@thematrix.org'
-        ]);
-        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
+        $poster = Poster::signUp(
+            new Username('thomas_anderson'),
+            Password::fromPlainText($password),
+            new Name('Thomas Anderson'),
+            Email::withAddress('thomas.anderson@thematrix.org')
+        );
 
         $this->assertTrue($poster->verifyPassword($password));
         $this->assertFalse($poster->verifyPassword('incorrect password'));
@@ -54,19 +52,14 @@ class PosterTest extends TestCase
     /** @test */
     function it_can_draft_a_post()
     {
-        $input = SignUpPosterInput::withValues([
-            'username' => 'thomas_anderson',
-            'password' => 'ilovemyjob',
-            'name' => 'Thomas Anderson',
-            'email' => 'thomas.anderson@thematrix.org'
-        ]);
-        $poster = Poster::signUp($input->username(), $input->password(), $input->name(), $input->email());
-        $input = DraftAdInput::withValues([
-            'title' => 'Test title',
-            'description' => 'Test description',
-        ]);
+        $poster = A::poster()->build();
+        $now = 1537024269;
 
-        $ad = $poster->draft($input->title(), $input->description(), $input->createdAt());
+        $ad = $poster->draft(
+            Title::fromText('Test title'),
+            Description::fromText('Test description'),
+            $now
+        );
 
         $this->assertTrue($ad->isDraft());
     }
