@@ -8,6 +8,7 @@
 namespace Ads\UI\Web\HTTP\HAL;
 
 use Ads\Application\Pagination\Paginator;
+use Ads\UI\Web\HTTP\HAL\Mappings\AdMapping;
 use Ads\UI\Web\HTTP\HAL\Mappings\ObjectMapping;
 use Ads\UI\Web\HTTP\HAL\Mappings\PosterMapping;
 use Ads\UI\Web\HTTP\HAL\Mappings\StoredEventMapping;
@@ -64,6 +65,7 @@ class Serializer
     {
         $mappings = [
             ObjectMapping::fromMapper(new PosterMapping($uriBuilder)),
+            ObjectMapping::fromMapper(new AdMapping($uriBuilder)),
             ObjectMapping::fromMapper(new StoredEventMapping()),
         ];
         $this->halSerializer = new HalSerializer(new JsonTransformer(new Mapper($mappings)));

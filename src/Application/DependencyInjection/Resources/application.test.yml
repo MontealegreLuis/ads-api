@@ -37,6 +37,12 @@ services:
     - '@router'
     - '@Ads\CodeList\Authentication\Login\LoginAction'
     - '@Ads\UI\Web\HTTP\JWT\TokenFactory'
+  Ads\UI\Web\Slim\Controllers\DraftAdController:
+    public: true
+    arguments:
+    - '@Ads\Application\CommandBus\Bus'
+    - '@router'
+    - '@Ads\CodeList\Listings\DraftAd\DraftAdAction'
   # Actions
   Ads\CodeList\Registration\SignUp\SignUpPosterAction:
     arguments:
@@ -47,6 +53,10 @@ services:
   Ads\CodeList\Authentication\Login\LoginAction:
     arguments:
     - '@Ads\CodeList\Posters\Posters'
+  Ads\CodeList\Listings\DraftAd\DraftAdAction:
+    arguments:
+    - '@Ads\CodeList\Posters\Posters'
+    - '@Ads\CodeList\Ads\Ads'
   # Middleware
   Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware:
     public: true
@@ -76,6 +86,12 @@ services:
     public: true
     shared: false
     class: 'Ads\Application\DomainEvents\Ports\EventStoreRepository'
+    arguments:
+      - '@Doctrine\ORM\EntityManager'
+  Ads\CodeList\Ads\Ads:
+    public: true
+    shared: false
+    class: 'Ads\CodeList\Ads\Ports\AdsRepository'
     arguments:
       - '@Doctrine\ORM\EntityManager'
   # Slim handlers

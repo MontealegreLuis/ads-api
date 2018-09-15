@@ -22,7 +22,7 @@ class DraftAdActionTest extends TestCase
     function it_cannot_draft_an_ad_without_a_responder()
     {
         $this->expectException(LogicException::class);
-        $this->action->draftAction(DraftAdInput::withValues([]));
+        $this->action->draftAd(DraftAdInput::withValues([]));
     }
 
     /** @test */
@@ -35,7 +35,7 @@ class DraftAdActionTest extends TestCase
         ]);
         $this->action->attach($this->responder->reveal());
 
-        $this->action->draftAction($input);
+        $this->action->draftAd($input);
 
         $this->responder->respondToUnknownPosterWith(Argument::type(Username::class))->shouldHaveBeenCalled();
         $this->assertTrue($input->isValid());
@@ -48,7 +48,7 @@ class DraftAdActionTest extends TestCase
         $input = DraftAdInput::withValues([]);
         $this->action->attach($this->responder->reveal());
 
-        $this->action->draftAction($input);
+        $this->action->draftAd($input);
 
         $this->responder->respondToInvalidInput($input)->shouldHaveBeenCalled();
         $this->assertFalse($input->isValid());
@@ -67,7 +67,7 @@ class DraftAdActionTest extends TestCase
         ]);
         $this->action->attach($this->responder->reveal());
 
-        $this->action->draftAction($input);
+        $this->action->draftAd($input);
 
         $this->responder->respondToAdDrafted(Argument::type(Ad::class))->shouldHaveBeenCalled();
         $this->assertTrue($input->isValid());

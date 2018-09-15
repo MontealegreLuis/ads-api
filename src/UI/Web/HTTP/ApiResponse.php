@@ -35,7 +35,7 @@ class ApiResponse
             ->withHeader('Content-Type',ContentType::PROBLEM_JSON);
     }
 
-    public static function unathorized(ApiProblem $problem): ResponseInterface
+    public static function unauthorized(ApiProblem $problem): ResponseInterface
     {
         $response = new Response();
         $response->write($problem->asJson());
@@ -53,5 +53,15 @@ class ApiResponse
         return $response
             ->withStatus(Status::OK)
             ->withHeader('Content-Type', ContentType::HAL_JSON);
+    }
+
+    public static function notFound(ApiProblem $problem)
+    {
+        $response = new Response();
+        $response->write($problem->asJson());
+
+        return $response
+            ->withStatus(Status::NOT_FOUND)
+            ->withHeader('Content-Type',ContentType::PROBLEM_JSON);
     }
 }

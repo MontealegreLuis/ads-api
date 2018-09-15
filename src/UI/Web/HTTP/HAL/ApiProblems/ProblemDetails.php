@@ -29,4 +29,12 @@ interface ProblemDetails
         'code' => 'INV_CRED_LOGIN',
         'details' => 'Either password or username are incorrect',
     ];
+    public const INVALID_DRAFT_INFORMATION = [
+        'code' => 'DRAFT-INV-INPUT',
+        'details' => 'Draft Ad information is invalid',
+    ];
+    public const POSTER_NOT_FOUND = [
+        'code' => 'POSTER-NOT-FOUND',
+        'details' => 'Unknown poster username',
+    ];
 }

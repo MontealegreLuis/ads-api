@@ -21,6 +21,12 @@ class PosterBuilder
     /** @var string */
     private $password;
 
+    /** @var string */
+    private $name;
+
+    /** @var string */
+    private $email;
+
     public function withUsername(string $username): PosterBuilder
     {
         $this->username = $username;
@@ -35,14 +41,28 @@ class PosterBuilder
         return $this;
     }
 
+    public function withName(string $name): PosterBuilder
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function withEmail(string $email): PosterBuilder
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
     /** @throws \ReflectionException */
     public function build(): Poster
     {
         $input = SignUpPosterInput::withValues([
             'username' => $this->username ?? str_replace('.', '_', $this->faker->userName),
             'password' => $this->password ?? $this->faker->password(8),
-            'name' => $this->faker->name,
-            'email' => $this->faker->email,
+            'name' => $this->name ?? $this->faker->name,
+            'email' => $this->email ?? $this->faker->email,
         ]);
 
         $class = new ReflectionClass(Poster::class);

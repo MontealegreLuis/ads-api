@@ -10,7 +10,7 @@ namespace Ads\CodeList\Listings\DraftAd;
 use Ads\Application\Validation\InputValidator;
 use Ads\CodeList\Ads\Description;
 use Ads\CodeList\Ads\Title;
-use Carbon\Carbon;
+use Ads\CodeList\Clock;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DraftAdInput extends InputValidator
@@ -64,6 +64,6 @@ class DraftAdInput extends InputValidator
         $this->title = trim($values['title'] ?? '');
         $this->description = trim($values['description'] ?? '');
         $this->author = trim($values['author'] ?? '');
-        $this->createdAt = $values['createdAt'] ?? Carbon::now('UTC')->getTimestamp();;
+        $this->createdAt = $values['createdAt'] ?? Clock::currentTimestamp();
     }
 }

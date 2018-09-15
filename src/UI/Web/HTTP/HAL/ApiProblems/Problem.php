@@ -22,6 +22,27 @@ class Problem
         return $problem;
     }
 
+    public static function notFound(array $errors, array $details): ApiProblem
+    {
+        $problem = self::notFoundProblem();
+        $problem['errors'] = $errors;
+        $problem['code'] = $details['code'];
+        $problem['details'] = $details['details'];
+
+        return $problem;
+    }
+
+    private static function notFoundProblem(): ApiProblem
+    {
+        $problem = new ApiProblem(
+            'Not Found',
+            'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html'
+        );
+        $problem->setStatus(Status::NOT_FOUND);
+
+        return $problem;
+    }
+
     private static function unprocessableEntity(): ApiProblem
     {
         $problem = new ApiProblem(

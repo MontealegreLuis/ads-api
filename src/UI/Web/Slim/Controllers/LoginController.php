@@ -49,7 +49,7 @@ class LoginController extends ApiController implements LoginResponder
 
     public function respondToUserNotFound(LoginInput $input): void
     {
-        $this->response = ApiResponse::unathorized(
+        $this->response = ApiResponse::unauthorized(
             Problem::failedValidation(
                 ['username' => 'Either password or username are incorrect'],
                 ProblemDetails::INVALID_CREDENTIALS
@@ -59,7 +59,7 @@ class LoginController extends ApiController implements LoginResponder
 
     public function respondToIncorrectPassword(LoginInput $input): void
     {
-        $this->response = ApiResponse::unathorized(
+        $this->response = ApiResponse::unauthorized(
             Problem::failedValidation(
                 ['username' => 'Either password or username are incorrect'],
                 ProblemDetails::INVALID_CREDENTIALS

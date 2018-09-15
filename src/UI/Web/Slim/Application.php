@@ -8,6 +8,7 @@
 namespace Ads\UI\Web\Slim;
 
 use Ads\UI\Web\Slim\Controllers\DomainEventsController;
+use Ads\UI\Web\Slim\Controllers\DraftAdController;
 use Ads\UI\Web\Slim\Controllers\LoginController;
 use Ads\UI\Web\Slim\Controllers\SignUpPosterController;
 use Ads\UI\Web\Slim\Middleware\EventSubscribersMiddleware;
@@ -33,6 +34,11 @@ class Application extends App
 
         $this->post('/authenticate', LoginController::class . ':authenticate')
             ->setName('authenticate');
+
+        $this->post('/draft-ads', DraftAdController::class . ':draftNewAd')
+            ->setName('newDraftAd');
+        $this->get('/draft-ads/{id}', DraftAdController::class . ':draftNewAd')
+            ->setName('draftAd');
 
         $this->get('/events', DomainEventsController::class . ':showPage')
             ->setName('events');

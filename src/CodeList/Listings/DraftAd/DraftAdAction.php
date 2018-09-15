@@ -31,7 +31,7 @@ class DraftAdAction
     }
 
     /** @throws UnknownPoster If ad author cannot be found */
-    public function draftAction(DraftAdInput $input): void
+    public function draftAd(DraftAdInput $input): void
     {
         if ($input->isValid()) {
             $this->tryToDraftAd($input);
