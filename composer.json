@@ -21,7 +21,7 @@
         "league/tactician-doctrine": "^1.1",
         "monolog/monolog": "^1.23",
         "nesbot/carbon": "^1.32",
-        "nilportugues/hal": "^2.1",
+        "nilportugues/hal": "dev-master",
         "pagerfanta/pagerfanta": "^2.0",
         "rbdwllr/reallysimplejwt": "^1.0",
         "slim/slim": "^3.10",
@@ -58,5 +58,11 @@
         "files": [
             "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/MontealegreLuis/php-hal.git"
+        }
+    ]
 }
